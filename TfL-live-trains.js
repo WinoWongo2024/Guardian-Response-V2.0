@@ -136,7 +136,11 @@ function generateRandomStops(line) {
         victoria: ["Victoria", "Oxford Circus", "Green Park", "Stockwell", "Vauxhall", "Brixton"],
         waterloo: ["Bank", "Lambeth North", "Waterloo"]
     };
-    return stops[line];
+    return stops[line].map(stop => ({
+        time: getCurrentTime(), // Just a placeholder, replace with real stop times if available
+        name: stop,
+        status: "On time" // Placeholder status, this can be randomized or based on real data
+    }));
 }
 
 // Function to create the detailed view for a selected train
@@ -147,7 +151,13 @@ function createDetailedView(trainDetails) {
     // Add the service status (e.g., "This service is running 11 minutes late.")
     const serviceStatus = document.createElement('div');
     serviceStatus.classList.add('service-status');
-    serviceStatus.textContent = `This service is running ${trainDetails.delay} minutes late.`;
+    
+    // Check for delay
+    const delayMessage = trainDetails.delay > 0 
+        ? `This service is running ${trainDetails.delay} minutes late.` 
+        : "This service is on time.";
+
+    serviceStatus.textContent = delayMessage;
     detailView.appendChild(serviceStatus);
 
     // Add the stop timeline
@@ -157,19 +167,19 @@ function createDetailedView(trainDetails) {
     trainDetails.stops.forEach(stop => {
         const stopItem = document.createElement('div');
         stopItem.classList.add('stop-item');
-        
+
         const time = document.createElement('span');
         time.classList.add('stop-time');
-        time.textContent = stop.time;
+        time.textContent = stop.time || "N/A"; // Debugging: Ensure time is available
         
         const stopName = document.createElement('span');
         stopName.classList.add('stop-name');
-        stopName.textContent = stop.name;
+        stopName.textContent = stop.name || "N/A"; // Debugging: Ensure stop name is available
         
         const status = document.createElement('span');
         status.classList.add('stop-status');
-        status.textContent = stop.status; // e.g., "On time" or "Delayed"
-        
+        status.textContent = stop.status || "N/A"; // Debugging: Ensure status is available
+
         stopItem.appendChild(time);
         stopItem.appendChild(stopName);
         stopItem.appendChild(status);
