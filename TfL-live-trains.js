@@ -144,6 +144,9 @@ function createDetailedView(trainDetails) {
     const detailView = document.createElement('div');
     detailView.classList.add('detail-view');
 
+    // Calculate and update the arrival or departure time based on the delay
+    const adjustedTime = addMinutesToTime(trainDetails.time, trainDetails.delay);
+
     // Add the service status (e.g., "This service is running 11 minutes late.")
     const serviceStatus = document.createElement('div');
     serviceStatus.classList.add('service-status');
@@ -157,19 +160,19 @@ function createDetailedView(trainDetails) {
     trainDetails.stops.forEach(stop => {
         const stopItem = document.createElement('div');
         stopItem.classList.add('stop-item');
-        
+
         const time = document.createElement('span');
         time.classList.add('stop-time');
         time.textContent = stop.time;
-        
+
         const stopName = document.createElement('span');
         stopName.classList.add('stop-name');
         stopName.textContent = stop.name;
-        
+
         const status = document.createElement('span');
         status.classList.add('stop-status');
         status.textContent = stop.status; // e.g., "On time" or "Delayed"
-        
+
         stopItem.appendChild(time);
         stopItem.appendChild(stopName);
         stopItem.appendChild(status);
@@ -182,15 +185,20 @@ function createDetailedView(trainDetails) {
 
 // Function to handle train selection (when clicked)
 function handleTrainClick(train) {
-    const detailContainer = document.querySelector('.detail-container');
-    detailContainer.innerHTML = ''; // Clear previous details
+    const detailContainer = document.createElement('div');
+    detailContainer.classList.add('detail-container');
 
     const trainDetails = {
         delay: train.delay,  // Delay in minutes
-        stops: train.stops  // Stops for the selected train
+        stops: train.stops,  // Stops for the selected train
+        time: train.departureTime || train.arrivalTime,  // Time (either departure or arrival)
     };
 
     const detailView = createDetailedView(trainDetails);
+
+    // Insert the detailed view right after the selected train in the DOM
+    const selectedTrainElement = event.target.closest('.train-item');
+    selectedTrainElement.after(detailContainer);
     detailContainer.appendChild(detailView);
 }
 
