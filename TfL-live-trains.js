@@ -49,7 +49,6 @@ function generateTrainSchedule() {
                     status: isCancelled ? "cancelled" : "on-time",
                     stops: generateRandomStops(line),
                     cancelledTime: null, // Track when a train is cancelled
-                    currentStopIndex: 0, // Track the current stop for dynamic movement
                 });
             }
         }
@@ -96,7 +95,7 @@ function generateRandomStops(line) {
     return stops[line];
 }
 
-// Update the current stop based on the train's departure time and current time
+// Update the current stop based on the train's departure time and how long it has been traveling
 function getCurrentStop(train) {
     const { departureTime, stops } = train;
     const currentTime = getCurrentTime();
@@ -107,8 +106,8 @@ function getCurrentStop(train) {
 
     // Calculate how many stops the train has passed
     const stopsCount = stops.length;
-    const travelTime = 60; // Assume it takes 60 minutes to go through all stops
-    const timePerStop = travelTime / stopsCount;
+    const totalTravelTime = 60; // Assume it takes 60 minutes for a train to go through all stops
+    const timePerStop = totalTravelTime / (stopsCount - 1); // Time per stop
     const stopsPassed = Math.min(Math.floor(timeDiff / timePerStop), stopsCount - 1);
 
     return stops[stopsPassed];
