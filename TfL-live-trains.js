@@ -1,16 +1,35 @@
 // Time to keep cancelled trains visible (in milliseconds)
 const CANCELLED_TRAIN_VISIBILITY_DURATION = 120000; // 2 minutes
+const REFRESH_INTERVAL = 60000; // 1 minute (to refresh train data)
 
 // A global anchor date that all users will reference for consistency
 const ANCHOR_DATE = new Date("2024-01-01T00:00:00Z"); // A fixed universal start date
 
-// Generate a deterministic train schedule based on the current time relative to ANCHOR_DATE
+// Global state for the train schedule
+let trainSchedule = {};
+
+// Utility function to get the current time in HH:MM format
+function getCurrentTime() {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+}
+
+// Function to calculate the difference in minutes between two HH:MM times
+function timeDifferenceInMinutes(time1, time2) {
+    const [hours1, minutes1] = time1.split(':').map(Number);
+    const [hours2, minutes2] = time2.split(':').map(Number);
+    return (hours1 * 60 + minutes1) - (hours2 * 60 + minutes2);
+}
+
+// Function to generate a deterministic train schedule based on the current time relative to ANCHOR_DATE
 function generateTrainSchedule() {
     const lines = ["bakerloo", "central", "circle", "district", "hammersmith", "jubilee", "metropolitan", "northern", "piccadilly", "victoria", "waterloo"];
     const schedule = {};
+    const currentDate = new Date();
 
     // Calculate the number of days since ANCHOR_DATE for deterministic consistency
-    const currentDate = new Date();
     const daysSinceAnchor = Math.floor((currentDate - ANCHOR_DATE) / (1000 * 60 * 60 * 24)); // Total days since anchor
 
     lines.forEach((line, index) => {
@@ -29,7 +48,8 @@ function generateTrainSchedule() {
                     departureTime: `${formattedHour}:${formattedMinute}`,
                     status: isCancelled ? "cancelled" : "on-time",
                     stops: generateRandomStops(line),
-                    cancelledTime: null // Track when a train is cancelled
+                    cancelledTime: null, // Track when a train is cancelled
+                    currentStopIndex: 0, // Track the current stop for dynamic movement
                 });
             }
         }
@@ -73,7 +93,7 @@ function generateRandomStops(line) {
         victoria: ["Victoria", "Oxford Circus", "Green Park", "Stockwell", "Vauxhall", "Brixton"],
         waterloo: ["Bank", "Lambeth North", "Waterloo"]
     };
-    return stops[line].join(", ");
+    return stops[line];
 }
 
 // Update the train departures every minute
@@ -101,6 +121,16 @@ function updateTrainDepartures(schedule) {
                 train.cancelledTime = now;
             }
 
+            // Update current stop for dynamic movement
+            if (timeDifferenceInMinutes(getCurrentTime(), train.departureTime) < 0 && train.status === "on-time") {
+                // Train is moving, update its current stop
+                const stopsCount = train.stops.length;
+                train.currentStopIndex = Math.min(
+                    train.currentStopIndex + 1,
+                    stopsCount - 1
+                );
+            }
+
             // Create the train item
             const trainItem = document.createElement('div');
             trainItem.classList.add('train-item');
@@ -117,7 +147,7 @@ function updateTrainDepartures(schedule) {
             const stopsElement = document.createElement('div');
             stopsElement.classList.add('train-stops');
             const stopsText = document.createElement('span');
-            stopsText.textContent = `Stops: ${train.stops}`;
+            stopsText.textContent = `Current Stop: ${train.stops[train.currentStopIndex]}`;
             stopsElement.appendChild(stopsText);
 
             // Show cancellation status
@@ -148,9 +178,9 @@ function updateClock() {
 
 // Initialize the schedule and update train departures every minute
 function startLiveUpdates() {
-    const schedule = generateTrainSchedule(); // Generate schedule based on current time and days since ANCHOR_DATE
-    updateTrainDepartures(schedule); // Display the initial trains
-    setInterval(() => updateTrainDepartures(schedule), 60000); // Update every minute
+    trainSchedule = generateTrainSchedule(); // Generate schedule based on current time and days since ANCHOR_DATE
+    updateTrainDepartures(trainSchedule); // Display the initial trains
+    setInterval(() => updateTrainDepartures(trainSchedule), REFRESH_INTERVAL); // Update every minute
     setInterval(updateClock, 1000); // Update the clock every second
 }
 
