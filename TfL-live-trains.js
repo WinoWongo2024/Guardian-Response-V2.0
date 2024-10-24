@@ -1,5 +1,15 @@
-// Generate a full day of train departures from 00:00 to 23:59
+// Time to keep cancelled trains visible (in milliseconds)
+const CANCELLED_TRAIN_VISIBILITY_DURATION = 120000; // 2 minutes
+
+// Generate or retrieve a train schedule from localStorage
 function generateTrainSchedule() {
+    const storedSchedule = localStorage.getItem('trainSchedule');
+    
+    // If schedule exists in localStorage, parse and return it
+    if (storedSchedule) {
+        return JSON.parse(storedSchedule);
+    }
+    
     const lines = ["bakerloo", "central", "circle", "district", "hammersmith", "jubilee", "metropolitan", "northern", "piccadilly", "victoria", "waterloo"];
     const schedule = {};
 
@@ -13,11 +23,15 @@ function generateTrainSchedule() {
                     destination: generateRandomDestination(line),
                     departureTime: `${formattedHour}:${formattedMinute}`,
                     status: Math.random() > 0.85 ? "cancelled" : "on-time", // Randomly cancel some trains
-                    stops: generateRandomStops(line)
+                    stops: generateRandomStops(line),
+                    cancelledTime: null // Track when a train is cancelled
                 });
             }
         }
     });
+
+    // Store the generated schedule in localStorage
+    localStorage.setItem('trainSchedule', JSON.stringify(schedule));
 
     return schedule;
 }
@@ -58,24 +72,32 @@ function generateRandomStops(line) {
     return stops[line].join(", ");
 }
 
-// Get the current time and display upcoming trains within the next 30 minutes
+// Update the train departures every minute
 function updateTrainDepartures(schedule) {
     const now = new Date();
     const currentHour = now.getHours();
     const currentMinutes = now.getMinutes();
+    const currentTimeInMinutes = currentHour * 60 + currentMinutes;
     
     for (const line in schedule) {
         const trainList = document.querySelector(`.train-list[data-line="${line}"]`);
         trainList.innerHTML = ''; // Clear the list
 
-        const departures = schedule[line].filter(train => {
+        schedule[line].forEach(train => {
             const [trainHour, trainMinutes] = train.departureTime.split(':').map(Number);
             const trainTimeInMinutes = trainHour * 60 + trainMinutes;
-            const currentTimeInMinutes = currentHour * 60 + currentMinutes;
-            return trainTimeInMinutes >= currentTimeInMinutes && trainTimeInMinutes <= currentTimeInMinutes + 30; // Show trains within 30 minutes
-        });
 
-        departures.forEach(train => {
+            // If the train has already departed or its cancelled visibility period has expired, skip it
+            if (trainTimeInMinutes < currentTimeInMinutes && (!train.cancelledTime || now - train.cancelledTime > CANCELLED_TRAIN_VISIBILITY_DURATION)) {
+                return;
+            }
+
+            // If the train is marked as cancelled, track the time it was cancelled
+            if (train.status === "cancelled" && !train.cancelledTime) {
+                train.cancelledTime = now;
+            }
+
+            // Create the train item
             const trainItem = document.createElement('div');
             trainItem.classList.add('train-item');
             trainItem.classList.add(train.status); // Add on-time or cancelled class
@@ -94,6 +116,7 @@ function updateTrainDepartures(schedule) {
             stopsText.textContent = `Stops: ${train.stops}`;
             stopsElement.appendChild(stopsText);
 
+            // Show cancellation status
             if (train.status === "cancelled") {
                 const statusElement = document.createElement('span');
                 statusElement.classList.add('train-status');
@@ -121,7 +144,7 @@ function updateClock() {
 
 // Initialize the schedule and update train departures every minute
 function startLiveUpdates() {
-    const schedule = generateTrainSchedule(); // Generate the full day's schedule
+    let schedule = generateTrainSchedule(); // Retrieve or generate the full day's schedule
     updateTrainDepartures(schedule); // Display the initial trains
     setInterval(() => updateTrainDepartures(schedule), 60000); // Update every minute
     setInterval(updateClock, 1000); // Update the clock every second
