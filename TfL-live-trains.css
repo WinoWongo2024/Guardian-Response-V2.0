@@ -1,6 +1,6 @@
 /* General Styles */
 body {
-    font-family: 'Johnston100', sans-serif;
+    font-family: 'johnston100', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
@@ -76,7 +76,7 @@ body {
 
 /* Digital Clock Styling */
 .digital-clock {
-    font-family: 'Johnston100', sans-serif;
+    font-family: 'johnston100', sans-serif;
     font-size: 4rem;
     text-align: center;
     padding: 1.5rem;
@@ -212,7 +212,7 @@ body {
     list-style: none;
     padding: 0;
     margin: 0;
-    font-family: 'Johnston100', sans-serif;
+    font-family: 'johnston100', sans-serif;
 }
 
 .train-item {
