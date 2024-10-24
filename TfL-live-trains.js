@@ -22,38 +22,38 @@ function generateTrainSchedule() {
     return schedule;
 }
 
-// Generate random destinations for demonstration purposes
+// Generate random destinations for demonstration purposes with more destinations
 function generateRandomDestination(line) {
     const destinations = {
-        bakerloo: ["Elephant & Castle", "Harrow & Wealdstone"],
-        central: ["Epping", "West Ruislip"],
-        circle: ["Hammersmith", "Edgware Road"],
-        district: ["Upminster", "Richmond"],
-        hammersmith: ["Barking", "Hammersmith"],
-        jubilee: ["Stratford", "Stanmore"],
-        metropolitan: ["Aldgate", "Amersham"],
-        northern: ["Morden", "High Barnet"],
-        piccadilly: ["Heathrow Terminal 5", "Cockfosters"],
-        victoria: ["Brixton", "Walthamstow Central"],
-        waterloo: ["Bank", "Waterloo"]
+        bakerloo: ["Elephant & Castle", "Harrow & Wealdstone", "Queen's Park", "Paddington", "Oxford Circus", "Wembley Central"],
+        central: ["Epping", "West Ruislip", "White City", "Marble Arch", "Liverpool Street", "Bethnal Green"],
+        circle: ["Hammersmith", "Edgware Road", "Aldgate", "King's Cross", "Monument", "Notting Hill Gate"],
+        district: ["Upminster", "Richmond", "Wimbledon", "Ealing Broadway", "Tower Hill", "Barking"],
+        hammersmith: ["Barking", "Hammersmith", "Whitechapel", "Mile End", "Paddington", "Royal Oak"],
+        jubilee: ["Stratford", "Stanmore", "London Bridge", "Westminster", "Wembley Park", "Bermondsey"],
+        metropolitan: ["Aldgate", "Amersham", "Chorleywood", "Rickmansworth", "Baker Street", "Uxbridge"],
+        northern: ["Morden", "High Barnet", "Camden Town", "Kennington", "Tooting Broadway", "East Finchley"],
+        piccadilly: ["Heathrow Terminal 5", "Cockfosters", "Hammersmith", "Covent Garden", "South Kensington", "Leicester Square"],
+        victoria: ["Brixton", "Walthamstow Central", "Victoria", "Oxford Circus", "King's Cross", "Stockwell"],
+        waterloo: ["Bank", "Waterloo", "Lambeth North"]
     };
     return destinations[line][Math.floor(Math.random() * destinations[line].length)];
 }
 
-// Generate random stops for each line
+// Generate random stops for each line with more stops
 function generateRandomStops(line) {
     const stops = {
-        bakerloo: ["Paddington", "Oxford Circus", "Piccadilly Circus"],
-        central: ["Notting Hill Gate", "Liverpool Street", "Stratford"],
-        circle: ["Baker Street", "King's Cross", "Liverpool Street"],
-        district: ["Earl's Court", "Hammersmith", "Richmond"],
-        hammersmith: ["Paddington", "West Ham", "Barking"],
-        jubilee: ["Waterloo", "London Bridge", "Canary Wharf"],
-        metropolitan: ["King's Cross", "Moorgate", "Harrow-on-the-Hill"],
-        northern: ["Camden Town", "Kennington", "Clapham Common"],
-        piccadilly: ["King's Cross", "Heathrow", "Knightsbridge"],
-        victoria: ["Victoria", "Oxford Circus", "Stockwell"],
-        waterloo: ["Lambeth North", "Waterloo", "Bank"]
+        bakerloo: ["Paddington", "Oxford Circus", "Piccadilly Circus", "Waterloo", "Lambeth North", "Elephant & Castle"],
+        central: ["Notting Hill Gate", "Marble Arch", "Oxford Circus", "Liverpool Street", "Stratford", "Leyton"],
+        circle: ["Baker Street", "King's Cross", "Farringdon", "Moorgate", "Liverpool Street", "Tower Hill"],
+        district: ["Earl's Court", "West Kensington", "Hammersmith", "Richmond", "Turnham Green", "Acton Town"],
+        hammersmith: ["Paddington", "West Ham", "Whitechapel", "Barking", "Mile End", "Latimer Road"],
+        jubilee: ["Waterloo", "London Bridge", "Canary Wharf", "North Greenwich", "Stratford", "Wembley Park"],
+        metropolitan: ["King's Cross", "Moorgate", "Harrow-on-the-Hill", "Chorleywood", "Rickmansworth", "Amersham"],
+        northern: ["Camden Town", "Kennington", "Clapham Common", "Highgate", "East Finchley", "Tooting Broadway"],
+        piccadilly: ["Knightsbridge", "King's Cross", "Covent Garden", "Leicester Square", "South Kensington", "Heathrow Terminal 5"],
+        victoria: ["Victoria", "Oxford Circus", "Green Park", "Stockwell", "Vauxhall", "Brixton"],
+        waterloo: ["Bank", "Lambeth North", "Waterloo"]
     };
     return stops[line].join(", ");
 }
@@ -109,11 +109,22 @@ function updateTrainDepartures(schedule) {
     }
 }
 
+// Function to update the digital clock
+function updateClock() {
+    const clockElement = document.getElementById('digital-clock');
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+}
+
 // Initialize the schedule and update train departures every minute
 function startLiveUpdates() {
     const schedule = generateTrainSchedule(); // Generate the full day's schedule
     updateTrainDepartures(schedule); // Display the initial trains
     setInterval(() => updateTrainDepartures(schedule), 60000); // Update every minute
+    setInterval(updateClock, 1000); // Update the clock every second
 }
 
 // Start live updates when the page loads
