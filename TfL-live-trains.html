@@ -8,82 +8,110 @@
     <link href="https://winowongo2024.github.io/Fonts/johnston100.otf" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <header>
-        <h1>TfL Live Trains – King's Cross Station</h1> <!-- Updated header text -->
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="tfl-logo.png" alt="TfL Logo" class="logo">
+            <span class="brand-title">TfL Live Trains</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#lines">Lines</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="main-header">
+        <h1>TfL Live Trains – King's Cross Station</h1>
     </header>
 
-    <!-- Digital clock display -->
-    <div id="digital-clock">
+    <!-- Digital Clock Display -->
+    <div id="digital-clock" class="digital-clock">
         00:00:00 <!-- Default value, will be updated by JavaScript -->
     </div>
 
+    <!-- Search Bar or Filter for Stations -->
+    <section class="station-filter">
+        <label for="station-search">Search Station:</label>
+        <input type="text" id="station-search" placeholder="Type station name...">
+        <button type="button" id="search-btn">Search</button>
+    </section>
+
+    <!-- Train Lines Section -->
     <div class="train-lines">
         <!-- Bakerloo Line -->
-        <section id="bakerloo">
+        <section id="bakerloo" class="line-section">
             <h2>Bakerloo Line</h2>
             <div class="train-list" data-line="bakerloo"></div>
         </section>
 
         <!-- Central Line -->
-        <section id="central">
+        <section id="central" class="line-section">
             <h2>Central Line</h2>
             <div class="train-list" data-line="central"></div>
         </section>
 
         <!-- Circle Line -->
-        <section id="circle">
+        <section id="circle" class="line-section">
             <h2>Circle Line</h2>
             <div class="train-list" data-line="circle"></div>
         </section>
 
         <!-- District Line -->
-        <section id="district">
+        <section id="district" class="line-section">
             <h2>District Line</h2>
             <div class="train-list" data-line="district"></div>
         </section>
 
         <!-- Hammersmith & City Line -->
-        <section id="hammersmith">
+        <section id="hammersmith" class="line-section">
             <h2>Hammersmith & City Line</h2>
             <div class="train-list" data-line="hammersmith"></div>
         </section>
 
         <!-- Jubilee Line -->
-        <section id="jubilee">
+        <section id="jubilee" class="line-section">
             <h2>Jubilee Line</h2>
             <div class="train-list" data-line="jubilee"></div>
         </section>
 
         <!-- Metropolitan Line -->
-        <section id="metropolitan">
+        <section id="metropolitan" class="line-section">
             <h2>Metropolitan Line</h2>
             <div class="train-list" data-line="metropolitan"></div>
         </section>
 
         <!-- Northern Line -->
-        <section id="northern">
+        <section id="northern" class="line-section">
             <h2>Northern Line</h2>
             <div class="train-list" data-line="northern"></div>
         </section>
 
         <!-- Piccadilly Line -->
-        <section id="piccadilly">
+        <section id="piccadilly" class="line-section">
             <h2>Piccadilly Line</h2>
             <div class="train-list" data-line="piccadilly"></div>
         </section>
 
         <!-- Victoria Line -->
-        <section id="victoria">
+        <section id="victoria" class="line-section">
             <h2>Victoria Line</h2>
             <div class="train-list" data-line="victoria"></div>
         </section>
 
         <!-- Waterloo & City Line -->
-        <section id="waterloo">
+        <section id="waterloo" class="line-section">
             <h2>Waterloo & City Line</h2>
             <div class="train-list" data-line="waterloo"></div>
         </section>
     </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <p>© 2024 Transport for London (TfL). All rights reserved.</p>
+        <p>Website by TfL Dev Team</p>
+    </footer>
 
     <script src="TfL-live-trains.js"></script>
 </body>
