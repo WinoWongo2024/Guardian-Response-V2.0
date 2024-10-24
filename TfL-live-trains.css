@@ -71,6 +71,7 @@ body {
 .main-header h1 {
     font-size: 3rem;
     margin: 0;
+    font-weight: bold;
 }
 
 /* Digital Clock Styling */
@@ -161,59 +162,49 @@ body {
     padding-left: 10px;
 }
 
-#line-color {
-    display: block;
-    height: 4px;
-    width: 30px;
-    background-color: #000;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
 /* Line-Specific Color Themes */
-#line-color-bakerloo {
-    background-color: #B36305; /* Bakerloo Line Brown */
+.bakerloo {
+    border-left: 8px solid #B36305; /* Bakerloo Line Brown */
 }
 
-#line-color-central {
-    background-color: #E32017; /* Central Line Red */
+.central {
+    border-left: 8px solid #E32017; /* Central Line Red */
 }
 
-#line-color-circle {
-    background-color: #FFD300; /* Circle Line Yellow */
+.circle {
+    border-left: 8px solid #FFD300; /* Circle Line Yellow */
 }
 
-#line-color-district {
-    background-color: #00782A; /* District Line Green */
+.district {
+    border-left: 8px solid #00782A; /* District Line Green */
 }
 
-#line-color-hammersmith {
-    background-color: #F3A9BB; /* Hammersmith & City Line Pink */
+.hammersmith {
+    border-left: 8px solid #F3A9BB; /* Hammersmith & City Line Pink */
 }
 
-#line-color-jubilee {
-    background-color: #A0A5A9; /* Jubilee Line Grey */
+.jubilee {
+    border-left: 8px solid #A0A5A9; /* Jubilee Line Grey */
 }
 
-#line-color-metropolitan {
-    background-color: #9B0056; /* Metropolitan Line Magenta */
+.metropolitan {
+    border-left: 8px solid #9B0056; /* Metropolitan Line Magenta */
 }
 
-#line-color-northern {
-    background-color: #000000; /* Northern Line Black */
+.northern {
+    border-left: 8px solid #000000; /* Northern Line Black */
 }
 
-#line-color-piccadilly {
-    background-color: #003688; /* Piccadilly Line Blue */
+.piccadilly {
+    border-left: 8px solid #003688; /* Piccadilly Line Blue */
 }
 
-#line-color-victoria {
-    background-color: #0098D4; /* Victoria Line Light Blue */
+.victoria {
+    border-left: 8px solid #0098D4; /* Victoria Line Light Blue */
 }
 
-#line-color-waterloo {
-    background-color: #95CDBA; /* Waterloo & City Line Turquoise */
+.waterloo {
+    border-left: 8px solid #95CDBA; /* Waterloo & City Line Turquoise */
 }
 
 /* Train List Styles */
@@ -247,6 +238,7 @@ body {
 .train-destination {
     font-weight: bold;
     font-size: 1.3rem;
+    color: #0019a8; /* TfL blue */
 }
 
 .train-time {
