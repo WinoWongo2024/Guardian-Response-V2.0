@@ -23,6 +23,15 @@ function timeDifferenceInMinutes(time1, time2) {
     return (hours1 * 60 + minutes1) - (hours2 * 60 + minutes2);
 }
 
+// Function to add a duration to a time in HH:MM format
+function addMinutesToTime(time, minutesToAdd) {
+    const [hours, minutes] = time.split(':').map(Number);
+    const totalMinutes = hours * 60 + minutes + minutesToAdd;
+    const newHours = Math.floor(totalMinutes / 60).toString().padStart(2, '0');
+    const newMinutes = (totalMinutes % 60).toString().padStart(2, '0');
+    return `${newHours}:${newMinutes}`;
+}
+
 // Function to generate a deterministic train schedule based on the current time relative to ANCHOR_DATE
 function generateTrainSchedule() {
     const lines = ["bakerloo", "central", "circle", "district", "hammersmith", "jubilee", "metropolitan", "northern", "piccadilly", "victoria", "waterloo"];
@@ -33,7 +42,10 @@ function generateTrainSchedule() {
     const daysSinceAnchor = Math.floor((currentDate - ANCHOR_DATE) / (1000 * 60 * 60 * 24)); // Total days since anchor
 
     lines.forEach((line, index) => {
-        schedule[line] = [];
+        schedule[line] = {
+            departures: [],
+            arrivals: []
+        };
         for (let hour = 0; hour < 24; hour++) {
             for (let minute = 0; minute < 60; minute += 15) { // Trains depart every 15 minutes
                 const formattedHour = hour.toString().padStart(2, '0');
@@ -43,9 +55,21 @@ function generateTrainSchedule() {
                 const randomFactor = (daysSinceAnchor + hour + minute + index) % 100;
                 const isCancelled = randomFactor > 85; // 15% chance of cancellation
 
-                schedule[line].push({
+                const departureTime = `${formattedHour}:${formattedMinute}`;
+                const arrivalTime = addMinutesToTime(departureTime, 10); // Assume the travel time is 10 minutes for arrivals
+
+                // Add to departures and arrivals
+                schedule[line].departures.push({
                     destination: generateRandomDestination(line, daysSinceAnchor),
-                    departureTime: `${formattedHour}:${formattedMinute}`,
+                    departureTime: departureTime,
+                    status: isCancelled ? "cancelled" : "on-time",
+                    stops: generateRandomStops(line),
+                    cancelledTime: null, // Track when a train is cancelled
+                });
+
+                schedule[line].arrivals.push({
+                    origin: generateRandomOrigin(line, daysSinceAnchor), // Add random origins for arrivals
+                    arrivalTime: arrivalTime,
                     status: isCancelled ? "cancelled" : "on-time",
                     stops: generateRandomStops(line),
                     cancelledTime: null, // Track when a train is cancelled
@@ -73,8 +97,26 @@ function generateRandomDestination(line, dayFactor) {
         waterloo: ["Bank", "Waterloo", "Lambeth North"]
     };
 
-    // Use a consistent way to select a destination based on the dayFactor (calculated from days since ANCHOR_DATE)
     return destinations[line][dayFactor % destinations[line].length];
+}
+
+// Generate random origins based on the day to ensure consistency across users (for arrivals)
+function generateRandomOrigin(line, dayFactor) {
+    const origins = {
+        bakerloo: ["Queen's Park", "Elephant & Castle", "Paddington", "Oxford Circus"],
+        central: ["Bethnal Green", "Liverpool Street", "Marble Arch", "Epping"],
+        circle: ["Notting Hill Gate", "Hammersmith", "Monument", "King's Cross"],
+        district: ["Richmond", "Tower Hill", "Barking", "Ealing Broadway"],
+        hammersmith: ["Whitechapel", "Mile End", "Paddington", "Royal Oak"],
+        jubilee: ["Wembley Park", "Stanmore", "London Bridge", "Westminster"],
+        metropolitan: ["Amersham", "Rickmansworth", "Uxbridge", "Baker Street"],
+        northern: ["High Barnet", "Camden Town", "Kennington", "Tooting Broadway"],
+        piccadilly: ["Heathrow Terminal 5", "Cockfosters", "Covent Garden", "Leicester Square"],
+        victoria: ["Brixton", "Oxford Circus", "Green Park", "King's Cross"],
+        waterloo: ["Bank", "Waterloo", "Lambeth North"]
+    };
+
+    return origins[line][dayFactor % origins[line].length];
 }
 
 // Generate random stops based on the line
@@ -95,36 +137,21 @@ function generateRandomStops(line) {
     return stops[line];
 }
 
-// Update the current stop based on the train's departure time and how long it has been traveling
-function getCurrentStop(train) {
-    const { departureTime, stops } = train;
-    const currentTime = getCurrentTime();
-    const timeDiff = timeDifferenceInMinutes(currentTime, departureTime);
-
-    // If the train hasn't departed yet, display the message "This train has not started service yet"
-    if (timeDiff < 0) return "This train has not started service yet";
-
-    // Calculate how many stops the train has passed
-    const stopsCount = stops.length;
-    const totalTravelTime = 60; // Assume it takes 60 minutes for a train to go through all stops
-    const timePerStop = totalTravelTime / (stopsCount - 1); // Time per stop
-    const stopsPassed = Math.min(Math.floor(timeDiff / timePerStop), stopsCount - 1);
-
-    return stops[stopsPassed];
-}
-
-// Update the train departures every minute
-function updateTrainDepartures(schedule) {
+// Update the train departures and arrivals every minute
+function updateTrainDeparturesAndArrivals(schedule) {
     const now = new Date();
     const currentHour = now.getHours();
     const currentMinutes = now.getMinutes();
     const currentTimeInMinutes = currentHour * 60 + currentMinutes;
 
     for (const line in schedule) {
-        const trainList = document.querySelector(`.train-list[data-line="${line}"]`);
-        trainList.innerHTML = ''; // Clear the list
+        const departureList = document.querySelector(`.departure-list[data-line="${line}"]`);
+        const arrivalList = document.querySelector(`.arrival-list[data-line="${line}"]`);
+        departureList.innerHTML = ''; // Clear the departure list
+        arrivalList.innerHTML = '';   // Clear the arrival list
 
-        schedule[line].forEach(train => {
+        // Render Departures
+        schedule[line].departures.forEach(train => {
             const [trainHour, trainMinutes] = train.departureTime.split(':').map(Number);
             const trainTimeInMinutes = trainHour * 60 + trainMinutes;
 
@@ -138,7 +165,7 @@ function updateTrainDepartures(schedule) {
                 train.cancelledTime = now;
             }
 
-            // Create the train item
+            // Create the departure item
             const trainItem = document.createElement('div');
             trainItem.classList.add('train-item');
             trainItem.classList.add(train.status); // Add on-time or cancelled class
@@ -151,24 +178,42 @@ function updateTrainDepartures(schedule) {
             timeElement.classList.add('train-time');
             timeElement.textContent = train.departureTime;
 
-            const stopsElement = document.createElement('div');
-            stopsElement.classList.add('train-stops');
-            const stopsText = document.createElement('span');
-            stopsText.textContent = `Current Stop: ${getCurrentStop(train)}`;
-            stopsElement.appendChild(stopsText);
-
-            // Show cancellation status
-            if (train.status === "cancelled") {
-                const statusElement = document.createElement('span');
-                statusElement.classList.add('train-status');
-                statusElement.textContent = 'Cancelled';
-                trainItem.appendChild(statusElement);
-            }
-
             trainItem.appendChild(destinationElement);
             trainItem.appendChild(timeElement);
-            trainItem.appendChild(stopsElement);
-            trainList.appendChild(trainItem);
+            departureList.appendChild(trainItem);
+        });
+
+        // Render Arrivals
+        schedule[line].arrivals.forEach(train => {
+            const [trainHour, trainMinutes] = train.arrivalTime.split(':').map(Number);
+            const trainTimeInMinutes = trainHour * 60 + trainMinutes;
+
+            // If the train has already arrived or its cancelled visibility period has expired, skip it
+            if (trainTimeInMinutes < currentTimeInMinutes && (!train.cancelledTime || now - train.cancelledTime > CANCELLED_TRAIN_VISIBILITY_DURATION)) {
+                return;
+            }
+
+            // If the train is marked as cancelled, track the time it was cancelled
+            if (train.status === "cancelled" && !train.cancelledTime) {
+                train.cancelledTime = now;
+            }
+
+            // Create the arrival item
+            const trainItem = document.createElement('div');
+            trainItem.classList.add('train-item');
+            trainItem.classList.add(train.status); // Add on-time or cancelled class
+
+            const originElement = document.createElement('span');
+            originElement.classList.add('train-origin');
+            originElement.textContent = train.origin;
+
+            const timeElement = document.createElement('span');
+            timeElement.classList.add('train-time');
+            timeElement.textContent = train.arrivalTime;
+
+            trainItem.appendChild(originElement);
+            trainItem.appendChild(timeElement);
+            arrivalList.appendChild(trainItem);
         });
     }
 }
@@ -183,11 +228,11 @@ function updateClock() {
     clockElement.textContent = `${hours}:${minutes}:${seconds}`;
 }
 
-// Initialize the schedule and update train departures every minute
+// Initialize the schedule and update train departures and arrivals every minute
 function startLiveUpdates() {
     trainSchedule = generateTrainSchedule(); // Generate schedule based on current time and days since ANCHOR_DATE
-    updateTrainDepartures(trainSchedule); // Display the initial trains
-    setInterval(() => updateTrainDepartures(trainSchedule), REFRESH_INTERVAL); // Update every minute
+    updateTrainDeparturesAndArrivals(trainSchedule); // Display the initial trains
+    setInterval(() => updateTrainDeparturesAndArrivals(trainSchedule), REFRESH_INTERVAL); // Update every minute
     setInterval(updateClock, 1000); // Update the clock every second
 }
 
