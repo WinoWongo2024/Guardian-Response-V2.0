@@ -16,7 +16,7 @@ function getCurrentTime() {
     return `${hours}:${minutes}`;
 }
 
-// Function to calculate the difference in minutes between two HH:MM times
+// Function to calculate the time difference in minutes between two times in HH:MM format
 function timeDifferenceInMinutes(time1, time2) {
     const [hours1, minutes1] = time1.split(':').map(Number);
     const [hours2, minutes2] = time2.split(':').map(Number);
@@ -96,6 +96,24 @@ function generateRandomStops(line) {
     return stops[line];
 }
 
+// Update the current stop based on the train's departure time and current time
+function getCurrentStop(train) {
+    const { departureTime, stops } = train;
+    const currentTime = getCurrentTime();
+    const timeDiff = timeDifferenceInMinutes(currentTime, departureTime);
+
+    // If the train hasn't departed yet, it should still be at the first stop
+    if (timeDiff < 0) return stops[0];
+
+    // Calculate how many stops the train has passed
+    const stopsCount = stops.length;
+    const travelTime = 60; // Assume it takes 60 minutes to go through all stops
+    const timePerStop = travelTime / stopsCount;
+    const stopsPassed = Math.min(Math.floor(timeDiff / timePerStop), stopsCount - 1);
+
+    return stops[stopsPassed];
+}
+
 // Update the train departures every minute
 function updateTrainDepartures(schedule) {
     const now = new Date();
@@ -121,16 +139,6 @@ function updateTrainDepartures(schedule) {
                 train.cancelledTime = now;
             }
 
-            // Update current stop for dynamic movement
-            if (timeDifferenceInMinutes(getCurrentTime(), train.departureTime) < 0 && train.status === "on-time") {
-                // Train is moving, update its current stop
-                const stopsCount = train.stops.length;
-                train.currentStopIndex = Math.min(
-                    train.currentStopIndex + 1,
-                    stopsCount - 1
-                );
-            }
-
             // Create the train item
             const trainItem = document.createElement('div');
             trainItem.classList.add('train-item');
@@ -147,7 +155,7 @@ function updateTrainDepartures(schedule) {
             const stopsElement = document.createElement('div');
             stopsElement.classList.add('train-stops');
             const stopsText = document.createElement('span');
-            stopsText.textContent = `Current Stop: ${train.stops[train.currentStopIndex]}`;
+            stopsText.textContent = `Current Stop: ${getCurrentStop(train)}`;
             stopsElement.appendChild(stopsText);
 
             // Show cancellation status
