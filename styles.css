@@ -1,0 +1,109 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Johnston100', sans-serif;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-links {
+    list-style-type: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links li a {
+    color: white;
+    text-decoration: none;
+}
+
+.contact-info {
+    display: none;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Main Section */
+.main-section {
+    height: 100vh;
+    background-image: url('london-tube.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.main-section h1 {
+    z-index: 1;
+    font-size: 3rem;
+}
+
+.main-section p {
+    z-index: 1;
+    font-size: 1.5rem;
+}
+
+/* Protection Sections */
+.protection-section {
+    display: flex;
+    justify-content: space-around;
+    padding: 50px;
+    gap: 20px;
+}
+
+.card {
+    background-color: #eee;
+    padding: 20px;
+    text-align: center;
+    width: 30%;
+    border-radius: 10px;
+    transition: box-shadow 0.3s;
+}
+
+.card h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.business {
+    background-color: #f4a261;
+}
+
+.travel {
+   
