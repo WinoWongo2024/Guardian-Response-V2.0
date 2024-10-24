@@ -1,19 +1,19 @@
 /* Importing custom fonts */
 @font-face {
     font-family: 'BBCReithSerif';
-    src: url('../fonts/BBCReithSerif_Bd.ttf') format('truetype');
+    src: url('BBCReithSerif_Bd.ttf') format('truetype');
     font-weight: bold;
 }
 
 @font-face {
     font-family: 'BBCReithSerif';
-    src: url('../fonts/BBCReithSerif_Lt.ttf') format('truetype');
+    src: url('BBCReithSerif_Lt.ttf') format('truetype');
     font-weight: 300;
 }
 
 @font-face {
     font-family: 'BBCReithSerif';
-    src: url('../fonts/BBCReithSerif_Md.ttf') format('truetype');
+    src: url('BBCReithSerif_Md.ttf') format('truetype');
     font-weight: 500;
 }
 
