@@ -12,10 +12,13 @@ body {
 
 /* Scrolling Banner */
 .scrolling-banner {
-    background-color: #ffcc00;
-    padding: 10px;
+    background-color: #ffcc00; /* Yellow background */
+    padding: 10px 0; /* Adjust padding to give more room */
     overflow: hidden;
     position: relative;
+    height: 50px; /* Set a fixed height to ensure enough space for text */
+    display: flex;
+    align-items: center; /* Vertically center the text */
 }
 
 .scrolling-banner p {
@@ -25,6 +28,8 @@ body {
     position: absolute;
     will-change: transform;
     animation: scroll-left 10s linear infinite;
+    color: #000; /* Black text for contrast */
+    line-height: 1.5rem; /* Ensure line height provides enough spacing */
 }
 
 @keyframes scroll-left {
@@ -35,7 +40,6 @@ body {
         transform: translateX(-100%);
     }
 }
-
 /* Navigation Bar */
 .navbar {
     display: flex;
