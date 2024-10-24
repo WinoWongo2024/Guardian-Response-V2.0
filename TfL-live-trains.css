@@ -26,8 +26,10 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
+    border-bottom: 5px solid #ffdd00; /* TfL yellow */
 }
 
+/* Logo Styling */
 .nav-brand {
     display: flex;
     align-items: center;
@@ -36,6 +38,7 @@ body {
 .logo {
     height: 50px;
     margin-right: 1rem;
+    background-color: transparent; /* Ensure the background is transparent */
 }
 
 .brand-title {
@@ -65,6 +68,11 @@ body {
     color: #ffdd00; /* TfL yellow */
 }
 
+/* Remove default image backgrounds */
+img {
+    background-color: transparent;
+}
+
 /* Header Section */
 .main-header {
     background-color: #0019a8; /* TfL blue */
@@ -91,51 +99,6 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     color: #0019a8; /* TfL blue */
-}
-
-/* Station Search Bar */
-.station-filter {
-    text-align: center;
-    padding: 2rem;
-    background-color: #e6e6e6;
-    margin: 2rem 0;
-}
-
-.station-filter label {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-right: 1rem;
-}
-
-.station-filter input {
-    padding: 0.7rem;
-    font-size: 1.2rem;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    width: 250px;
-    margin-right: 1rem;
-    transition: border-color 0.3s;
-}
-
-.station-filter input:focus {
-    border-color: #0019a8;
-    outline: none;
-}
-
-.station-filter button {
-    background-color: #0019a8;
-    color: white;
-    border: none;
-    padding: 0.7rem 1.5rem;
-    font-size: 1.2rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.station-filter button:hover {
-    background-color: #ffdd00;
-    color: #0019a8;
 }
 
 /* Train Lines Section */
