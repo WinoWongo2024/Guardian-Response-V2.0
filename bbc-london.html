@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BBC London - News</title>
+    <link rel="stylesheet" href="css/bbc-london.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="bbc-header">
+        <div class="header-left">
+            <img src="img/logo-placeholder.svg" alt="BBC Logo" class="bbc-logo">
+            <div id="bbc-clock" class="clock">00:00</div>
+        </div>
+        <div class="header-right">
+            <span class="icon-profile"></span>
+            <span class="icon-notifications"></span>
+            <input type="text" class="search-bar" placeholder="Search">
+        </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="bbc-navbar">
+        <ul class="nav-links">
+            <li><a href="#">England</a></li>
+            <li><a href="#">N. Ireland</a></li>
+            <li><a href="#">Scotland</a></li>
+            <li><a href="#">Alba</a></li>
+            <li><a href="#">Wales</a></li>
+            <li><a href="#">Cymru</a></li>
+        </ul>
+        <div class="menu-button" id="menu-toggle">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- Main News Story -->
+    <section class="main-news">
+        <div class="news-image">
+            <img src="img/main-story-placeholder.jpg" alt="Main News Story">
+        </div>
+        <div class="news-details">
+            <h1 class="headline">Major Strike Hits Gaza Shelter, Hundreds Injured</h1>
+            <p class="description">A medic tells the BBC's Jeremy Bowen of the moments of panic and hopelessness immediately after an Israeli strike on a shelter.</p>
+            <span class="category">Middle East</span>
+            <span class="timestamp">2 hours ago</span>
+        </div>
+    </section>
+
+    <!-- Secondary News Stories -->
+    <section class="secondary-news">
+        <div class="grid">
+            <div class="news-item">
+                <img src="img/news-1.jpg" alt="Secondary Story 1">
+                <p>Headline for secondary news story 1</p>
+            </div>
+            <div class="news-item">
+                <img src="img/news-2.jpg" alt="Secondary Story 2">
+                <p>Headline for secondary news story 2</p>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/bbc-london.js"></script>
+</body>
+</html>
