@@ -136,75 +136,10 @@ function generateRandomStops(line) {
         victoria: ["Victoria", "Oxford Circus", "Green Park", "Stockwell", "Vauxhall", "Brixton"],
         waterloo: ["Bank", "Lambeth North", "Waterloo"]
     };
-    return stops[line].map(stop => ({
-        time: getCurrentTime(), // Just a placeholder, replace with real stop times if available
-        name: stop,
-        status: "On time" // Placeholder status, this can be randomized or based on real data
-    }));
+    return stops[line];
 }
 
-// Function to create the detailed view for a selected train
-function createDetailedView(trainDetails) {
-    const detailView = document.createElement('div');
-    detailView.classList.add('detail-view');
-
-    // Add the service status (e.g., "This service is running 11 minutes late.")
-    const serviceStatus = document.createElement('div');
-    serviceStatus.classList.add('service-status');
-    
-    // Check for delay
-    const delayMessage = trainDetails.delay > 0 
-        ? `This service is running ${trainDetails.delay} minutes late.` 
-        : "This service is on time.";
-
-    serviceStatus.textContent = delayMessage;
-    detailView.appendChild(serviceStatus);
-
-    // Add the stop timeline
-    const stopTimeline = document.createElement('div');
-    stopTimeline.classList.add('stop-timeline');
-
-    trainDetails.stops.forEach(stop => {
-        const stopItem = document.createElement('div');
-        stopItem.classList.add('stop-item');
-
-        const time = document.createElement('span');
-        time.classList.add('stop-time');
-        time.textContent = stop.time || "N/A"; // Debugging: Ensure time is available
-        
-        const stopName = document.createElement('span');
-        stopName.classList.add('stop-name');
-        stopName.textContent = stop.name || "N/A"; // Debugging: Ensure stop name is available
-        
-        const status = document.createElement('span');
-        status.classList.add('stop-status');
-        status.textContent = stop.status || "N/A"; // Debugging: Ensure status is available
-
-        stopItem.appendChild(time);
-        stopItem.appendChild(stopName);
-        stopItem.appendChild(status);
-        stopTimeline.appendChild(stopItem);
-    });
-
-    detailView.appendChild(stopTimeline);
-    return detailView;
-}
-
-// Function to handle train selection (when clicked)
-function handleTrainClick(train) {
-    const detailContainer = document.querySelector('.detail-container');
-    detailContainer.innerHTML = ''; // Clear previous details
-
-    const trainDetails = {
-        delay: train.delay,  // Delay in minutes
-        stops: train.stops  // Stops for the selected train
-    };
-
-    const detailView = createDetailedView(trainDetails);
-    detailContainer.appendChild(detailView);
-}
-
-// Update the train departures and arrivals every minute and add click event listeners
+// Update the train departures and arrivals every minute and limit to 2 trains at a time
 function updateTrainDeparturesAndArrivals(schedule) {
     const now = new Date();
     const currentHour = now.getHours();
@@ -217,22 +152,14 @@ function updateTrainDeparturesAndArrivals(schedule) {
         departureList.innerHTML = ''; // Clear the departure list
         arrivalList.innerHTML = '';   // Clear the arrival list
 
-        // Render Departures
-        schedule[line].departures.forEach(train => {
+        // Render next 2 Departures
+        const upcomingDepartures = schedule[line].departures.filter(train => {
             const [trainHour, trainMinutes] = train.departureTime.split(':').map(Number);
             const trainTimeInMinutes = trainHour * 60 + trainMinutes;
+            return trainTimeInMinutes >= currentTimeInMinutes;
+        }).slice(0, 2); // Show only the next 2 departures
 
-            // If the train has already departed or its cancelled visibility period has expired, skip it
-            if (trainTimeInMinutes < currentTimeInMinutes && (!train.cancelledTime || now - train.cancelledTime > CANCELLED_TRAIN_VISIBILITY_DURATION)) {
-                return;
-            }
-
-            // If the train is marked as cancelled, track the time it was cancelled
-            if (train.status === "cancelled" && !train.cancelledTime) {
-                train.cancelledTime = now;
-            }
-
-            // Create the departure item
+        upcomingDepartures.forEach(train => {
             const trainItem = document.createElement('div');
             trainItem.classList.add('train-item');
             trainItem.classList.add(train.status); // Add on-time or cancelled class
@@ -248,27 +175,16 @@ function updateTrainDeparturesAndArrivals(schedule) {
             trainItem.appendChild(destinationElement);
             trainItem.appendChild(timeElement);
             departureList.appendChild(trainItem);
-
-            // Add click event to show the detailed view when the train is clicked
-            trainItem.addEventListener('click', () => handleTrainClick(train));
         });
 
-        // Render Arrivals (similar logic for arrivals)
-        schedule[line].arrivals.forEach(train => {
+        // Render next 2 Arrivals
+        const upcomingArrivals = schedule[line].arrivals.filter(train => {
             const [trainHour, trainMinutes] = train.arrivalTime.split(':').map(Number);
             const trainTimeInMinutes = trainHour * 60 + trainMinutes;
+            return trainTimeInMinutes >= currentTimeInMinutes;
+        }).slice(0, 2); // Show only the next 2 arrivals
 
-            // If the train has already arrived or its cancelled visibility period has expired, skip it
-            if (trainTimeInMinutes < currentTimeInMinutes && (!train.cancelledTime || now - train.cancelledTime > CANCELLED_TRAIN_VISIBILITY_DURATION)) {
-                return;
-            }
-
-            // If the train is marked as cancelled, track the time it was cancelled
-            if (train.status === "cancelled" && !train.cancelledTime) {
-                train.cancelledTime = now;
-            }
-
-            // Create the arrival item
+        upcomingArrivals.forEach(train => {
             const trainItem = document.createElement('div');
             trainItem.classList.add('train-item');
             trainItem.classList.add(train.status); // Add on-time or cancelled class
@@ -284,9 +200,6 @@ function updateTrainDeparturesAndArrivals(schedule) {
             trainItem.appendChild(originElement);
             trainItem.appendChild(timeElement);
             arrivalList.appendChild(trainItem);
-
-            // Add click event to show the detailed view when the train is clicked
-            trainItem.addEventListener('click', () => handleTrainClick(train));
         });
     }
 }
