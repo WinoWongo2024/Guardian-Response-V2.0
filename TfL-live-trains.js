@@ -139,6 +139,61 @@ function generateRandomStops(line) {
     return stops[line];
 }
 
+// Function to create the detailed view for a selected train
+function createDetailedView(trainDetails) {
+    const detailView = document.createElement('div');
+    detailView.classList.add('detail-view');
+
+    // Add the service status (e.g., "This service is running 11 minutes late.")
+    const serviceStatus = document.createElement('div');
+    serviceStatus.classList.add('service-status');
+    serviceStatus.textContent = `This service is running ${trainDetails.delay} minutes late.`;
+    detailView.appendChild(serviceStatus);
+
+    // Add the stop timeline
+    const stopTimeline = document.createElement('div');
+    stopTimeline.classList.add('stop-timeline');
+
+    trainDetails.stops.forEach(stop => {
+        const stopItem = document.createElement('div');
+        stopItem.classList.add('stop-item');
+        
+        const time = document.createElement('span');
+        time.classList.add('stop-time');
+        time.textContent = stop.time;
+        
+        const stopName = document.createElement('span');
+        stopName.classList.add('stop-name');
+        stopName.textContent = stop.name;
+        
+        const status = document.createElement('span');
+        status.classList.add('stop-status');
+        status.textContent = stop.status; // e.g., "On time" or "Delayed"
+        
+        stopItem.appendChild(time);
+        stopItem.appendChild(stopName);
+        stopItem.appendChild(status);
+        stopTimeline.appendChild(stopItem);
+    });
+
+    detailView.appendChild(stopTimeline);
+    return detailView;
+}
+
+// Function to handle train selection (when clicked)
+function handleTrainClick(train) {
+    const detailContainer = document.querySelector('.detail-container');
+    detailContainer.innerHTML = ''; // Clear previous details
+
+    const trainDetails = {
+        delay: train.delay,  // Delay in minutes
+        stops: train.stops  // Stops for the selected train
+    };
+
+    const detailView = createDetailedView(trainDetails);
+    detailContainer.appendChild(detailView);
+}
+
 // Update the train departures and arrivals every minute and limit to 2 trains at a time
 function updateTrainDeparturesAndArrivals(schedule) {
     const now = new Date();
@@ -175,6 +230,9 @@ function updateTrainDeparturesAndArrivals(schedule) {
             trainItem.appendChild(destinationElement);
             trainItem.appendChild(timeElement);
             departureList.appendChild(trainItem);
+
+            // Add click event to show the detailed view when the train is clicked
+            trainItem.addEventListener('click', () => handleTrainClick(train));
         });
 
         // Render next 2 Arrivals
@@ -200,6 +258,9 @@ function updateTrainDeparturesAndArrivals(schedule) {
             trainItem.appendChild(originElement);
             trainItem.appendChild(timeElement);
             arrivalList.appendChild(trainItem);
+
+            // Add click event to show the detailed view when the train is clicked
+            trainItem.addEventListener('click', () => handleTrainClick(train));
         });
     }
 }
