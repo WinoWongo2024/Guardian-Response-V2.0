@@ -1,79 +1,84 @@
-// Sample Train Data (with scrolling stops)
-const trainData = {
-    bakerloo: [
-        { destination: "Elephant & Castle", departureTime: "14:15", status: "cancelled", stops: "Baker Street, Oxford Circus, Piccadilly Circus, Charing Cross" },
-        { destination: "Harrow & Wealdstone", departureTime: "14:25", status: "cancelled", stops: "Paddington, Marylebone, Kilburn Park, Queen's Park" }
-    ],
-    central: [
-        { destination: "Epping", departureTime: "14:10", status: "cancelled", stops: "Liverpool Street, Stratford, Leytonstone" },
-        { destination: "West Ruislip", departureTime: "14:20", status: "cancelled", stops: "Notting Hill Gate, Shepherd's Bush, Ealing Broadway" }
-    ],
-    circle: [
-        { destination: "Hammersmith", departureTime: "14:12", status: "cancelled", stops: "Baker Street, King's Cross, Farringdon, Liverpool Street" },
-        { destination: "Edgware Road", departureTime: "14:22", status: "cancelled", stops: "South Kensington, Gloucester Road, Paddington" }
-    ],
-    district: [
-        { destination: "Upminster", departureTime: "14:08", status: "cancelled", stops: "Whitechapel, East Ham, Barking" },
-        { destination: "Richmond", departureTime: "14:18", status: "cancelled", stops: "Earl's Court, Hammersmith, Gunnersbury" }
-    ],
-    hammersmith: [
-        { destination: "Barking", departureTime: "14:14", status: "cancelled", stops: "Liverpool Street, Mile End, West Ham" },
-        { destination: "Hammersmith", departureTime: "14:24", status: "cancelled", stops: "Paddington, Royal Oak, Latimer Road" }
-    ],
-    jubilee: [
-        { destination: "Stratford", departureTime: "14:13", status: "cancelled", stops: "London Bridge, Canary Wharf, North Greenwich" },
-        { destination: "Stanmore", departureTime: "14:23", status: "cancelled", stops: "Baker Street, Finchley Road, Wembley Park" }
-    ],
-    metropolitan: [
-        { destination: "Aldgate", departureTime: "14:09", status: "cancelled", stops: "Baker Street, King's Cross, Moorgate" },
-        { destination: "Amersham", departureTime: "14:19", status: "cancelled", stops: "Chorleywood, Rickmansworth, Moor Park" }
-    ],
-    northern: [
-        { destination: "Morden", departureTime: "14:17", status: "cancelled", stops: "Waterloo, Kennington, Clapham Common" },
-        { destination: "High Barnet", departureTime: "14:27", status: "cancelled", stops: "Camden Town, Archway, East Finchley" }
-    ],
-    piccadilly: [
-        { destination: "Heathrow Terminal 5", departureTime: "14:11", status: "cancelled", stops: "Hammersmith, Acton Town, Hounslow" },
-        { destination: "Cockfosters", departureTime: "14:21", status: "cancelled", stops: "Knightsbridge, King's Cross, Finsbury Park" }
-    ],
-    victoria: [
-        { destination: "Brixton", departureTime: "14:16", status: "cancelled", stops: "Oxford Circus, Victoria, Stockwell" },
-        { destination: "Walthamstow Central", departureTime: "14:26", status: "cancelled", stops: "Green Park, King's Cross, Finsbury Park" }
-    ],
-    waterloo: [
-        { destination: "Bank", departureTime: "14:18", status: "cancelled", stops: "Waterloo, Lambeth North" },
-        { destination: "Waterloo", departureTime: "14:28", status: "cancelled", stops: "Bank, Lambeth North" }
-    ]
-};
+// Generate a full day of train departures from 00:00 to 23:59
+function generateTrainSchedule() {
+    const lines = ["bakerloo", "central", "circle", "district", "hammersmith", "jubilee", "metropolitan", "northern", "piccadilly", "victoria", "waterloo"];
+    const schedule = {};
 
-// Function to dynamically update train departures
-function updateTrainDepartures() {
+    lines.forEach(line => {
+        schedule[line] = [];
+        for (let hour = 0; hour < 24; hour++) {
+            for (let minute = 0; minute < 60; minute += 15) { // Trains depart every 15 minutes
+                const formattedHour = hour.toString().padStart(2, '0');
+                const formattedMinute = minute.toString().padStart(2, '0');
+                schedule[line].push({
+                    destination: generateRandomDestination(line),
+                    departureTime: `${formattedHour}:${formattedMinute}`,
+                    status: Math.random() > 0.85 ? "cancelled" : "on-time", // Randomly cancel some trains
+                    stops: generateRandomStops(line)
+                });
+            }
+        }
+    });
+
+    return schedule;
+}
+
+// Generate random destinations for demonstration purposes
+function generateRandomDestination(line) {
+    const destinations = {
+        bakerloo: ["Elephant & Castle", "Harrow & Wealdstone"],
+        central: ["Epping", "West Ruislip"],
+        circle: ["Hammersmith", "Edgware Road"],
+        district: ["Upminster", "Richmond"],
+        hammersmith: ["Barking", "Hammersmith"],
+        jubilee: ["Stratford", "Stanmore"],
+        metropolitan: ["Aldgate", "Amersham"],
+        northern: ["Morden", "High Barnet"],
+        piccadilly: ["Heathrow Terminal 5", "Cockfosters"],
+        victoria: ["Brixton", "Walthamstow Central"],
+        waterloo: ["Bank", "Waterloo"]
+    };
+    return destinations[line][Math.floor(Math.random() * destinations[line].length)];
+}
+
+// Generate random stops for each line
+function generateRandomStops(line) {
+    const stops = {
+        bakerloo: ["Paddington", "Oxford Circus", "Piccadilly Circus"],
+        central: ["Notting Hill Gate", "Liverpool Street", "Stratford"],
+        circle: ["Baker Street", "King's Cross", "Liverpool Street"],
+        district: ["Earl's Court", "Hammersmith", "Richmond"],
+        hammersmith: ["Paddington", "West Ham", "Barking"],
+        jubilee: ["Waterloo", "London Bridge", "Canary Wharf"],
+        metropolitan: ["King's Cross", "Moorgate", "Harrow-on-the-Hill"],
+        northern: ["Camden Town", "Kennington", "Clapham Common"],
+        piccadilly: ["King's Cross", "Heathrow", "Knightsbridge"],
+        victoria: ["Victoria", "Oxford Circus", "Stockwell"],
+        waterloo: ["Lambeth North", "Waterloo", "Bank"]
+    };
+    return stops[line].join(", ");
+}
+
+// Get the current time and display upcoming trains within the next 30 minutes
+function updateTrainDepartures(schedule) {
     const now = new Date();
     const currentHour = now.getHours();
     const currentMinutes = now.getMinutes();
-
-    // Iterate through each line and update departures
-    for (const line in trainData) {
+    
+    for (const line in schedule) {
         const trainList = document.querySelector(`.train-list[data-line="${line}"]`);
-        trainList.innerHTML = ''; // Clear existing list
+        trainList.innerHTML = ''; // Clear the list
 
-        // Get the train departures for the line
-        const departures = trainData[line];
+        const departures = schedule[line].filter(train => {
+            const [trainHour, trainMinutes] = train.departureTime.split(':').map(Number);
+            const trainTimeInMinutes = trainHour * 60 + trainMinutes;
+            const currentTimeInMinutes = currentHour * 60 + currentMinutes;
+            return trainTimeInMinutes >= currentTimeInMinutes && trainTimeInMinutes <= currentTimeInMinutes + 30; // Show trains within 30 minutes
+        });
 
         departures.forEach(train => {
-            // Split the departure time into hours and minutes
-            const [trainHour, trainMinutes] = train.departureTime.split(':').map(Number);
-
-            // Check if the train has expired (departure time has passed)
-            if (trainHour < currentHour || (trainHour === currentHour && trainMinutes < currentMinutes)) {
-                // Skip expired trains
-                return;
-            }
-
-            // Create a new list item for the train
             const trainItem = document.createElement('div');
             trainItem.classList.add('train-item');
-            trainItem.classList.add(train.status); // Add status class ("cancelled")
+            trainItem.classList.add(train.status); // Add on-time or cancelled class
 
             const destinationElement = document.createElement('span');
             destinationElement.classList.add('train-destination');
@@ -83,15 +88,13 @@ function updateTrainDepartures() {
             timeElement.classList.add('train-time');
             timeElement.textContent = train.departureTime;
 
-            // Create scrolling stops
             const stopsElement = document.createElement('div');
             stopsElement.classList.add('train-stops');
             const stopsText = document.createElement('span');
             stopsText.textContent = `Stops: ${train.stops}`;
             stopsElement.appendChild(stopsText);
 
-            // Add a label if the train is cancelled
-            if (train.status === 'cancelled') {
+            if (train.status === "cancelled") {
                 const statusElement = document.createElement('span');
                 statusElement.classList.add('train-status');
                 statusElement.textContent = 'Cancelled';
@@ -100,16 +103,17 @@ function updateTrainDepartures() {
 
             trainItem.appendChild(destinationElement);
             trainItem.appendChild(timeElement);
-            trainItem.appendChild(stopsElement); // Add scrolling stops
+            trainItem.appendChild(stopsElement);
             trainList.appendChild(trainItem);
         });
     }
 }
 
-// Function to refresh the train data every minute
+// Initialize the schedule and update train departures every minute
 function startLiveUpdates() {
-    updateTrainDepartures();
-    setInterval(updateTrainDepartures, 60000); // Update every minute
+    const schedule = generateTrainSchedule(); // Generate the full day's schedule
+    updateTrainDepartures(schedule); // Display the initial trains
+    setInterval(() => updateTrainDepartures(schedule), 60000); // Update every minute
 }
 
 // Start live updates when the page loads
