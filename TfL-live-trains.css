@@ -1,0 +1,140 @@
+/* General Styles */
+body {
+    font-family: 'Johnston100', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #0019a8; /* TfL blue */
+    color: white;
+    padding: 1rem 0;
+    text-align: center;
+    border-bottom: 5px solid #ffdd00; /* TfL yellow border */
+}
+
+h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+.train-lines {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1rem;
+}
+
+/* Train Line Section Styles */
+section {
+    background-color: white;
+    border-radius: 8px;
+    margin: 1rem;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex-basis: 300px;
+    max-width: 350px;
+    min-width: 300px;
+}
+
+/* Line-Specific Color Themes */
+#bakerloo {
+    border-left: 8px solid #B36305; /* Bakerloo Line Brown */
+}
+
+#central {
+    border-left: 8px solid #E32017; /* Central Line Red */
+}
+
+#circle {
+    border-left: 8px solid #FFD300; /* Circle Line Yellow */
+}
+
+#district {
+    border-left: 8px solid #00782A; /* District Line Green */
+}
+
+#hammersmith {
+    border-left: 8px solid #F3A9BB; /* Hammersmith & City Line Pink */
+}
+
+#jubilee {
+    border-left: 8px solid #A0A5A9; /* Jubilee Line Grey */
+}
+
+#metropolitan {
+    border-left: 8px solid #9B0056; /* Metropolitan Line Magenta */
+}
+
+#northern {
+    border-left: 8px solid #000000; /* Northern Line Black */
+}
+
+#piccadilly {
+    border-left: 8px solid #003688; /* Piccadilly Line Blue */
+}
+
+#victoria {
+    border-left: 8px solid #0098D4; /* Victoria Line Light Blue */
+}
+
+#waterloo {
+    border-left: 8px solid #95CDBA; /* Waterloo & City Line Turquoise */
+}
+
+/* Train Departure List Styles */
+.train-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.train-list .train-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.train-item.on-time {
+    background-color: #d4edda; /* Light green for on-time trains */
+}
+
+.train-item.delayed {
+    background-color: #f8d7da; /* Light red for delayed trains */
+}
+
+.train-item.expired {
+    display: none; /* Expired trains will be hidden */
+}
+
+.train-destination {
+    font-weight: bold;
+}
+
+.train-time {
+    font-style: italic;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    section {
+        flex-basis: 100%;
+        max-width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.25rem;
+    }
+}
