@@ -1,49 +1,14 @@
-// Sample Train Data (all trains set to "cancelled")
+// Sample Train Data (with scrolling stops)
 const trainData = {
     bakerloo: [
-        { destination: "Elephant & Castle", departureTime: "14:15", status: "cancelled" },
-        { destination: "Harrow & Wealdstone", departureTime: "14:25", status: "cancelled" }
+        { destination: "Elephant & Castle", departureTime: "14:15", status: "cancelled", stops: "Baker Street, Oxford Circus, Piccadilly Circus, Charing Cross" },
+        { destination: "Harrow & Wealdstone", departureTime: "14:25", status: "cancelled", stops: "Paddington, Marylebone, Kilburn Park, Queen's Park" }
     ],
     central: [
-        { destination: "Epping", departureTime: "14:10", status: "cancelled" },
-        { destination: "West Ruislip", departureTime: "14:20", status: "cancelled" }
+        { destination: "Epping", departureTime: "14:10", status: "cancelled", stops: "Liverpool Street, Stratford, Leytonstone" },
+        { destination: "West Ruislip", departureTime: "14:20", status: "cancelled", stops: "Notting Hill Gate, Shepherd's Bush, Ealing Broadway" }
     ],
-    circle: [
-        { destination: "Hammersmith", departureTime: "14:12", status: "cancelled" },
-        { destination: "Edgware Road", departureTime: "14:22", status: "cancelled" }
-    ],
-    district: [
-        { destination: "Upminster", departureTime: "14:08", status: "cancelled" },
-        { destination: "Richmond", departureTime: "14:18", status: "cancelled" }
-    ],
-    hammersmith: [
-        { destination: "Barking", departureTime: "14:14", status: "cancelled" },
-        { destination: "Hammersmith", departureTime: "14:24", status: "cancelled" }
-    ],
-    jubilee: [
-        { destination: "Stratford", departureTime: "14:13", status: "cancelled" },
-        { destination: "Stanmore", departureTime: "14:23", status: "cancelled" }
-    ],
-    metropolitan: [
-        { destination: "Aldgate", departureTime: "14:09", status: "cancelled" },
-        { destination: "Amersham", departureTime: "14:19", status: "cancelled" }
-    ],
-    northern: [
-        { destination: "Morden", departureTime: "14:17", status: "cancelled" },
-        { destination: "High Barnet", departureTime: "14:27", status: "cancelled" }
-    ],
-    piccadilly: [
-        { destination: "Heathrow Terminal 5", departureTime: "14:11", status: "cancelled" },
-        { destination: "Cockfosters", departureTime: "14:21", status: "cancelled" }
-    ],
-    victoria: [
-        { destination: "Brixton", departureTime: "14:16", status: "cancelled" },
-        { destination: "Walthamstow Central", departureTime: "14:26", status: "cancelled" }
-    ],
-    waterloo: [
-        { destination: "Bank", departureTime: "14:18", status: "cancelled" },
-        { destination: "Waterloo", departureTime: "14:28", status: "cancelled" }
-    ]
+    // Add other lines similarly with stops
 };
 
 // Function to dynamically update train departures
@@ -83,6 +48,13 @@ function updateTrainDepartures() {
             timeElement.classList.add('train-time');
             timeElement.textContent = train.departureTime;
 
+            // Create scrolling stops
+            const stopsElement = document.createElement('div');
+            stopsElement.classList.add('train-stops');
+            const stopsText = document.createElement('span');
+            stopsText.textContent = `Stops: ${train.stops}`;
+            stopsElement.appendChild(stopsText);
+
             // Add a label if the train is cancelled
             if (train.status === 'cancelled') {
                 const statusElement = document.createElement('span');
@@ -93,6 +65,7 @@ function updateTrainDepartures() {
 
             trainItem.appendChild(destinationElement);
             trainItem.appendChild(timeElement);
+            trainItem.appendChild(stopsElement); // Add scrolling stops
             trainList.appendChild(trainItem);
         });
     }
