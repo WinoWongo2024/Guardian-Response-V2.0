@@ -222,7 +222,7 @@ img {
     padding: 1.5rem;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 1rem; /* Updated to reduce spacing */
+    margin-top: 2rem;
 }
 
 .service-status {
@@ -236,7 +236,6 @@ img {
 .stop-timeline {
     border-left: 4px solid #0019a8; /* TfL Blue Line */
     padding-left: 1rem;
-    margin-top: 1rem;
 }
 
 .stop-item {
@@ -266,8 +265,8 @@ img {
     position: absolute;
     top: 0;
     left: 0;
-    height: 16px; /* Increased size */
-    width: 16px;  /* Increased size */
+    height: 12px;
+    width: 12px;
     background-color: #0019a8;
     border-radius: 50%;
 }
