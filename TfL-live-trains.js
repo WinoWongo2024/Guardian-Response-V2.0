@@ -101,8 +101,8 @@ function getCurrentStop(train) {
     const currentTime = getCurrentTime();
     const timeDiff = timeDifferenceInMinutes(currentTime, departureTime);
 
-    // If the train hasn't departed yet, it should still be at the first stop
-    if (timeDiff < 0) return stops[0];
+    // If the train hasn't departed yet, display the message "This train has not started service yet"
+    if (timeDiff < 0) return "This train has not started service yet";
 
     // Calculate how many stops the train has passed
     const stopsCount = stops.length;
