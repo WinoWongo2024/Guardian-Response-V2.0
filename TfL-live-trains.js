@@ -1,28 +1,33 @@
 // Time to keep cancelled trains visible (in milliseconds)
 const CANCELLED_TRAIN_VISIBILITY_DURATION = 120000; // 2 minutes
 
-// Generate or retrieve a train schedule from localStorage
+// A global anchor date that all users will reference for consistency
+const ANCHOR_DATE = new Date("2024-01-01T00:00:00Z"); // A fixed universal start date
+
+// Generate a deterministic train schedule based on the current time relative to ANCHOR_DATE
 function generateTrainSchedule() {
-    const storedSchedule = localStorage.getItem('trainSchedule');
-    
-    // If schedule exists in localStorage, parse and return it
-    if (storedSchedule) {
-        return JSON.parse(storedSchedule);
-    }
-    
     const lines = ["bakerloo", "central", "circle", "district", "hammersmith", "jubilee", "metropolitan", "northern", "piccadilly", "victoria", "waterloo"];
     const schedule = {};
 
-    lines.forEach(line => {
+    // Calculate the number of days since ANCHOR_DATE for deterministic consistency
+    const currentDate = new Date();
+    const daysSinceAnchor = Math.floor((currentDate - ANCHOR_DATE) / (1000 * 60 * 60 * 24)); // Total days since anchor
+
+    lines.forEach((line, index) => {
         schedule[line] = [];
         for (let hour = 0; hour < 24; hour++) {
             for (let minute = 0; minute < 60; minute += 15) { // Trains depart every 15 minutes
                 const formattedHour = hour.toString().padStart(2, '0');
                 const formattedMinute = minute.toString().padStart(2, '0');
+
+                // Generate a consistent random factor based on the current day, hour, minute, and line index
+                const randomFactor = (daysSinceAnchor + hour + minute + index) % 100;
+                const isCancelled = randomFactor > 85; // 15% chance of cancellation
+
                 schedule[line].push({
-                    destination: generateRandomDestination(line),
+                    destination: generateRandomDestination(line, daysSinceAnchor),
                     departureTime: `${formattedHour}:${formattedMinute}`,
-                    status: Math.random() > 0.85 ? "cancelled" : "on-time", // Randomly cancel some trains
+                    status: isCancelled ? "cancelled" : "on-time",
                     stops: generateRandomStops(line),
                     cancelledTime: null // Track when a train is cancelled
                 });
@@ -30,14 +35,11 @@ function generateTrainSchedule() {
         }
     });
 
-    // Store the generated schedule in localStorage
-    localStorage.setItem('trainSchedule', JSON.stringify(schedule));
-
     return schedule;
 }
 
-// Generate random destinations for demonstration purposes with more destinations
-function generateRandomDestination(line) {
+// Generate random destinations based on the day to ensure consistency across users
+function generateRandomDestination(line, dayFactor) {
     const destinations = {
         bakerloo: ["Elephant & Castle", "Harrow & Wealdstone", "Queen's Park", "Paddington", "Oxford Circus", "Wembley Central"],
         central: ["Epping", "West Ruislip", "White City", "Marble Arch", "Liverpool Street", "Bethnal Green"],
@@ -51,10 +53,12 @@ function generateRandomDestination(line) {
         victoria: ["Brixton", "Walthamstow Central", "Victoria", "Oxford Circus", "King's Cross", "Stockwell"],
         waterloo: ["Bank", "Waterloo", "Lambeth North"]
     };
-    return destinations[line][Math.floor(Math.random() * destinations[line].length)];
+
+    // Use a consistent way to select a destination based on the dayFactor (calculated from days since ANCHOR_DATE)
+    return destinations[line][dayFactor % destinations[line].length];
 }
 
-// Generate random stops for each line with more stops
+// Generate random stops based on the line
 function generateRandomStops(line) {
     const stops = {
         bakerloo: ["Paddington", "Oxford Circus", "Piccadilly Circus", "Waterloo", "Lambeth North", "Elephant & Castle"],
@@ -78,7 +82,7 @@ function updateTrainDepartures(schedule) {
     const currentHour = now.getHours();
     const currentMinutes = now.getMinutes();
     const currentTimeInMinutes = currentHour * 60 + currentMinutes;
-    
+
     for (const line in schedule) {
         const trainList = document.querySelector(`.train-list[data-line="${line}"]`);
         trainList.innerHTML = ''; // Clear the list
@@ -144,7 +148,7 @@ function updateClock() {
 
 // Initialize the schedule and update train departures every minute
 function startLiveUpdates() {
-    let schedule = generateTrainSchedule(); // Retrieve or generate the full day's schedule
+    const schedule = generateTrainSchedule(); // Generate schedule based on current time and days since ANCHOR_DATE
     updateTrainDepartures(schedule); // Display the initial trains
     setInterval(() => updateTrainDepartures(schedule), 60000); // Update every minute
     setInterval(updateClock, 1000); // Update the clock every second
