@@ -22,6 +22,17 @@ h1 {
     font-family: 'Johnston100', sans-serif; /* Ensure the font is applied */
 }
 
+/* Digital Clock Styling */
+#digital-clock {
+    font-family: 'Johnston100', sans-serif;
+    font-size: 4rem; /* Large clock size */
+    text-align: center;
+    padding: 1rem 0;
+    background-color: #f0f0f0;
+    color: #333;
+    margin-top: 0.5rem;
+}
+
 h2 {
     font-family: 'Johnston100', sans-serif;
     font-size: 1.5rem;
@@ -54,42 +65,6 @@ section {
 
 #central {
     border-left: 8px solid #E32017; /* Central Line Red */
-}
-
-#circle {
-    border-left: 8px solid #FFD300; /* Circle Line Yellow */
-}
-
-#district {
-    border-left: 8px solid #00782A; /* District Line Green */
-}
-
-#hammersmith {
-    border-left: 8px solid #F3A9BB; /* Hammersmith & City Line Pink */
-}
-
-#jubilee {
-    border-left: 8px solid #A0A5A9; /* Jubilee Line Grey */
-}
-
-#metropolitan {
-    border-left: 8px solid #9B0056; /* Metropolitan Line Magenta */
-}
-
-#northern {
-    border-left: 8px solid #000000; /* Northern Line Black */
-}
-
-#piccadilly {
-    border-left: 8px solid #003688; /* Piccadilly Line Blue */
-}
-
-#victoria {
-    border-left: 8px solid #0098D4; /* Victoria Line Light Blue */
-}
-
-#waterloo {
-    border-left: 8px solid #95CDBA; /* Waterloo & City Line Turquoise */
 }
 
 /* Train List Styles */
@@ -166,5 +141,9 @@ section {
 
     h2 {
         font-size: 1.25rem;
+    }
+
+    #digital-clock {
+        font-size: 3rem; /* Adjust clock size for smaller screens */
     }
 }
