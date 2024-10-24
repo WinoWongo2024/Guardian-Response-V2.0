@@ -19,6 +19,13 @@ header {
 h1 {
     margin: 0;
     font-size: 2.5rem;
+    font-family: 'Johnston100', sans-serif; /* Ensure the font is applied */
+}
+
+h2 {
+    font-family: 'Johnston100', sans-serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .train-lines {
@@ -85,14 +92,15 @@ section {
     border-left: 8px solid #95CDBA; /* Waterloo & City Line Turquoise */
 }
 
-/* Train Departure List Styles */
+/* Train List Styles */
 .train-list {
     list-style: none;
     padding: 0;
     margin: 0;
+    font-family: 'Johnston100', sans-serif; /* Ensure the font is applied to the train list */
 }
 
-.train-list .train-item {
+.train-item {
     display: flex;
     justify-content: space-between;
     margin-bottom: 0.5rem;
@@ -101,16 +109,8 @@ section {
     border-radius: 5px;
 }
 
-.train-item.on-time {
-    background-color: #d4edda; /* Light green for on-time trains */
-}
-
-.train-item.delayed {
-    background-color: #f8d7da; /* Light red for delayed trains */
-}
-
-.train-item.expired {
-    display: none; /* Expired trains will be hidden */
+.train-item.cancelled {
+    background-color: #f8d7da; /* Light red for cancelled trains */
 }
 
 .train-destination {
@@ -119,6 +119,12 @@ section {
 
 .train-time {
     font-style: italic;
+}
+
+.train-status {
+    margin-left: 1rem;
+    font-weight: bold;
+    color: red; /* Red color for "Cancelled" label */
 }
 
 /* Responsive Design */
