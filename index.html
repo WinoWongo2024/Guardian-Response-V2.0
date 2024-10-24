@@ -3,88 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transport for London</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
-    <!-- Load the Johnston100 font -->
-    <style>
-        @font-face {
-            font-family: 'Johnston100';
-            src: url('https://github.com/WinoWongo2024/Font/blob/main/johnston100.otf?raw=true') format('opentype');
-        }
-
-        body {
-            font-family: 'Johnston100', sans-serif;
-        }
-    </style>
+    <title>TfL Live Trains</title>
+    <link rel="stylesheet" href="TfL-live-trains.css">
+    <link href="https://winowongo2024.github.io/Fonts/johnston100.otf" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="logo">TfL</div>
-        <ul class="nav-links">
-            <li><a href="#">Business</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Tickets</a></li>
-            <li><a href="#">Team</a></li>
-            <li><a href="#">Information</a></li>
-        </ul>
-        <div class="contact-info">
-            <span>Email: info@tfl.com</span> | <span>Phone: 020 1234 5678</span>
-        </div>
-    </nav>
+    <header>
+        <h1>TfL Live Trains – [Station Name]</h1>
+    </header>
 
-    <!-- Scrolling Text Banners -->
-    <div class="scrolling-banner">
-        <p>All TfL services are facing disruption, please stay updated for more information</p>
+    <div class="train-lines">
+        <!-- Bakerloo Line -->
+        <section id="bakerloo">
+            <h2>Bakerloo Line</h2>
+            <div class="train-list" data-line="bakerloo"></div>
+        </section>
+
+        <!-- Central Line -->
+        <section id="central">
+            <h2>Central Line</h2>
+            <div class="train-list" data-line="central"></div>
+        </section>
+
+        <!-- Circle Line -->
+        <section id="circle">
+            <h2>Circle Line</h2>
+            <div class="train-list" data-line="circle"></div>
+        </section>
+
+        <!-- District Line -->
+        <section id="district">
+            <h2>District Line</h2>
+            <div class="train-list" data-line="district"></div>
+        </section>
+
+        <!-- Hammersmith & City Line -->
+        <section id="hammersmith">
+            <h2>Hammersmith & City Line</h2>
+            <div class="train-list" data-line="hammersmith"></div>
+        </section>
+
+        <!-- Jubilee Line -->
+        <section id="jubilee">
+            <h2>Jubilee Line</h2>
+            <div class="train-list" data-line="jubilee"></div>
+        </section>
+
+        <!-- Metropolitan Line -->
+        <section id="metropolitan">
+            <h2>Metropolitan Line</h2>
+            <div class="train-list" data-line="metropolitan"></div>
+        </section>
+
+        <!-- Northern Line -->
+        <section id="northern">
+            <h2>Northern Line</h2>
+            <div class="train-list" data-line="northern"></div>
+        </section>
+
+        <!-- Piccadilly Line -->
+        <section id="piccadilly">
+            <h2>Piccadilly Line</h2>
+            <div class="train-list" data-line="piccadilly"></div>
+        </section>
+
+        <!-- Victoria Line -->
+        <section id="victoria">
+            <h2>Victoria Line</h2>
+            <div class="train-list" data-line="victoria"></div>
+        </section>
+
+        <!-- Waterloo & City Line -->
+        <section id="waterloo">
+            <h2>Waterloo & City Line</h2>
+            <div class="train-list" data-line="waterloo"></div>
+        </section>
     </div>
-    <div class="scrolling-banner">
-        <p>This site is still currently in beta, we apologise for any bugs</p>
-    </div>
 
-    <!-- Main Section -->
-    <section class="main-section">
-        <div class="overlay"></div>
-        <h1>Transport for all London citizens within London.</h1>
-        <p>We are proud to support your travel needs.</p>
-    </section>
-
-    <!-- Protection Sections -->
-    <section class="protection-section">
-        <div class="card business">
-            <h2>Business Protection</h2>
-            <p>Comprehensive coverage for all your travel requirements.</p>
-        </div>
-        <div class="card travel">
-            <h2>People Protection</h2>
-            <p>Secure your daily commute with our services.</p>
-        </div>
-        <div class="card family">
-            <h2>Family Protection</h2>
-            <p>Keep your family safe while traveling in London.</p>
-        </div>
-        <div class="card live-trains">
-    <h2>Live Trains Information</h2>
-    <p>Check the current status and live updates for train services in London.</p>
-    <a href="TfL-live-trains.html">See Live Trains</a>
-</div>
-    </section>
-    
-
-    <!-- Contact Form -->
-    <section id="contact" class="contact-section">
-        <h2>Contact Us</h2>
-        <form action="#" method="post">
-            <input type="email" name="email" placeholder="Your Email" required>
-            <input type="text" name="phone" placeholder="Your Phone Number" required>
-            <button type="submit">Contact Us</button>
-        </form>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <p>Contact: info@tfl.com | Phone: 020 1234 5678</p>
-        <p>© 2024 Transport for London. All rights reserved.</p>
-    </footer>
+    <script src="TfL-live-trains.js"></script>
 </body>
 </html>
