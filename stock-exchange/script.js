@@ -13,7 +13,15 @@ let charts = {};
 // Initialize Charts and Update Functions
 function initializeCharts() {
     for (const symbol in stocks) {
-        const sparklineCtx = document.getElementById(`sparkline-${symbol}`).getContext("2d");
+        const sparklineElement = document.getElementById(`sparkline-${symbol}`);
+        
+        // Ensure the element exists before trying to access its context
+        if (!sparklineElement) {
+            console.error(`Element with ID sparkline-${symbol} not found`);
+            continue; // Skip to the next iteration if the element doesn't exist
+        }
+        
+        const sparklineCtx = sparklineElement.getContext("2d");
 
         // Create sparkline for each stock
         charts[symbol] = new Chart(sparklineCtx, {
@@ -55,20 +63,38 @@ function updatePrices() {
         stock.percent = ((change / stock.price) * 100).toFixed(2);
 
         // Update the DOM elements for price and percent change
-        document.querySelector(`#ticker-${symbol} .price`).textContent = stock.price.toFixed(2);
-        document.querySelector(`#ticker-${symbol} .percent`).textContent = `${stock.percent}%`;
+        const priceElement = document.querySelector(`#ticker-${symbol} .price`);
+        const percentElement = document.querySelector(`#ticker-${symbol} .percent`);
+
+        if (priceElement && percentElement) {
+            priceElement.textContent = stock.price.toFixed(2);
+            percentElement.textContent = `${stock.percent}%`;
+        } else {
+            console.error(`Ticker elements for ${symbol} not found`);
+        }
 
         // Update stock card data
-        document.querySelector(`#card-${symbol} .price`).textContent = stock.price.toFixed(2);
-        document.querySelector(`#card-${symbol} .change`).textContent = `${stock.percent}%`;
+        const cardPriceElement = document.querySelector(`#card-${symbol} .price`);
+        const cardChangeElement = document.querySelector(`#card-${symbol} .change`);
+
+        if (cardPriceElement && cardChangeElement) {
+            cardPriceElement.textContent = stock.price.toFixed(2);
+            cardChangeElement.textContent = `${stock.percent}%`;
+        } else {
+            console.error(`Card elements for ${symbol} not found`);
+        }
 
         // Update the sparkline chart data
         const chart = charts[symbol];
-        chart.data.datasets[0].data.push(stock.price); // Add the new price
-        if (chart.data.datasets[0].data.length > 12) {
-            chart.data.datasets[0].data.shift(); // Keep only the last 12 data points
+        if (chart) {
+            chart.data.datasets[0].data.push(stock.price); // Add the new price
+            if (chart.data.datasets[0].data.length > 12) {
+                chart.data.datasets[0].data.shift(); // Keep only the last 12 data points
+            }
+            chart.update();
+        } else {
+            console.error(`Chart for ${symbol} not initialized`);
         }
-        chart.update();
     }
 }
 
