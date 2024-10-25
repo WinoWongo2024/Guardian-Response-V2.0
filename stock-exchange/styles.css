@@ -138,15 +138,19 @@ button:hover {
 /* More Details Section */
 .more-details {
     display: none; /* Hidden by default */
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
     background-color: #f9f9f9;
     padding: 10px;
     font-size: 0.9rem;
     color: #555;
     box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    transition: max-height 0.4s ease;
+    max-height: 0;
+    overflow: hidden;
+}
+
+.more-details.active {
+    display: block;
+    max-height: 500px; /* Adjust this for how much content is being shown */
 }
 
 /* Chart Styling */
