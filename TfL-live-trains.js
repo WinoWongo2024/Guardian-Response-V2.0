@@ -76,6 +76,7 @@ function generateTrainSchedule() {
                     status,
                     platform: generatePlatformNumber(),
                     cause: status === "delayed" ? generateDelayCause() : null,
+                    stops: ["Oxford Circus", "Piccadilly", "Waterloo"], // Example stops
                     cancelledTime: status === "cancelled" ? new Date() : null,
                 });
 
@@ -86,6 +87,7 @@ function generateTrainSchedule() {
                     status,
                     platform: generatePlatformNumber(),
                     cause: status === "delayed" ? generateDelayCause() : null,
+                    stops: ["Bank", "Oxford Circus", "Paddington"], // Example stops
                     cancelledTime: status === "cancelled" ? new Date() : null,
                 });
             }
@@ -135,11 +137,15 @@ function generateRandomOrigin(line, dayFactor) {
 
 // Function to handle train selection (display details)
 function handleTrainClick(train, trainItem) {
-    const detailContainer = document.createElement('div');
-    detailContainer.classList.add('detail-view');
+    const detailContainer = document.querySelector('.detail-container');
+    detailContainer.innerHTML = ''; // Clear previous details
+
+    const detailView = document.createElement('div');
+    detailView.classList.add('detail-view');
 
     const serviceStatus = document.createElement('div');
     serviceStatus.classList.add('service-status');
+    
     if (train.status === "delayed") {
         serviceStatus.textContent = `This service is delayed by ${train.delay} minutes. Reason: ${train.cause}`;
     } else if (train.status === "cancelled") {
@@ -151,22 +157,16 @@ function handleTrainClick(train, trainItem) {
     const platformInfo = document.createElement('div');
     platformInfo.textContent = `Platform: ${train.platform}`;
 
-    const stopsBanner = document.createElement('div');
-    stopsBanner.classList.add('scrolling-banner');
-    stopsBanner.textContent = `Stops: ${train.destination} ➡ ${train.origin}`;
+    // Stops banner generation with a proper fallback
+    const stopBanner = document.createElement('div');
+    stopBanner.classList.add('stop-banner');
+    const stops = train.stops ? train.stops.join(" ➡ ") : "No stops information available";
+    stopBanner.textContent = `Stops: ${stops}`;
 
-    detailContainer.appendChild(serviceStatus);
-    detailContainer.appendChild(platformInfo);
-    detailContainer.appendChild(stopsBanner);
-
-    // Clear existing details first
-    const existingDetail = trainItem.parentNode.querySelector('.detail-view');
-    if (existingDetail) {
-        existingDetail.remove();
-    }
-
-    // Append directly under the clicked train
-    trainItem.insertAdjacentElement('afterend', detailContainer);
+    detailView.appendChild(serviceStatus);
+    detailView.appendChild(platformInfo);
+    detailView.appendChild(stopBanner);
+    detailContainer.appendChild(detailView);
 }
 
 // Update train departures and arrivals
@@ -200,7 +200,7 @@ function updateTrainDeparturesAndArrivals(schedule) {
 
             const timeElement = document.createElement('span');
             timeElement.classList.add('train-time');
-            timeElement.textContent = `${train.departureTime} (${addMinutesToTime(train.departureTime, -train.delay)})`;
+            timeElement.textContent = train.departureTime;
 
             trainItem.appendChild(destinationElement);
             trainItem.appendChild(timeElement);
@@ -227,7 +227,7 @@ function updateTrainDeparturesAndArrivals(schedule) {
 
             const timeElement = document.createElement('span');
             timeElement.classList.add('train-time');
-            timeElement.textContent = `${train.arrivalTime} (${addMinutesToTime(train.arrivalTime, -train.delay)})`;
+            timeElement.textContent = train.arrivalTime;
 
             trainItem.appendChild(originElement);
             trainItem.appendChild(timeElement);
