@@ -216,6 +216,31 @@ img {
     margin-top: 0.5rem;
 }
 
+/* Scrolling Banners */
+.scrolling-banner {
+    background-color: #ffdd00; /* TfL yellow */
+    color: #0019a8; /* TfL blue */
+    padding: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.scrolling-text {
+    display: inline-block;
+    padding-left: 100%;
+    animation: scrollBanner 15s linear infinite;
+}
+
+@keyframes scrollBanner {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
 /* Footer Styles */
 .footer {
     text-align: center;
