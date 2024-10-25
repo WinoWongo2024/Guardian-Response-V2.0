@@ -1,11 +1,11 @@
 // Time to keep cancelled trains visible (in milliseconds)
 const CANCELLED_TRAIN_VISIBILITY_DURATION = 120000; // 2 minutes
 const REFRESH_INTERVAL = 60000; // 1 minute (to refresh train data)
+const MAX_DELAY = 15; // Maximum delay in minutes
+const MIN_DELAY = -5; // Minimum delay (early departure)
 
-// A global anchor date that all users will reference for consistency
-const ANCHOR_DATE = new Date("2024-01-01T00:00:00Z"); // A fixed universal start date
+const ANCHOR_DATE = new Date("2024-01-01T00:00:00Z"); // Universal start date
 
-// Global state for the train schedule
 let trainSchedule = {};
 
 // Utility function to get the current time in HH:MM format
@@ -16,14 +16,7 @@ function getCurrentTime() {
     return `${hours}:${minutes}`;
 }
 
-// Function to calculate the time difference in minutes between two times in HH:MM format
-function timeDifferenceInMinutes(time1, time2) {
-    const [hours1, minutes1] = time1.split(':').map(Number);
-    const [hours2, minutes2] = time2.split(':').map(Number);
-    return (hours1 * 60 + minutes1) - (hours2 * 60 + minutes2);
-}
-
-// Function to add a duration to a time in HH:MM format
+// Add minutes to time in HH:MM format
 function addMinutesToTime(time, minutesToAdd) {
     const [hours, minutes] = time.split(':').map(Number);
     const totalMinutes = hours * 60 + minutes + minutesToAdd;
@@ -32,47 +25,68 @@ function addMinutesToTime(time, minutesToAdd) {
     return `${newHours}:${newMinutes}`;
 }
 
-// Function to generate a deterministic train schedule based on the current time relative to ANCHOR_DATE
+// Generate random delay between a given range
+function generateRandomDelay() {
+    return Math.floor(Math.random() * (MAX_DELAY - MIN_DELAY + 1)) + MIN_DELAY;
+}
+
+// Generate platform number between 1 and 10
+function generatePlatformNumber() {
+    return Math.floor(Math.random() * 10) + 1;
+}
+
+// Generate train status (on-time, delayed, or cancelled)
+function generateTrainStatus(delay) {
+    if (delay > 10) return "cancelled";
+    return delay > 0 ? "delayed" : "on-time";
+}
+
+// Generate causes of delay
+function generateDelayCause() {
+    const causes = ["Signal failure", "Track maintenance", "Congestion", "Staff shortage"];
+    return causes[Math.floor(Math.random() * causes.length)];
+}
+
+// Generate train schedule for each line
 function generateTrainSchedule() {
     const lines = ["bakerloo", "central", "circle", "district", "hammersmith", "jubilee", "metropolitan", "northern", "piccadilly", "victoria", "waterloo"];
     const schedule = {};
     const currentDate = new Date();
-
-    // Calculate the number of days since ANCHOR_DATE for deterministic consistency
-    const daysSinceAnchor = Math.floor((currentDate - ANCHOR_DATE) / (1000 * 60 * 60 * 24)); // Total days since anchor
+    const daysSinceAnchor = Math.floor((currentDate - ANCHOR_DATE) / (1000 * 60 * 60 * 24)); // Days since anchor date
 
     lines.forEach((line, index) => {
         schedule[line] = {
             departures: [],
             arrivals: []
         };
+
         for (let hour = 0; hour < 24; hour++) {
-            for (let minute = 0; minute < 60; minute += 15) { // Trains depart every 15 minutes
+            for (let minute = 0; minute < 60; minute += 15) {
                 const formattedHour = hour.toString().padStart(2, '0');
                 const formattedMinute = minute.toString().padStart(2, '0');
-
-                // Generate a consistent random factor based on the current day, hour, minute, and line index
-                const randomFactor = (daysSinceAnchor + hour + minute + index) % 100;
-                const isCancelled = randomFactor > 85; // 15% chance of cancellation
-
                 const departureTime = `${formattedHour}:${formattedMinute}`;
-                const arrivalTime = addMinutesToTime(departureTime, 10); // Assume the travel time is 10 minutes for arrivals
+                const arrivalTime = addMinutesToTime(departureTime, 10); // Travel time of 10 minutes
+                const delay = generateRandomDelay();
+                const status = generateTrainStatus(delay);
 
-                // Add to departures and arrivals
                 schedule[line].departures.push({
                     destination: generateRandomDestination(line, daysSinceAnchor),
-                    departureTime: departureTime,
-                    status: isCancelled ? "cancelled" : "on-time",
-                    delay: randomFactor % 10, // Generate a random delay in minutes
-                    cancelledTime: null, // Track when a train is cancelled
+                    departureTime: addMinutesToTime(departureTime, delay),
+                    delay,
+                    status,
+                    platform: generatePlatformNumber(),
+                    cause: status === "delayed" ? generateDelayCause() : null,
+                    cancelledTime: status === "cancelled" ? new Date() : null,
                 });
 
                 schedule[line].arrivals.push({
-                    origin: generateRandomOrigin(line, daysSinceAnchor), // Add random origins for arrivals
-                    arrivalTime: arrivalTime,
-                    status: isCancelled ? "cancelled" : "on-time",
-                    delay: randomFactor % 10, // Generate a random delay in minutes
-                    cancelledTime: null, // Track when a train is cancelled
+                    origin: generateRandomOrigin(line, daysSinceAnchor),
+                    arrivalTime: addMinutesToTime(arrivalTime, delay),
+                    delay,
+                    status,
+                    platform: generatePlatformNumber(),
+                    cause: status === "delayed" ? generateDelayCause() : null,
+                    cancelledTime: status === "cancelled" ? new Date() : null,
                 });
             }
         }
@@ -81,45 +95,45 @@ function generateTrainSchedule() {
     return schedule;
 }
 
-// Generate random destinations based on the day to ensure consistency across users
+// Generate random destinations
 function generateRandomDestination(line, dayFactor) {
     const destinations = {
-        bakerloo: ["Elephant & Castle", "Harrow & Wealdstone", "Queen's Park", "Paddington", "Oxford Circus", "Wembley Central"],
-        central: ["Epping", "West Ruislip", "White City", "Marble Arch", "Liverpool Street", "Bethnal Green"],
-        circle: ["Hammersmith", "Edgware Road", "Aldgate", "King's Cross", "Monument", "Notting Hill Gate"],
-        district: ["Upminster", "Richmond", "Wimbledon", "Ealing Broadway", "Tower Hill", "Barking"],
-        hammersmith: ["Barking", "Hammersmith", "Whitechapel", "Mile End", "Paddington", "Royal Oak"],
-        jubilee: ["Stratford", "Stanmore", "London Bridge", "Westminster", "Wembley Park", "Bermondsey"],
-        metropolitan: ["Aldgate", "Amersham", "Chorleywood", "Rickmansworth", "Baker Street", "Uxbridge"],
-        northern: ["Morden", "High Barnet", "Camden Town", "Kennington", "Tooting Broadway", "East Finchley"],
-        piccadilly: ["Heathrow Terminal 5", "Cockfosters", "Hammersmith", "Covent Garden", "South Kensington", "Leicester Square"],
-        victoria: ["Brixton", "Walthamstow Central", "Victoria", "Oxford Circus", "King's Cross", "Stockwell"],
+        bakerloo: ["Elephant & Castle", "Paddington", "Oxford Circus", "Wembley Central"],
+        central: ["Epping", "White City", "Marble Arch", "Liverpool Street"],
+        circle: ["Aldgate", "Monument", "King's Cross", "Edgware Road"],
+        district: ["Upminster", "Richmond", "Wimbledon", "Barking"],
+        hammersmith: ["Barking", "Hammersmith", "Paddington", "Mile End"],
+        jubilee: ["Stanmore", "Westminster", "London Bridge", "Wembley Park"],
+        metropolitan: ["Aldgate", "Amersham", "Baker Street", "Uxbridge"],
+        northern: ["Morden", "Camden Town", "Kennington", "Tooting Broadway"],
+        piccadilly: ["Heathrow", "Cockfosters", "Covent Garden", "Leicester Square"],
+        victoria: ["Brixton", "Victoria", "King's Cross", "Stockwell"],
         waterloo: ["Bank", "Waterloo", "Lambeth North"]
     };
 
     return destinations[line][dayFactor % destinations[line].length];
 }
 
-// Generate random origins based on the day to ensure consistency across users (for arrivals)
+// Generate random origins
 function generateRandomOrigin(line, dayFactor) {
     const origins = {
-        bakerloo: ["Queen's Park", "Elephant & Castle", "Paddington", "Oxford Circus"],
-        central: ["Bethnal Green", "Liverpool Street", "Marble Arch", "Epping"],
-        circle: ["Notting Hill Gate", "Hammersmith", "Monument", "King's Cross"],
-        district: ["Richmond", "Tower Hill", "Barking", "Ealing Broadway"],
-        hammersmith: ["Whitechapel", "Mile End", "Paddington", "Royal Oak"],
-        jubilee: ["Wembley Park", "Stanmore", "London Bridge", "Westminster"],
-        metropolitan: ["Amersham", "Rickmansworth", "Uxbridge", "Baker Street"],
-        northern: ["High Barnet", "Camden Town", "Kennington", "Tooting Broadway"],
-        piccadilly: ["Heathrow Terminal 5", "Cockfosters", "Covent Garden", "Leicester Square"],
-        victoria: ["Brixton", "Oxford Circus", "Green Park", "King's Cross"],
-        waterloo: ["Bank", "Waterloo", "Lambeth North"]
+        bakerloo: ["Paddington", "Oxford Circus", "Elephant & Castle"],
+        central: ["Liverpool Street", "Marble Arch", "Epping"],
+        circle: ["Monument", "King's Cross", "Aldgate"],
+        district: ["Barking", "Wimbledon", "Richmond"],
+        hammersmith: ["Hammersmith", "Paddington", "Barking"],
+        jubilee: ["London Bridge", "Westminster", "Stanmore"],
+        metropolitan: ["Amersham", "Baker Street", "Aldgate"],
+        northern: ["Kennington", "Camden Town", "Morden"],
+        piccadilly: ["Covent Garden", "Leicester Square", "Heathrow"],
+        victoria: ["Victoria", "Brixton", "King's Cross"],
+        waterloo: ["Waterloo", "Bank", "Lambeth North"]
     };
 
     return origins[line][dayFactor % origins[line].length];
 }
 
-// Function to handle train selection (when clicked)
+// Function to handle train selection (display details)
 function handleTrainClick(train) {
     const detailContainer = document.querySelector('.detail-container');
     detailContainer.innerHTML = ''; // Clear previous details
@@ -127,16 +141,25 @@ function handleTrainClick(train) {
     const detailView = document.createElement('div');
     detailView.classList.add('detail-view');
 
-    // Add the service status (e.g., "This service is running 7 minutes late.")
     const serviceStatus = document.createElement('div');
     serviceStatus.classList.add('service-status');
-    serviceStatus.textContent = `This service is running ${train.delay} minutes late.`;
-    detailView.appendChild(serviceStatus);
+    if (train.status === "delayed") {
+        serviceStatus.textContent = `This service is delayed by ${train.delay} minutes. Reason: ${train.cause}`;
+    } else if (train.status === "cancelled") {
+        serviceStatus.textContent = `This service is cancelled.`;
+    } else {
+        serviceStatus.textContent = `This service is on time.`;
+    }
 
+    const platformInfo = document.createElement('div');
+    platformInfo.textContent = `Platform: ${train.platform}`;
+
+    detailView.appendChild(serviceStatus);
+    detailView.appendChild(platformInfo);
     detailContainer.appendChild(detailView);
 }
 
-// Update the train departures and arrivals every minute
+// Update train departures and arrivals
 function updateTrainDeparturesAndArrivals(schedule) {
     const now = new Date();
     const currentHour = now.getHours();
@@ -146,20 +169,20 @@ function updateTrainDeparturesAndArrivals(schedule) {
     for (const line in schedule) {
         const departureList = document.querySelector(`.departure-list[data-line="${line}"]`);
         const arrivalList = document.querySelector(`.arrival-list[data-line="${line}"]`);
-        departureList.innerHTML = ''; // Clear the departure list
-        arrivalList.innerHTML = '';   // Clear the arrival list
+        departureList.innerHTML = '';
+        arrivalList.innerHTML = '';
 
-        // Render next 2 Departures
+        // Render next 2 departures
         const upcomingDepartures = schedule[line].departures.filter(train => {
             const [trainHour, trainMinutes] = train.departureTime.split(':').map(Number);
             const trainTimeInMinutes = trainHour * 60 + trainMinutes;
             return trainTimeInMinutes >= currentTimeInMinutes;
-        }).slice(0, 2); // Show only the next 2 departures
+        }).slice(0, 2);
 
         upcomingDepartures.forEach(train => {
             const trainItem = document.createElement('div');
             trainItem.classList.add('train-item');
-            trainItem.classList.add(train.status); // Add on-time or cancelled class
+            trainItem.classList.add(train.status); // Add class based on status
 
             const destinationElement = document.createElement('span');
             destinationElement.classList.add('train-destination');
@@ -173,21 +196,20 @@ function updateTrainDeparturesAndArrivals(schedule) {
             trainItem.appendChild(timeElement);
             departureList.appendChild(trainItem);
 
-            // Add click event to show the detailed view when the train is clicked
             trainItem.addEventListener('click', () => handleTrainClick(train));
         });
 
-        // Render next 2 Arrivals
+        // Render next 2 arrivals
         const upcomingArrivals = schedule[line].arrivals.filter(train => {
             const [trainHour, trainMinutes] = train.arrivalTime.split(':').map(Number);
             const trainTimeInMinutes = trainHour * 60 + trainMinutes;
             return trainTimeInMinutes >= currentTimeInMinutes;
-        }).slice(0, 2); // Show only the next 2 arrivals
+        }).slice(0, 2);
 
         upcomingArrivals.forEach(train => {
             const trainItem = document.createElement('div');
             trainItem.classList.add('train-item');
-            trainItem.classList.add(train.status); // Add on-time or cancelled class
+            trainItem.classList.add(train.status); // Add class based on status
 
             const originElement = document.createElement('span');
             originElement.classList.add('train-origin');
@@ -201,13 +223,12 @@ function updateTrainDeparturesAndArrivals(schedule) {
             trainItem.appendChild(timeElement);
             arrivalList.appendChild(trainItem);
 
-            // Add click event to show the detailed view when the train is clicked
             trainItem.addEventListener('click', () => handleTrainClick(train));
         });
     }
 }
 
-// Function to update the digital clock
+// Update the clock
 function updateClock() {
     const clockElement = document.getElementById('digital-clock');
     const now = new Date();
@@ -217,13 +238,13 @@ function updateClock() {
     clockElement.textContent = `${hours}:${minutes}:${seconds}`;
 }
 
-// Initialize the schedule and update train departures and arrivals every minute
+// Start live updates
 function startLiveUpdates() {
-    trainSchedule = generateTrainSchedule(); // Generate schedule based on current time and days since ANCHOR_DATE
-    updateTrainDeparturesAndArrivals(trainSchedule); // Display the initial trains
-    setInterval(() => updateTrainDeparturesAndArrivals(trainSchedule), REFRESH_INTERVAL); // Update every minute
-    setInterval(updateClock, 1000); // Update the clock every second
+    trainSchedule = generateTrainSchedule();
+    updateTrainDeparturesAndArrivals(trainSchedule);
+    setInterval(() => updateTrainDeparturesAndArrivals(trainSchedule), REFRESH_INTERVAL);
+    setInterval(updateClock, 1000);
 }
 
-// Start live updates when the page loads
+// Start live updates on page load
 document.addEventListener('DOMContentLoaded', startLiveUpdates);
