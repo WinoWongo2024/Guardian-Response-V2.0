@@ -63,7 +63,6 @@ function generateTrainSchedule() {
                     destination: generateRandomDestination(line, daysSinceAnchor),
                     departureTime: departureTime,
                     status: isCancelled ? "cancelled" : "on-time",
-                    stops: generateRandomStops(line),
                     delay: randomFactor % 10, // Generate a random delay in minutes
                     cancelledTime: null, // Track when a train is cancelled
                 });
@@ -72,7 +71,6 @@ function generateTrainSchedule() {
                     origin: generateRandomOrigin(line, daysSinceAnchor), // Add random origins for arrivals
                     arrivalTime: arrivalTime,
                     status: isCancelled ? "cancelled" : "on-time",
-                    stops: generateRandomStops(line),
                     delay: randomFactor % 10, // Generate a random delay in minutes
                     cancelledTime: null, // Track when a train is cancelled
                 });
@@ -121,83 +119,24 @@ function generateRandomOrigin(line, dayFactor) {
     return origins[line][dayFactor % origins[line].length];
 }
 
-// Generate random stops based on the line
-function generateRandomStops(line) {
-    const stops = {
-        bakerloo: ["Paddington", "Oxford Circus", "Piccadilly Circus", "Waterloo", "Lambeth North", "Elephant & Castle"],
-        central: ["Notting Hill Gate", "Marble Arch", "Oxford Circus", "Liverpool Street", "Stratford", "Leyton"],
-        circle: ["Baker Street", "King's Cross", "Farringdon", "Moorgate", "Liverpool Street", "Tower Hill"],
-        district: ["Earl's Court", "West Kensington", "Hammersmith", "Richmond", "Turnham Green", "Acton Town"],
-        hammersmith: ["Paddington", "West Ham", "Whitechapel", "Barking", "Mile End", "Latimer Road"],
-        jubilee: ["Waterloo", "London Bridge", "Canary Wharf", "North Greenwich", "Stratford", "Wembley Park"],
-        metropolitan: ["King's Cross", "Moorgate", "Harrow-on-the-Hill", "Chorleywood", "Rickmansworth", "Amersham"],
-        northern: ["Camden Town", "Kennington", "Clapham Common", "Highgate", "East Finchley", "Tooting Broadway"],
-        piccadilly: ["Knightsbridge", "King's Cross", "Covent Garden", "Leicester Square", "South Kensington", "Heathrow Terminal 5"],
-        victoria: ["Victoria", "Oxford Circus", "Green Park", "Stockwell", "Vauxhall", "Brixton"],
-        waterloo: ["Bank", "Lambeth North", "Waterloo"]
-    };
-    return stops[line];
-}
+// Function to handle train selection (when clicked)
+function handleTrainClick(train) {
+    const detailContainer = document.querySelector('.detail-container');
+    detailContainer.innerHTML = ''; // Clear previous details
 
-// Function to create the detailed view for a selected train
-function createDetailedView(trainDetails) {
     const detailView = document.createElement('div');
     detailView.classList.add('detail-view');
 
     // Add the service status (e.g., "This service is running 7 minutes late.")
     const serviceStatus = document.createElement('div');
     serviceStatus.classList.add('service-status');
-    serviceStatus.textContent = `This service is running ${trainDetails.delay} minutes late.`;
+    serviceStatus.textContent = `This service is running ${train.delay} minutes late.`;
     detailView.appendChild(serviceStatus);
 
-    // Adjust each stop's time based on the delay
-    const stopTimeline = document.createElement('div');
-    stopTimeline.classList.add('stop-timeline');
-
-    trainDetails.stops.forEach(stop => {
-        const stopItem = document.createElement('div');
-        stopItem.classList.add('stop-item');
-        
-        const time = document.createElement('span');
-        time.classList.add('stop-time');
-        
-        // Adjust the stop time by adding the delay
-        const adjustedTime = addMinutesToTime(stop.time, trainDetails.delay);
-        time.textContent = adjustedTime;
-        
-        const stopName = document.createElement('span');
-        stopName.classList.add('stop-name');
-        stopName.textContent = stop.name;
-        
-        const status = document.createElement('span');
-        status.classList.add('stop-status');
-        status.textContent = stop.status; // e.g., "On time" or "Delayed"
-        
-        stopItem.appendChild(time);
-        stopItem.appendChild(stopName);
-        stopItem.appendChild(status);
-        stopTimeline.appendChild(stopItem);
-    });
-
-    detailView.appendChild(stopTimeline);
-    return detailView;
-}
-
-// Function to handle train selection (when clicked)
-function handleTrainClick(train) {
-    const detailContainer = document.querySelector('.detail-container');
-    detailContainer.innerHTML = ''; // Clear previous details
-
-    const trainDetails = {
-        delay: train.delay,  // Delay in minutes
-        stops: train.stops  // Stops for the selected train
-    };
-
-    const detailView = createDetailedView(trainDetails);
     detailContainer.appendChild(detailView);
 }
 
-// Update the train departures and arrivals every minute and limit to 2 trains at a time
+// Update the train departures and arrivals every minute
 function updateTrainDeparturesAndArrivals(schedule) {
     const now = new Date();
     const currentHour = now.getHours();
