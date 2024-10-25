@@ -1,9 +1,3 @@
-/* Importing the Johnston100 font from the specified source */
-@font-face {
-    font-family: 'Johnston100';
-    src: url('https://winowongo2024.github.io/Font/johnson100.otf') format('opentype');
-}
-
 /* General Styles */
 body {
     font-family: 'Johnston100', sans-serif;
@@ -29,89 +23,10 @@ body {
     border-bottom: 5px solid #ffdd00; /* TfL yellow */
 }
 
-/* Logo Styling */
-.nav-brand {
-    display: flex;
-    align-items: center;
-}
-
-.logo {
-    height: 50px;
-    margin-right: 1rem;
-    background-color: transparent; /* Ensure the background is transparent */
-}
-
-.brand-title {
-    font-size: 1.8rem;
-    font-weight: bold;
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-}
-
-.nav-links li {
-    margin: 0 1rem;
-}
-
-.nav-links a {
-    color: white;
-    text-decoration: none;
-    font-size: 1.2rem;
-    transition: color 0.3s;
-}
-
-.nav-links a:hover {
-    color: #ffdd00; /* TfL yellow */
-}
-
-/* Remove default image backgrounds */
-img {
-    background-color: transparent;
-}
-
-/* Header Section */
-.main-header {
-    background-color: #0019a8; /* TfL blue */
-    color: white;
-    padding: 2rem 0;
-    text-align: center;
-    border-bottom: 5px solid #ffdd00; /* TfL yellow */
-}
-
-.main-header h1 {
-    font-size: 3rem;
-    margin: 0;
-    font-weight: bold;
-}
-
-/* Digital Clock Styling */
-.digital-clock {
-    font-family: 'Johnston100', sans-serif;
-    font-size: 4rem;
-    text-align: center;
-    padding: 1.5rem;
-    background-color: #fff;
-    margin-top: 1rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    color: #0019a8; /* TfL blue */
-}
-
-/* Train Lines Section */
-.train-lines {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    grid-gap: 1.5rem;
-    padding: 2rem;
-}
-
 /* Train Line Section Styling */
 .line-section {
-    background-color: white;
+    background-color: white;  /* Resetting to white */
+    border-left-width: 8px;
     border-radius: 8px;
     padding: 2rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -119,116 +34,78 @@ img {
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.line-section:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-}
-
-.line-section h2 {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-    position: relative;
-    padding-left: 10px;
-}
-
 /* Line-Specific Color Themes */
 .bakerloo {
-    border-left: 8px solid #B36305; /* Bakerloo Line Brown */
-    background-color: #B36305;
+    border-left-color: #B36305; /* Bakerloo Line Brown */
 }
 
 .central {
-    border-left: 8px solid #E32017; /* Central Line Red */
-    background-color: #E32017;
+    border-left-color: #E32017; /* Central Line Red */
 }
 
 .circle {
-    border-left: 8px solid #FFD300; /* Circle Line Yellow */
-    background-color: #FFD300;
+    border-left-color: #FFD300; /* Circle Line Yellow */
 }
 
 .district {
-    border-left: 8px solid #00782A; /* District Line Green */
-    background-color: #00782A;
+    border-left-color: #00782A; /* District Line Green */
 }
 
 .hammersmith {
-    border-left: 8px solid #F3A9BB; /* Hammersmith & City Line Pink */
-    background-color: #F3A9BB;
+    border-left-color: #F3A9BB; /* Hammersmith & City Line Pink */
 }
 
 .jubilee {
-    border-left: 8px solid #A0A5A9; /* Jubilee Line Grey */
-    background-color: #A0A5A9;
+    border-left-color: #A0A5A9; /* Jubilee Line Grey */
 }
 
 .metropolitan {
-    border-left: 8px solid #9B0056; /* Metropolitan Line Magenta */
-    background-color: #9B0056;
+    border-left-color: #9B0056; /* Metropolitan Line Magenta */
 }
 
 .northern {
-    border-left: 8px solid #000000; /* Northern Line Black */
-    background-color: #000000;
-    color: #FFFFFF; /* Ensure text is readable on dark background */
+    border-left-color: #000000; /* Northern Line Black */
 }
 
 .piccadilly {
-    border-left: 8px solid #003688; /* Piccadilly Line Blue */
-    background-color: #003688;
+    border-left-color: #003688; /* Piccadilly Line Blue */
 }
 
 .victoria {
-    border-left: 8px solid #0098D4; /* Victoria Line Light Blue */
-    background-color: #0098D4;
+    border-left-color: #0098D4; /* Victoria Line Light Blue */
 }
 
 .waterloo {
-    border-left: 8px solid #95CDBA; /* Waterloo & City Line Turquoise */
-    background-color: #95CDBA;
+    border-left-color: #95CDBA; /* Waterloo & City Line Turquoise */
 }
 
-/* Train List Styles */
-.train-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    font-family: 'Johnston100', sans-serif;
-}
-
-.train-item {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
+/* Scrolling Banner */
+.scrolling-banner {
+    background-color: #ffdd00;
+    color: #0019a8;
     padding: 1rem;
-    background-color: #f9f9f9;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s;
-}
-
-.train-item:hover {
-    background-color: #e6f7ff;
-}
-
-.train-item.cancelled {
-    background-color: #f8d7da; /* Light red for cancelled trains */
-}
-
-.train-destination {
+    text-align: center;
     font-weight: bold;
-    font-size: 1.3rem;
-    color: #0019a8; /* TfL blue */
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
 }
 
-.train-time {
-    font-style: italic;
-    color: #666;
-    margin-top: 0.5rem;
+.scrolling-text {
+    display: inline-block;
+    animation: smoothScroll 10s linear infinite;
 }
 
-/* Detailed View Styling */
+@keyframes smoothScroll {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* Train Details */
 .detail-view {
     background-color: #fff;
     padding: 1.5rem;
@@ -237,7 +114,6 @@ img {
     margin-top: 1rem;
 }
 
-/* Service Status Styling */
 .service-status {
     font-size: 1.2rem;
     font-weight: bold;
@@ -245,72 +121,12 @@ img {
     margin-bottom: 1rem;
 }
 
-/* Scrolling Banners */
-.scrolling-banner,
-.scrolling-banner-delay {
-    background-color: #0019a8;
-    color: #ffdd00;
+.platform-info {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.platform-info span {
     font-weight: bold;
-    padding: 0.8rem;
-    margin-top: 0.8rem;
-    border-radius: 5px;
-}
-
-/* Marquee Text Style */
-.scrolling-banner marquee,
-.scrolling-banner-delay marquee {
-    font-family: 'Johnston100', sans-serif;
-    font-size: 1.1rem;
-    scroll-behavior: smooth;
-}
-
-/* Footer Styles */
-.footer {
-    text-align: center;
-    padding: 2rem;
-    background-color: #0019a8; /* TfL blue */
-    color: white;
-    margin-top: 2rem;
-}
-
-.footer p {
-    margin: 0.5rem 0;
-    font-size: 1rem;
-}
-
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-    .line-section {
-        padding: 1rem;
-    }
-
-    .main-header h1 {
-        font-size: 2rem;
-    }
-
-    .digital-clock {
-        font-size: 3rem;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .main-header h1 {
-        font-size: 1.8rem;
-    }
-
-    .digital-clock {
-        font-size: 2.5rem;
-    }
-
-    .station-filter label {
-        font-size: 1.2rem;
-    }
-
-    .station-filter input {
-        width: 200px;
-    }
-
-    .station-filter button {
-        padding: 0.6rem 1rem;
-    }
 }
