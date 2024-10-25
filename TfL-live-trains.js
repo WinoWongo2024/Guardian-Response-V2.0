@@ -26,42 +26,74 @@ function isAtLeast10MinutesAhead(trainTime, currentTime) {
     return timeDifference >= 10; // Check if the time is at least 10 minutes ahead
 }
 
-// Function to parse train times from strings (e.g., "16:41") and return a Date object for today
+// Function to parse train times from strings (e.g., "05:00") and return a Date object for today
 function parseTrainTime(timeString, currentDate) {
     const [hours, minutes] = timeString.split(':').map(Number);
     return new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), hours, minutes);
 }
 
+// Function to randomly assign a status and potentially adjust time
+function randomizeStatus(train) {
+    const statuses = ["On Time", "Delayed", "Early"];
+    const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+
+    // Randomly adjust the time if the train is Delayed or Early
+    if (randomStatus === "Delayed") {
+        const delayMinutes = Math.floor(Math.random() * 5) + 1; // Delay by 1 to 5 minutes
+        const [hours, minutes] = train.time.split(':').map(Number);
+        const delayedTime = new Date();
+        delayedTime.setHours(hours, minutes + delayMinutes);
+        train.adjusted_time = delayedTime.toTimeString().slice(0, 5); // Format as "HH:MM"
+    } else if (randomStatus === "Early") {
+        const earlyMinutes = Math.floor(Math.random() * 5) + 1; // Early by 1 to 5 minutes
+        const [hours, minutes] = train.time.split(':').map(Number);
+        const earlyTime = new Date();
+        earlyTime.setHours(hours, minutes - earlyMinutes);
+        train.adjusted_time = earlyTime.toTimeString().slice(0, 5); // Format as "HH:MM"
+    }
+
+    train.status = randomStatus;
+}
+
 // Function to filter and render train times
-function renderTrainTimes(container, times, currentTime) {
-    const upcomingTrains = times.filter(time => {
-        const trainTime = parseTrainTime(time, currentTime);
+function renderTrainTimes(container, trains, currentTime) {
+    const upcomingTrains = trains.filter(train => {
+        // Randomize the status and possibly adjust the time
+        randomizeStatus(train);
+
+        const trainTime = train.adjusted_time ? parseTrainTime(train.adjusted_time, currentTime) : parseTrainTime(train.time, currentTime);
         return isAtLeast10MinutesAhead(trainTime, currentTime);
     });
 
     if (upcomingTrains.length === 0) {
         container.innerHTML = '<p>There are no scheduled trains</p>';
     } else {
-        container.innerHTML = upcomingTrains.map(time => `<p>${time}</p>`).join('');
+        container.innerHTML = upcomingTrains.map(train => {
+            const displayTime = train.adjusted_time || train.time;
+            return `<p>${train.station} - ${displayTime} (${train.status})</p>`;
+        }).join('');
     }
 }
 
 // Populate departures and arrivals dynamically based on fetched data and current time
 async function populateTrains() {
     const currentTime = await getCurrentTime(); // Fetch the current internet time
-    const lines = ['bakerloo', 'central', 'circle', 'district', 'hammer+city', 'jubilee', 'metropolitan', 'northern', 'piccadilly', 'victoria', 'waterloo+city'];
+    const lines = ['bakerloo']; // Add more lines as needed, or loop through them dynamically
     
-    // Loop through each line and fetch the corresponding JSON data
     for (const line of lines) {
         const trainData = await fetchTrainData(line);
+        
+        // Assuming it's Monday to Friday for now (you can add logic for other days if needed)
+        const departures = trainData.Bakerloo.MondayToFriday.departures;
+        const arrivals = trainData.Bakerloo.MondayToFriday.arrivals;
         
         // Get the containers for departures and arrivals
         const departureContainer = document.querySelector(`.departure-list[data-line="${line}"]`);
         const arrivalContainer = document.querySelector(`.arrival-list[data-line="${line}"]`);
         
         // Render departures and arrivals, showing "There are no scheduled trains" if empty or not 10 mins ahead
-        renderTrainTimes(departureContainer, trainData.departures, currentTime);
-        renderTrainTimes(arrivalContainer, trainData.arrivals, currentTime);
+        renderTrainTimes(departureContainer, departures, currentTime);
+        renderTrainTimes(arrivalContainer, arrivals, currentTime);
     }
 }
 
