@@ -201,7 +201,7 @@ function updateTrainDeparturesAndArrivals(schedule) {
             trainItem.appendChild(timeElement);
             departureList.appendChild(trainItem);
 
-            trainItem.addEventListener('click', () => handleTrainClick(train));
+            trainItem.addEventListener('click', () => handleTrainClick(train, trainItem));
         });
 
         // Render next 2 arrivals
@@ -228,7 +228,7 @@ function updateTrainDeparturesAndArrivals(schedule) {
             trainItem.appendChild(timeElement);
             arrivalList.appendChild(trainItem);
 
-            trainItem.addEventListener('click', () => handleTrainClick(train));
+            trainItem.addEventListener('click', () => handleTrainClick(train, trainItem));
         });
     }
 }
