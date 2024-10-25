@@ -72,7 +72,6 @@ function generateTrainSchedule() {
                 schedule[line].departures.push({
                     destination: generateRandomDestination(line, daysSinceAnchor),
                     departureTime: addMinutesToTime(departureTime, delay),
-                    originalTime: departureTime,
                     delay,
                     status,
                     platform: generatePlatformNumber(),
@@ -83,7 +82,6 @@ function generateTrainSchedule() {
                 schedule[line].arrivals.push({
                     origin: generateRandomOrigin(line, daysSinceAnchor),
                     arrivalTime: addMinutesToTime(arrivalTime, delay),
-                    originalTime: arrivalTime,
                     delay,
                     status,
                     platform: generatePlatformNumber(),
@@ -136,19 +134,16 @@ function generateRandomOrigin(line, dayFactor) {
 }
 
 // Function to handle train selection (display details)
-function handleTrainClick(train) {
-    const detailContainer = document.querySelector('.detail-container');
-    detailContainer.innerHTML = ''; // Clear previous details
-
-    const detailView = document.createElement('div');
-    detailView.classList.add('detail-view');
+function handleTrainClick(train, trainItem) {
+    const detailContainer = document.createElement('div');
+    detailContainer.classList.add('detail-view');
 
     const serviceStatus = document.createElement('div');
     serviceStatus.classList.add('service-status');
-    if (train.status === "cancelled") {
-        serviceStatus.textContent = `This service is cancelled.`;
-    } else if (train.status === "delayed") {
+    if (train.status === "delayed") {
         serviceStatus.textContent = `This service is delayed by ${train.delay} minutes. Reason: ${train.cause}`;
+    } else if (train.status === "cancelled") {
+        serviceStatus.textContent = `This service is cancelled.`;
     } else {
         serviceStatus.textContent = `This service is on time.`;
     }
@@ -156,16 +151,22 @@ function handleTrainClick(train) {
     const platformInfo = document.createElement('div');
     platformInfo.textContent = `Platform: ${train.platform}`;
 
-    if (train.status !== "cancelled") {
-        const scrollingText = document.createElement('div');
-        scrollingText.classList.add('scrolling-text');
-        scrollingText.innerHTML = `<p>Next stops: ${train.destination} ➔ ${train.platform}</p>`;
-        detailView.appendChild(scrollingText);
+    const stopsBanner = document.createElement('div');
+    stopsBanner.classList.add('scrolling-banner');
+    stopsBanner.textContent = `Stops: ${train.destination} ➡ ${train.origin}`;
+
+    detailContainer.appendChild(serviceStatus);
+    detailContainer.appendChild(platformInfo);
+    detailContainer.appendChild(stopsBanner);
+
+    // Clear existing details first
+    const existingDetail = trainItem.parentNode.querySelector('.detail-view');
+    if (existingDetail) {
+        existingDetail.remove();
     }
 
-    detailView.appendChild(serviceStatus);
-    detailView.appendChild(platformInfo);
-    detailContainer.appendChild(detailView);
+    // Append directly under the clicked train
+    trainItem.insertAdjacentElement('afterend', detailContainer);
 }
 
 // Update train departures and arrivals
@@ -199,13 +200,13 @@ function updateTrainDeparturesAndArrivals(schedule) {
 
             const timeElement = document.createElement('span');
             timeElement.classList.add('train-time');
-            timeElement.textContent = `${train.departureTime} (${train.originalTime})`;
+            timeElement.textContent = `${train.departureTime} (${addMinutesToTime(train.departureTime, -train.delay)})`;
 
             trainItem.appendChild(destinationElement);
             trainItem.appendChild(timeElement);
             departureList.appendChild(trainItem);
 
-            trainItem.addEventListener('click', () => handleTrainClick(train));
+            trainItem.addEventListener('click', () => handleTrainClick(train, trainItem));
         });
 
         // Render next 2 arrivals
@@ -226,13 +227,13 @@ function updateTrainDeparturesAndArrivals(schedule) {
 
             const timeElement = document.createElement('span');
             timeElement.classList.add('train-time');
-            timeElement.textContent = `${train.arrivalTime} (${train.originalTime})`;
+            timeElement.textContent = `${train.arrivalTime} (${addMinutesToTime(train.arrivalTime, -train.delay)})`;
 
             trainItem.appendChild(originElement);
             trainItem.appendChild(timeElement);
             arrivalList.appendChild(trainItem);
 
-            trainItem.addEventListener('click', () => handleTrainClick(train));
+            trainItem.addEventListener('click', () => handleTrainClick(train, trainItem));
         });
     }
 }
