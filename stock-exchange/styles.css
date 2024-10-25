@@ -1,18 +1,16 @@
-/* Basic Reset */
+/* General styling remains unchanged */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* General Body Styling */
 body {
     font-family: Arial, sans-serif;
     color: #333;
     background-color: #f5f7fa;
 }
 
-/* Header Styling */
 header {
     background-color: #2c3e50;
     color: #ecf0f1;
@@ -38,7 +36,6 @@ header .local-time {
     font-size: 0.9rem;
 }
 
-/* Stock Ticker Styling */
 .stock-ticker {
     background-color: #3498db;
     color: #fff;
@@ -75,11 +72,12 @@ header .local-time {
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    height: 300px; /* Fixed height for stock cards */
-    overflow: hidden; /* Hide overflow for consistent card height */
+    height: 300px; /* Fixed height */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow: hidden;
+    position: relative;
 }
 
 .stock-card:hover {
@@ -90,6 +88,11 @@ header .local-time {
     font-size: 1.3rem;
     margin-bottom: 10px;
     color: #2c3e50;
+}
+
+/* Price and Sparkline Styling */
+.stock-info {
+    margin: auto 0;
 }
 
 .stock-info .price {
@@ -103,10 +106,10 @@ header .local-time {
     color: #e74c3c;
 }
 
-/* Restrict Sparkline Size */
+/* Fixed Sparkline Size */
 .stock-info canvas {
     height: 40px;
-    max-width: 100%;
+    width: 100%;
     margin-top: 10px;
 }
 
@@ -128,16 +131,23 @@ button:hover {
 
 /* More Details Section */
 .more-details {
-    display: none;
+    display: none; /* Hidden by default */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f9f9f9;
+    padding: 10px;
     font-size: 0.9rem;
     color: #555;
-    padding-top: 10px;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Restrict Chart Size */
+/* Chart Styling */
 .more-details canvas {
     height: 100px;
     max-width: 100%;
+    margin-top: 10px;
 }
 
 /* Responsive News Section */
@@ -186,7 +196,6 @@ button:hover {
     text-decoration: underline;
 }
 
-/* Footer Styling */
 footer {
     background-color: #2c3e50;
     color: #ecf0f1;
