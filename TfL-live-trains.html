@@ -26,11 +26,6 @@
         <h1>TfL Live Trains – King's Cross Station</h1>
     </header>
 
-    <!-- Digital Clock Display -->
-    <div id="digital-clock" class="digital-clock">
-        00:00:00 <!-- Default value, will be updated by JavaScript -->
-    </div>
-
     <!-- Search Bar or Filter for Stations -->
     <section class="station-filter">
         <label for="station-search">Search Station:</label>
@@ -140,8 +135,15 @@
         </section>
     </div>
 
-    <!-- Service Detail Section -->
-    <div class="detail-container"></div>
+    <!-- Detailed Information Section -->
+    <div id="detail-container" class="detail-container">
+        <!-- The detailed information for selected trains will appear here -->
+        <div class="detail-view">
+            <p class="service-status"></p>
+            <p class="platform-info"></p>
+            <p class="stops"></p>
+        </div>
+    </div>
 
     <!-- Footer Section -->
     <footer class="footer">
@@ -149,7 +151,7 @@
         <p>Website by TfL Dev Team</p>
     </footer>
 
-    <!-- JavaScript to handle live updates -->
+    <!-- Link to JavaScript file -->
     <script src="TfL-live-trains.js"></script>
 </body>
 </html>
