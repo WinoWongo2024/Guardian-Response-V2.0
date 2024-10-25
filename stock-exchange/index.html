@@ -1,1 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Hub - Live Stock Market</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">Financial Hub</div>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Markets</a>
+            <a href="#">News</a>
+            <a href="#">Portfolio</a>
+            <a href="#">Login</a>
+        </nav>
+        <div class="local-time" id="local-time"></div>
+    </header>
 
+    <!-- Main Content -->
+    <main>
+        <!-- Live Stock Ticker -->
+        <div class="stock-ticker">
+            <span id="ticker-AAPL">AAPL <span class="price">---</span> (<span class="percent">---</span>)</span>
+            <span id="ticker-TFL">TFL <span class="price">---</span> (<span class="percent">---</span>)</span>
+            <span id="ticker-LAS">LAS <span class="price">---</span> (<span class="percent">---</span>)</span>
+            <span id="ticker-LFB">LFB <span class="price">---</span> (<span class="percent">---</span>)</span>
+            <span id="ticker-MET">MET <span class="price">---</span> (<span class="percent">---</span>)</span>
+        </div>
+
+        <!-- Stock Cards -->
+        <section class="stock-cards">
+            <!-- AAPL Stock Card -->
+            <div class="stock-card" id="card-AAPL">
+                <h2>AAPL</h2>
+                <div class="stock-info">
+                    <span class="price">---</span>
+                    <span class="change">---</span>
+                    <canvas id="sparkline-AAPL"></canvas>
+                </div>
+                <button onclick="showDetails('AAPL')">More Details</button>
+                <div class="more-details" id="details-AAPL">
+                    <p>Open: <span class="open">---</span></p>
+                    <p>High: <span class="high">---</span></p>
+                    <p>Low: <span class="low">---</span></p>
+                    <p>Close: <span class="close">---</span></p>
+                    <p>Volume: <span class="volume">---</span></p>
+                    <canvas id="chart-AAPL"></canvas>
+                </div>
+            </div>
+
+            <!-- TFL Stock Card -->
+            <div class="stock-card" id="card-TFL">
+                <h2>TFL</h2>
+                <div class="stock-info">
+                    <span class="price">---</span>
+                    <span class="change">---</span>
+                    <canvas id="sparkline-TFL"></canvas>
+                </div>
+                <button onclick="showDetails('TFL')">More Details</button>
+                <div class="more-details" id="details-TFL">
+                    <p>Open: <span class="open">---</span></p>
+                    <p>High: <span class="high">---</span></p>
+                    <p>Low: <span class="low">---</span></p>
+                    <p>Close: <span class="close">---</span></p>
+                    <p>Volume: <span class="volume">---</span></p>
+                    <canvas id="chart-TFL"></canvas>
+                </div>
+            </div>
+
+            <!-- LAS Stock Card -->
+            <div class="stock-card" id="card-LAS">
+                <h2>LAS</h2>
+                <div class="stock-info">
+                    <span class="price">---</span>
+                    <span class="change">---</span>
+                    <canvas id="sparkline-LAS"></canvas>
+                </div>
+                <button onclick="showDetails('LAS')">More Details</button>
+                <div class="more-details" id="details-LAS">
+                    <p>Open: <span class="open">---</span></p>
+                    <p>High: <span class="high">---</span></p>
+                    <p>Low: <span class="low">---</span></p>
+                    <p>Close: <span class="close">---</span></p>
+                    <p>Volume: <span class="volume">---</span></p>
+                    <canvas id="chart-LAS"></canvas>
+                </div>
+            </div>
+
+            <!-- LFB Stock Card -->
+            <div class="stock-card" id="card-LFB">
+                <h2>LFB</h2>
+                <div class="stock-info">
+                    <span class="price">---</span>
+                    <span class="change">---</span>
+                    <canvas id="sparkline-LFB"></canvas>
+                </div>
+                <button onclick="showDetails('LFB')">More Details</button>
+                <div class="more-details" id="details-LFB">
+                    <p>Open: <span class="open">---</span></p>
+                    <p>High: <span class="high">---</span></p>
+                    <p>Low: <span class="low">---</span></p>
+                    <p>Close: <span class="close">---</span></p>
+                    <p>Volume: <span class="volume">---</span></p>
+                    <canvas id="chart-LFB"></canvas>
+                </div>
+            </div>
+
+            <!-- MET Stock Card -->
+            <div class="stock-card" id="card-MET">
+                <h2>MET</h2>
+                <div class="stock-info">
+                    <span class="price">---</span>
+                    <span class="change">---</span>
+                    <canvas id="sparkline-MET"></canvas>
+                </div>
+                <button onclick="showDetails('MET')">More Details</button>
+                <div class="more-details" id="details-MET">
+                    <p>Open: <span class="open">---</span></p>
+                    <p>High: <span class="high">---</span></p>
+                    <p>Low: <span class="low">---</span></p>
+                    <p>Close: <span class="close">---</span></p>
+                    <p>Volume: <span class="volume">---</span></p>
+                    <canvas id="chart-MET"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- News Section -->
+        <section class="news">
+            <h3>Latest News</h3>
+            <div class="news-item" id="news-AAPL">
+                <h4>AAPL News Headline</h4>
+                <p>Short description of AAPL news item.</p>
+                <span class="date">10/25/2024</span>
+                <a href="#" class="read-more">Read More</a>
+            </div>
+            <div class="news-item" id="news-TFL">
+                <h4>TFL News Headline</h4>
+                <p>Short description of TFL news item.</p>
+                <span class="date">10/25/2024</span>
+                <a href="#" class="read-more">Read More</a>
+            </div>
+            <div class="news-item" id="news-LAS">
+                <h4>LAS News Headline</h4>
+                <p>Short description of LAS news item.</p>
+                <span class="date">10/25/2024</span>
+                <a href="#" class="read-more">Read More</a>
+            </div>
+            <div class="news-item" id="news-LFB">
+                <h4>LFB News Headline</h4>
+                <p>Short description of LFB news item.</p>
+                <span class="date">10/25/2024</span>
+                <a href="#" class="read-more">Read More</a>
+            </div>
+            <div class="news-item" id="news-MET">
+                <h4>MET News Headline</h4>
+                <p>Short description of MET news item.</p>
+                <span class="date">10/25/2024</span>
+                <a href="#" class="read-more">Read More</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 Financial Hub. All Rights Reserved.</p>
+        <nav>
+            <a href="#">About Us</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </nav>
+    </footer>
+</body>
+</html>
