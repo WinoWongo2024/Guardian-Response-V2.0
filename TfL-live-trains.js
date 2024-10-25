@@ -72,7 +72,6 @@ function generateTrainSchedule() {
                 schedule[line].departures.push({
                     destination: generateRandomDestination(line, daysSinceAnchor),
                     departureTime: addMinutesToTime(departureTime, delay),
-                    originalDepartureTime: departureTime,
                     delay,
                     status,
                     platform: generatePlatformNumber(),
@@ -84,7 +83,6 @@ function generateTrainSchedule() {
                 schedule[line].arrivals.push({
                     origin: generateRandomOrigin(line, daysSinceAnchor),
                     arrivalTime: addMinutesToTime(arrivalTime, delay),
-                    originalArrivalTime: arrivalTime,
                     delay,
                     status,
                     platform: generatePlatformNumber(),
@@ -137,22 +135,21 @@ function generateRandomOrigin(line, dayFactor) {
     return origins[line][dayFactor % origins[line].length];
 }
 
-// Generate random stops for each line
+// Generate random stops
 function generateRandomStops(line) {
     const stops = {
-        bakerloo: ["Paddington", "Oxford Circus", "Piccadilly Circus", "Waterloo", "Elephant & Castle"],
-        central: ["White City", "Marble Arch", "Oxford Circus", "Liverpool Street", "Epping"],
-        circle: ["King's Cross", "Moorgate", "Liverpool Street", "Monument", "Edgware Road"],
-        district: ["Upminster", "Richmond", "Wimbledon", "Barking", "Ealing Broadway"],
-        hammersmith: ["Barking", "Paddington", "Hammersmith", "Mile End", "Liverpool Street"],
-        jubilee: ["London Bridge", "Canary Wharf", "North Greenwich", "Westminster", "Stanmore"],
-        metropolitan: ["Aldgate", "Baker Street", "Chorleywood", "Uxbridge", "Amersham"],
-        northern: ["Morden", "Camden Town", "Kennington", "Tooting Broadway", "East Finchley"],
-        piccadilly: ["Heathrow", "Covent Garden", "Leicester Square", "South Kensington", "Cockfosters"],
-        victoria: ["Victoria", "Brixton", "King's Cross", "Oxford Circus", "Walthamstow Central"],
-        waterloo: ["Bank", "Waterloo", "Lambeth North"]
+        bakerloo: ["Paddington", "Oxford Circus", "Piccadilly Circus", "Waterloo", "Lambeth North", "Elephant & Castle"],
+        central: ["Notting Hill Gate", "Marble Arch", "Oxford Circus", "Liverpool Street", "Stratford", "Leyton"],
+        circle: ["Baker Street", "King's Cross", "Farringdon", "Moorgate", "Liverpool Street", "Tower Hill"],
+        district: ["Earl's Court", "West Kensington", "Hammersmith", "Richmond", "Turnham Green", "Acton Town"],
+        hammersmith: ["Paddington", "West Ham", "Whitechapel", "Barking", "Mile End", "Latimer Road"],
+        jubilee: ["Waterloo", "London Bridge", "Canary Wharf", "North Greenwich", "Stratford", "Wembley Park"],
+        metropolitan: ["King's Cross", "Moorgate", "Harrow-on-the-Hill", "Chorleywood", "Rickmansworth", "Amersham"],
+        northern: ["Camden Town", "Kennington", "Clapham Common", "Highgate", "East Finchley", "Tooting Broadway"],
+        piccadilly: ["Knightsbridge", "King's Cross", "Covent Garden", "Leicester Square", "South Kensington", "Heathrow Terminal 5"],
+        victoria: ["Victoria", "Oxford Circus", "Green Park", "Stockwell", "Vauxhall", "Brixton"],
+        waterloo: ["Bank", "Lambeth North", "Waterloo"]
     };
-
     return stops[line];
 }
 
@@ -177,17 +174,20 @@ function handleTrainClick(train) {
     const platformInfo = document.createElement('div');
     platformInfo.textContent = `Platform: ${train.platform}`;
 
-    // Append service status and platform info
     detailView.appendChild(serviceStatus);
     detailView.appendChild(platformInfo);
 
-    // Create and append scrolling banners
-    const scrollingBannerStops = createScrollingBanner(train.stops.join(" ➟ "));
-    const scrollingBannerDelay = createScrollingBanner(`This service is delayed by ${train.delay} minutes`);
+    // Create and append the scrolling banners
+    const stopsText = `Next stops: ${train.stops.join(' ➔ ')}`;
+    const delayText = train.status === 'delayed'
+        ? `This service is delayed by ${train.delay} minutes`
+        : `This service is on time`;
 
-    // Append the scrolling banners to the detail view
-    detailView.appendChild(scrollingBannerStops);
-    detailView.appendChild(scrollingBannerDelay);
+    const stopsBanner = createScrollingBanner(stopsText);
+    const delayBanner = createScrollingBanner(delayText);
+
+    detailView.appendChild(stopsBanner);
+    detailView.appendChild(delayBanner);
 
     detailContainer.appendChild(detailView);
 }
@@ -229,11 +229,11 @@ function updateTrainDeparturesAndArrivals(schedule) {
 
             const destinationElement = document.createElement('span');
             destinationElement.classList.add('train-destination');
-            destinationElement.textContent = `${train.destination}`;
+            destinationElement.textContent = train.destination;
 
             const timeElement = document.createElement('span');
             timeElement.classList.add('train-time');
-            timeElement.textContent = `${train.departureTime} (${train.originalDepartureTime})`;
+            timeElement.textContent = `${train.departureTime} (${addMinutesToTime(train.departureTime, -train.delay)})`;
 
             trainItem.appendChild(destinationElement);
             trainItem.appendChild(timeElement);
@@ -256,11 +256,11 @@ function updateTrainDeparturesAndArrivals(schedule) {
 
             const originElement = document.createElement('span');
             originElement.classList.add('train-origin');
-            originElement.textContent = `${train.origin}`;
+            originElement.textContent = train.origin;
 
             const timeElement = document.createElement('span');
             timeElement.classList.add('train-time');
-            timeElement.textContent = `${train.arrivalTime} (${train.originalArrivalTime})`;
+            timeElement.textContent = `${train.arrivalTime} (${addMinutesToTime(train.arrivalTime, -train.delay)})`;
 
             trainItem.appendChild(originElement);
             trainItem.appendChild(timeElement);
