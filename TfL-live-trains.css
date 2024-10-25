@@ -80,19 +80,23 @@ body {
 
 /* Line colors */
 .bakerloo { border-left-color: #b36305; } /* Bakerloo line color */
-.central { border-left-color: #e32017; } /* Central line color */
-.circle { border-left-color: #ffd300; } /* Circle line color */
-.district { border-left-color: #00782a; } /* District line color */
-.hammersmith { border-left-color: #f3a9bb; } /* Hammersmith & City line color */
-.jubilee { border-left-color: #a0a5a9; } /* Jubilee line color */
-.metropolitan { border-left-color: #9b0056; } /* Metropolitan line color */
-.northern { border-left-color: #000000; } /* Northern line color */
-.piccadilly { border-left-color: #003688; } /* Piccadilly line color */
-.victoria { border-left-color: #0098d4; } /* Victoria line color */
-.waterloo { border-left-color: #95cdb8; } /* Waterloo & City line color */
 
-h2, h3 {
-    margin-top: 0;
+/* Styling for departures and arrivals */
+.departure-list, .arrival-list {
+    margin-top: 10px;
+}
+
+.departure-list p, .arrival-list p {
+    margin: 5px 0;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease;
+}
+
+.departure-list p:hover, .arrival-list p:hover {
+    background-color: #e0e0e0;
 }
 
 /* Detail Container */
