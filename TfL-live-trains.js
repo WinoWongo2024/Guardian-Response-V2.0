@@ -72,47 +72,31 @@ function generateTrainSchedule() {
                 schedule[line].departures.push({
                     destination: generateRandomDestination(line, daysSinceAnchor),
                     departureTime: addMinutesToTime(departureTime, delay),
+                    originalDepartureTime: departureTime,
                     delay,
                     status,
                     platform: generatePlatformNumber(),
-                    stops: generateRandomStops(line), // New stops
                     cause: status === "delayed" ? generateDelayCause() : null,
                     cancelledTime: status === "cancelled" ? new Date() : null,
+                    stops: generateRandomStops(line),
                 });
 
                 schedule[line].arrivals.push({
                     origin: generateRandomOrigin(line, daysSinceAnchor),
                     arrivalTime: addMinutesToTime(arrivalTime, delay),
+                    originalArrivalTime: arrivalTime,
                     delay,
                     status,
                     platform: generatePlatformNumber(),
-                    stops: generateRandomStops(line), // New stops
                     cause: status === "delayed" ? generateDelayCause() : null,
                     cancelledTime: status === "cancelled" ? new Date() : null,
+                    stops: generateRandomStops(line),
                 });
             }
         }
     });
 
     return schedule;
-}
-
-// Generate random stops
-function generateRandomStops(line) {
-    const stops = {
-        bakerloo: ["Paddington", "Oxford Circus", "Waterloo", "Lambeth North", "Elephant & Castle"],
-        central: ["White City", "Marble Arch", "Liverpool Street", "Bethnal Green", "Leyton"],
-        circle: ["Aldgate", "Monument", "King's Cross", "Edgware Road", "Paddington"],
-        district: ["Upminster", "Richmond", "Wimbledon", "Barking", "Tower Hill"],
-        hammersmith: ["Barking", "Mile End", "Paddington", "Latimer Road", "Hammersmith"],
-        jubilee: ["Stanmore", "Westminster", "London Bridge", "Wembley Park", "Stratford"],
-        metropolitan: ["Aldgate", "Amersham", "Baker Street", "Uxbridge", "Harrow-on-the-Hill"],
-        northern: ["Morden", "Camden Town", "Kennington", "Tooting Broadway", "East Finchley"],
-        piccadilly: ["Heathrow", "Cockfosters", "Covent Garden", "Leicester Square", "South Kensington"],
-        victoria: ["Brixton", "Victoria", "King's Cross", "Stockwell", "Green Park"],
-        waterloo: ["Bank", "Waterloo", "Lambeth North"]
-    };
-    return stops[line];
 }
 
 // Generate random destinations
@@ -153,58 +137,69 @@ function generateRandomOrigin(line, dayFactor) {
     return origins[line][dayFactor % origins[line].length];
 }
 
+// Generate random stops for each line
+function generateRandomStops(line) {
+    const stops = {
+        bakerloo: ["Paddington", "Oxford Circus", "Piccadilly Circus", "Waterloo", "Elephant & Castle"],
+        central: ["White City", "Marble Arch", "Oxford Circus", "Liverpool Street", "Epping"],
+        circle: ["King's Cross", "Moorgate", "Liverpool Street", "Monument", "Edgware Road"],
+        district: ["Upminster", "Richmond", "Wimbledon", "Barking", "Ealing Broadway"],
+        hammersmith: ["Barking", "Paddington", "Hammersmith", "Mile End", "Liverpool Street"],
+        jubilee: ["London Bridge", "Canary Wharf", "North Greenwich", "Westminster", "Stanmore"],
+        metropolitan: ["Aldgate", "Baker Street", "Chorleywood", "Uxbridge", "Amersham"],
+        northern: ["Morden", "Camden Town", "Kennington", "Tooting Broadway", "East Finchley"],
+        piccadilly: ["Heathrow", "Covent Garden", "Leicester Square", "South Kensington", "Cockfosters"],
+        victoria: ["Victoria", "Brixton", "King's Cross", "Oxford Circus", "Walthamstow Central"],
+        waterloo: ["Bank", "Waterloo", "Lambeth North"]
+    };
+
+    return stops[line];
+}
+
 // Function to handle train selection (display details)
 function handleTrainClick(train) {
     const detailContainer = document.querySelector('.detail-container');
     detailContainer.innerHTML = ''; // Clear previous details
 
-    const trainDetails = {
-        delay: train.delay,
-        stops: train.stops, // Stops for the selected train
-        status: train.status,
-        cause: train.cause
-    };
-
-    const detailView = createDetailedView(trainDetails);
-    detailContainer.appendChild(detailView);
-}
-
-// Create the detailed view for a selected train
-function createDetailedView(trainDetails) {
     const detailView = document.createElement('div');
     detailView.classList.add('detail-view');
 
-    // Add the service status
     const serviceStatus = document.createElement('div');
     serviceStatus.classList.add('service-status');
-    if (trainDetails.status === 'delayed') {
-        serviceStatus.textContent = `This service is delayed by ${trainDetails.delay} minutes. Reason: ${trainDetails.cause}`;
-    } else if (trainDetails.status === 'cancelled') {
+    if (train.status === "delayed") {
+        serviceStatus.textContent = `This service is delayed by ${train.delay} minutes. Reason: ${train.cause}`;
+    } else if (train.status === "cancelled") {
         serviceStatus.textContent = `This service is cancelled.`;
     } else {
         serviceStatus.textContent = `This service is on time.`;
     }
+
+    const platformInfo = document.createElement('div');
+    platformInfo.textContent = `Platform: ${train.platform}`;
+
+    // Append service status and platform info
     detailView.appendChild(serviceStatus);
+    detailView.appendChild(platformInfo);
 
-    // Add scrolling text banner for next stops
-    const stopsBanner = document.createElement('div');
-    stopsBanner.classList.add('scrolling-banner');
-    stopsBanner.innerHTML = `<span>Next Stops: ${trainDetails.stops.join(' → ')}</span>`;
-    detailView.appendChild(stopsBanner);
+    // Create and append scrolling banners
+    const scrollingBannerStops = createScrollingBanner(train.stops.join(" ➟ "));
+    const scrollingBannerDelay = createScrollingBanner(`This service is delayed by ${train.delay} minutes`);
 
-    // Add scrolling text banner for delay information
-    const delayBanner = document.createElement('div');
-    delayBanner.classList.add('scrolling-banner');
-    if (trainDetails.status === 'delayed') {
-        delayBanner.innerHTML = `<span>Delayed by ${trainDetails.delay} minutes</span>`;
-    } else if (trainDetails.status === 'on-time') {
-        delayBanner.innerHTML = `<span>On time</span>`;
-    } else {
-        delayBanner.innerHTML = `<span>Cancelled</span>`;
-    }
-    detailView.appendChild(delayBanner);
+    // Append the scrolling banners to the detail view
+    detailView.appendChild(scrollingBannerStops);
+    detailView.appendChild(scrollingBannerDelay);
 
-    return detailView;
+    detailContainer.appendChild(detailView);
+}
+
+// Function to create a scrolling banner dynamically
+function createScrollingBanner(text) {
+    const scrollingBanner = document.createElement('div');
+    scrollingBanner.classList.add('scrolling-banner');
+    const bannerText = document.createElement('span');
+    bannerText.textContent = text;
+    scrollingBanner.appendChild(bannerText);
+    return scrollingBanner;
 }
 
 // Update train departures and arrivals
@@ -234,11 +229,11 @@ function updateTrainDeparturesAndArrivals(schedule) {
 
             const destinationElement = document.createElement('span');
             destinationElement.classList.add('train-destination');
-            destinationElement.textContent = train.destination;
+            destinationElement.textContent = `${train.destination}`;
 
             const timeElement = document.createElement('span');
             timeElement.classList.add('train-time');
-            timeElement.textContent = `${train.departureTime} (${addMinutesToTime(train.departureTime, -train.delay)})`;
+            timeElement.textContent = `${train.departureTime} (${train.originalDepartureTime})`;
 
             trainItem.appendChild(destinationElement);
             trainItem.appendChild(timeElement);
@@ -261,11 +256,11 @@ function updateTrainDeparturesAndArrivals(schedule) {
 
             const originElement = document.createElement('span');
             originElement.classList.add('train-origin');
-            originElement.textContent = train.origin;
+            originElement.textContent = `${train.origin}`;
 
             const timeElement = document.createElement('span');
             timeElement.classList.add('train-time');
-            timeElement.textContent = `${train.arrivalTime} (${addMinutesToTime(train.arrivalTime, -train.delay)})`;
+            timeElement.textContent = `${train.arrivalTime} (${train.originalArrivalTime})`;
 
             trainItem.appendChild(originElement);
             trainItem.appendChild(timeElement);
