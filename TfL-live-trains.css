@@ -216,61 +216,6 @@ img {
     margin-top: 0.5rem;
 }
 
-/* Detailed View Styling */
-.detail-view {
-    background-color: #fff;
-    padding: 1.5rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 2rem;
-}
-
-.service-status {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #d9534f; /* Red for delays */
-    margin-bottom: 1rem;
-}
-
-/* Timeline Styles */
-.stop-timeline {
-    border-left: 4px solid #0019a8; /* TfL Blue Line */
-    padding-left: 1rem;
-}
-
-.stop-item {
-    position: relative;
-    margin-bottom: 1rem;
-    padding-left: 20px;
-}
-
-.stop-time {
-    font-weight: bold;
-    color: #333;
-    margin-right: 1rem;
-}
-
-.stop-name {
-    font-size: 1rem;
-    color: #0019a8; /* TfL Blue */
-}
-
-.stop-status {
-    font-size: 0.9rem;
-    color: #888;
-}
-
-.stop-item::before {
-    content: ' ';
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 12px;
-    width: 12px;
-    background-color: #0019a8;
-    border-radius: 50%;
-}
-
 /* Footer Styles */
 .footer {
     text-align: center;
