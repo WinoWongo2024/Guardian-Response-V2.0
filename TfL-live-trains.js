@@ -72,23 +72,25 @@ function generateTrainSchedule() {
                 schedule[line].departures.push({
                     destination: generateRandomDestination(line, daysSinceAnchor),
                     departureTime: addMinutesToTime(departureTime, delay),
+                    originalTime: departureTime,
                     delay,
                     status,
                     platform: generatePlatformNumber(),
                     cause: status === "delayed" ? generateDelayCause() : null,
                     cancelledTime: status === "cancelled" ? new Date() : null,
-                    stops: generateRandomStops(line),
+                    stops: generateRandomStops(line)
                 });
 
                 schedule[line].arrivals.push({
                     origin: generateRandomOrigin(line, daysSinceAnchor),
                     arrivalTime: addMinutesToTime(arrivalTime, delay),
+                    originalTime: arrivalTime,
                     delay,
                     status,
                     platform: generatePlatformNumber(),
                     cause: status === "delayed" ? generateDelayCause() : null,
                     cancelledTime: status === "cancelled" ? new Date() : null,
-                    stops: generateRandomStops(line),
+                    stops: generateRandomStops(line)
                 });
             }
         }
@@ -135,7 +137,7 @@ function generateRandomOrigin(line, dayFactor) {
     return origins[line][dayFactor % origins[line].length];
 }
 
-// Generate random stops
+// Generate random stops based on the line
 function generateRandomStops(line) {
     const stops = {
         bakerloo: ["Paddington", "Oxford Circus", "Piccadilly Circus", "Waterloo", "Lambeth North", "Elephant & Castle"],
@@ -191,15 +193,6 @@ function handleTrainClick(train, trainItem) {
     // Insert detailContainer directly after the clicked train item
     trainItem.insertAdjacentElement('afterend', detailContainer);
 }
-// Function to create a scrolling banner dynamically
-function createScrollingBanner(text) {
-    const scrollingBanner = document.createElement('div');
-    scrollingBanner.classList.add('scrolling-banner');
-    const bannerText = document.createElement('span');
-    bannerText.textContent = text;
-    scrollingBanner.appendChild(bannerText);
-    return scrollingBanner;
-}
 
 // Update train departures and arrivals
 function updateTrainDeparturesAndArrivals(schedule) {
@@ -232,13 +225,13 @@ function updateTrainDeparturesAndArrivals(schedule) {
 
             const timeElement = document.createElement('span');
             timeElement.classList.add('train-time');
-            timeElement.textContent = `${train.departureTime} (${addMinutesToTime(train.departureTime, -train.delay)})`;
+            timeElement.textContent = `${train.departureTime} (${train.originalTime})`;
 
             trainItem.appendChild(destinationElement);
             trainItem.appendChild(timeElement);
             departureList.appendChild(trainItem);
 
-            trainItem.addEventListener('click', () => handleTrainClick(train));
+            trainItem.addEventListener('click', () => handleTrainClick(train, trainItem));
         });
 
         // Render next 2 arrivals
@@ -259,13 +252,13 @@ function updateTrainDeparturesAndArrivals(schedule) {
 
             const timeElement = document.createElement('span');
             timeElement.classList.add('train-time');
-            timeElement.textContent = `${train.arrivalTime} (${addMinutesToTime(train.arrivalTime, -train.delay)})`;
+            timeElement.textContent = `${train.arrivalTime} (${train.originalTime})`;
 
             trainItem.appendChild(originElement);
             trainItem.appendChild(timeElement);
             arrivalList.appendChild(trainItem);
 
-            trainItem.addEventListener('click', () => handleTrainClick(train));
+            trainItem.addEventListener('click', () => handleTrainClick(train, trainItem));
         });
     }
 }
