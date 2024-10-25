@@ -78,7 +78,6 @@ function generateTrainSchedule() {
                     platform: generatePlatformNumber(),
                     cause: status === "delayed" ? generateDelayCause() : null,
                     cancelledTime: status === "cancelled" ? new Date() : null,
-                    stops: generateRandomStops(line)
                 });
 
                 schedule[line].arrivals.push({
@@ -90,7 +89,6 @@ function generateTrainSchedule() {
                     platform: generatePlatformNumber(),
                     cause: status === "delayed" ? generateDelayCause() : null,
                     cancelledTime: status === "cancelled" ? new Date() : null,
-                    stops: generateRandomStops(line)
                 });
             }
         }
@@ -137,37 +135,20 @@ function generateRandomOrigin(line, dayFactor) {
     return origins[line][dayFactor % origins[line].length];
 }
 
-// Generate random stops based on the line
-function generateRandomStops(line) {
-    const stops = {
-        bakerloo: ["Paddington", "Oxford Circus", "Piccadilly Circus", "Waterloo", "Lambeth North", "Elephant & Castle"],
-        central: ["Notting Hill Gate", "Marble Arch", "Oxford Circus", "Liverpool Street", "Stratford", "Leyton"],
-        circle: ["Baker Street", "King's Cross", "Farringdon", "Moorgate", "Liverpool Street", "Tower Hill"],
-        district: ["Earl's Court", "West Kensington", "Hammersmith", "Richmond", "Turnham Green", "Acton Town"],
-        hammersmith: ["Paddington", "West Ham", "Whitechapel", "Barking", "Mile End", "Latimer Road"],
-        jubilee: ["Waterloo", "London Bridge", "Canary Wharf", "North Greenwich", "Stratford", "Wembley Park"],
-        metropolitan: ["King's Cross", "Moorgate", "Harrow-on-the-Hill", "Chorleywood", "Rickmansworth", "Amersham"],
-        northern: ["Camden Town", "Kennington", "Clapham Common", "Highgate", "East Finchley", "Tooting Broadway"],
-        piccadilly: ["Knightsbridge", "King's Cross", "Covent Garden", "Leicester Square", "South Kensington", "Heathrow Terminal 5"],
-        victoria: ["Victoria", "Oxford Circus", "Green Park", "Stockwell", "Vauxhall", "Brixton"],
-        waterloo: ["Bank", "Lambeth North", "Waterloo"]
-    };
-    return stops[line];
-}
+// Function to handle train selection (display details)
+function handleTrainClick(train) {
+    const detailContainer = document.querySelector('.detail-container');
+    detailContainer.innerHTML = ''; // Clear previous details
 
-// Function to handle train selection (display details and scrolling banner)
-function handleTrainClick(train, trainItem) {
-    const detailContainer = document.createElement('div');
-    detailContainer.classList.add('detail-view');
-    detailContainer.innerHTML = ''; // Clear previous details inside
+    const detailView = document.createElement('div');
+    detailView.classList.add('detail-view');
 
     const serviceStatus = document.createElement('div');
     serviceStatus.classList.add('service-status');
-
-    if (train.status === "delayed") {
-        serviceStatus.textContent = `This service is delayed by ${train.delay} minutes. Reason: ${train.cause}`;
-    } else if (train.status === "cancelled") {
+    if (train.status === "cancelled") {
         serviceStatus.textContent = `This service is cancelled.`;
+    } else if (train.status === "delayed") {
+        serviceStatus.textContent = `This service is delayed by ${train.delay} minutes. Reason: ${train.cause}`;
     } else {
         serviceStatus.textContent = `This service is on time.`;
     }
@@ -175,23 +156,16 @@ function handleTrainClick(train, trainItem) {
     const platformInfo = document.createElement('div');
     platformInfo.textContent = `Platform: ${train.platform}`;
 
-    // Create scrolling banner for stops
-    const stopScrollBanner = document.createElement('div');
-    stopScrollBanner.classList.add('scrolling-banner');
-    stopScrollBanner.innerHTML = `<marquee>Next Stops: ${train.stops.join(' ➡ ')}</marquee>`;
+    if (train.status !== "cancelled") {
+        const scrollingText = document.createElement('div');
+        scrollingText.classList.add('scrolling-text');
+        scrollingText.innerHTML = `<p>Next stops: ${train.destination} ➔ ${train.platform}</p>`;
+        detailView.appendChild(scrollingText);
+    }
 
-    // Create scrolling banner for delay or early information
-    const delayScrollBanner = document.createElement('div');
-    delayScrollBanner.classList.add('scrolling-banner-delay');
-    delayScrollBanner.innerHTML = `<marquee>This service is ${train.delay >= 0 ? 'delayed' : 'early'} by ${Math.abs(train.delay)} minutes</marquee>`;
-
-    detailContainer.appendChild(serviceStatus);
-    detailContainer.appendChild(platformInfo);
-    detailContainer.appendChild(stopScrollBanner);
-    detailContainer.appendChild(delayScrollBanner);
-
-    // Insert detailContainer directly after the clicked train item
-    trainItem.insertAdjacentElement('afterend', detailContainer);
+    detailView.appendChild(serviceStatus);
+    detailView.appendChild(platformInfo);
+    detailContainer.appendChild(detailView);
 }
 
 // Update train departures and arrivals
@@ -231,7 +205,7 @@ function updateTrainDeparturesAndArrivals(schedule) {
             trainItem.appendChild(timeElement);
             departureList.appendChild(trainItem);
 
-            trainItem.addEventListener('click', () => handleTrainClick(train, trainItem));
+            trainItem.addEventListener('click', () => handleTrainClick(train));
         });
 
         // Render next 2 arrivals
@@ -258,7 +232,7 @@ function updateTrainDeparturesAndArrivals(schedule) {
             trainItem.appendChild(timeElement);
             arrivalList.appendChild(trainItem);
 
-            trainItem.addEventListener('click', () => handleTrainClick(train, trainItem));
+            trainItem.addEventListener('click', () => handleTrainClick(train));
         });
     }
 }
