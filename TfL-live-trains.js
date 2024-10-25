@@ -3,19 +3,30 @@ const baseUrl = 'https://winowongo2024.github.io/Guardian-Response-V2.0/data/';
 
 // Function to fetch JSON data for a specific train line
 async function fetchTrainData(line) {
-    const response = await fetch(`${baseUrl}${line}.json`);
-    const data = await response.json();
-    return data;
+    try {
+        const response = await fetch(`${baseUrl}${line}.json`);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch ${line} data. Status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error(`Error fetching train data for ${line}:`, error);
+        return null;
+    }
 }
 
 // Function to get the current time from the internet (fallback to local time if API fails)
 async function getCurrentTime() {
     try {
         const response = await fetch('https://worldtimeapi.org/api/ip');
+        if (!response.ok) {
+            throw new Error(`Error fetching time: ${response.statusText}`);
+        }
         const data = await response.json();
         return new Date(data.datetime); // Fetches time from the internet
     } catch (error) {
-        console.error('Error fetching internet time, using local time instead', error);
+        console.error('Error fetching internet time, using local time instead:', error.message);
         return new Date(); // Fall back to local time if the API request fails
     }
 }
@@ -57,6 +68,12 @@ function randomizeStatus(train) {
 
 // Function to filter and render train times
 function renderTrainTimes(container, trains, currentTime) {
+    if (!Array.isArray(trains)) {
+        console.error('Train data is not an array:', trains);
+        container.innerHTML = '<p>Error loading train data</p>';
+        return;
+    }
+
     const upcomingTrains = trains.filter(train => {
         // Randomize the status and possibly adjust the time
         randomizeStatus(train);
@@ -78,22 +95,31 @@ function renderTrainTimes(container, trains, currentTime) {
 // Populate departures and arrivals dynamically based on fetched data and current time
 async function populateTrains() {
     const currentTime = await getCurrentTime(); // Fetch the current internet time
-    const lines = ['bakerloo']; // Add more lines as needed, or loop through them dynamically
+    const lines = ['bakerloo']; // Assuming only Bakerloo for now, add more lines as needed
     
     for (const line of lines) {
-        const trainData = await fetchTrainData(line);
-        
-        // Assuming it's Monday to Friday for now (you can add logic for other days if needed)
-        const departures = trainData.Bakerloo.MondayToFriday.departures;
-        const arrivals = trainData.Bakerloo.MondayToFriday.arrivals;
-        
-        // Get the containers for departures and arrivals
-        const departureContainer = document.querySelector(`.departure-list[data-line="${line}"]`);
-        const arrivalContainer = document.querySelector(`.arrival-list[data-line="${line}"]`);
-        
-        // Render departures and arrivals, showing "There are no scheduled trains" if empty or not 10 mins ahead
-        renderTrainTimes(departureContainer, departures, currentTime);
-        renderTrainTimes(arrivalContainer, arrivals, currentTime);
+        try {
+            const trainData = await fetchTrainData(line);
+            
+            // Ensure we have the data for Bakerloo line and MondayToFriday departures
+            const departures = trainData?.Bakerloo?.MondayToFriday?.departures;
+            const arrivals = trainData?.Bakerloo?.MondayToFriday?.arrivals;
+
+            if (!departures) {
+                console.error('No departures found for Bakerloo line.');
+                continue;
+            }
+
+            // Get the containers for departures and arrivals
+            const departureContainer = document.querySelector(`.departure-list[data-line="${line}"]`);
+            const arrivalContainer = document.querySelector(`.arrival-list[data-line="${line}"]`);
+
+            // Render departures and arrivals, showing "There are no scheduled trains" if empty or not 10 mins ahead
+            renderTrainTimes(departureContainer, departures, currentTime);
+            renderTrainTimes(arrivalContainer, arrivals || [], currentTime); // Assuming no arrivals
+        } catch (error) {
+            console.error('Error populating train data:', error);
+        }
     }
 }
 
