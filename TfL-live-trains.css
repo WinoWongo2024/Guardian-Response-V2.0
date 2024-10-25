@@ -134,46 +134,58 @@ img {
 /* Line-Specific Color Themes */
 .bakerloo {
     border-left: 8px solid #B36305; /* Bakerloo Line Brown */
+    background-color: #B36305;
 }
 
 .central {
     border-left: 8px solid #E32017; /* Central Line Red */
+    background-color: #E32017;
 }
 
 .circle {
     border-left: 8px solid #FFD300; /* Circle Line Yellow */
+    background-color: #FFD300;
 }
 
 .district {
     border-left: 8px solid #00782A; /* District Line Green */
+    background-color: #00782A;
 }
 
 .hammersmith {
     border-left: 8px solid #F3A9BB; /* Hammersmith & City Line Pink */
+    background-color: #F3A9BB;
 }
 
 .jubilee {
     border-left: 8px solid #A0A5A9; /* Jubilee Line Grey */
+    background-color: #A0A5A9;
 }
 
 .metropolitan {
     border-left: 8px solid #9B0056; /* Metropolitan Line Magenta */
+    background-color: #9B0056;
 }
 
 .northern {
     border-left: 8px solid #000000; /* Northern Line Black */
+    background-color: #000000;
+    color: #FFFFFF; /* Ensure text is readable on dark background */
 }
 
 .piccadilly {
     border-left: 8px solid #003688; /* Piccadilly Line Blue */
+    background-color: #003688;
 }
 
 .victoria {
     border-left: 8px solid #0098D4; /* Victoria Line Light Blue */
+    background-color: #0098D4;
 }
 
 .waterloo {
     border-left: 8px solid #95CDBA; /* Waterloo & City Line Turquoise */
+    background-color: #95CDBA;
 }
 
 /* Train List Styles */
@@ -236,8 +248,8 @@ img {
 /* Scrolling Banners */
 .scrolling-banner,
 .scrolling-banner-delay {
-    background-color: #ffdd00;
-    color: #0019a8;
+    background-color: #0019a8;
+    color: #ffdd00;
     font-weight: bold;
     padding: 0.8rem;
     margin-top: 0.8rem;
@@ -249,6 +261,7 @@ img {
 .scrolling-banner-delay marquee {
     font-family: 'Johnston100', sans-serif;
     font-size: 1.1rem;
+    scroll-behavior: smooth;
 }
 
 /* Footer Styles */
