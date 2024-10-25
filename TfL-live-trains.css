@@ -1,6 +1,14 @@
-/* General styling */
+/* Define the font globally using @font-face */
+@font-face {
+    font-family: 'Johnston100';
+    src: url('https://winowongo2024.github.io/Font/johnston100.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Apply the font globally to the body */
 body {
-    font-family: 'johnston100', Arial, sans-serif;
+    font-family: 'Johnston100', Arial, sans-serif;
     margin: 0;
     background-color: #f0f0f0;
     color: #333;
@@ -16,6 +24,7 @@ body {
     color: white;
 }
 
+/* Logo and Brand */
 .nav-brand {
     display: flex;
     align-items: center;
@@ -26,6 +35,7 @@ body {
     margin-right: 10px;
 }
 
+/* Navigation Links */
 .nav-links {
     list-style: none;
     display: flex;
@@ -41,12 +51,17 @@ body {
     font-weight: bold;
 }
 
+.nav-links a:hover {
+    color: #ffd300;
+}
+
 /* Header */
 .main-header {
     background-color: #007acc;
     padding: 20px;
     color: white;
     text-align: center;
+    font-family: 'Johnston100', Arial, sans-serif; /* Ensuring header uses the correct font */
 }
 
 /* Station Filter */
@@ -69,34 +84,35 @@ body {
 }
 
 .line-section {
-    background-color: #fff; /* Make the background white */
+    background-color: #fff;
     border-radius: 8px;
     width: 300px;
     padding: 15px;
     margin: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-left: 8px solid; /* Colored line on the left */
+    border-left: 8px solid;
 }
 
 /* Line colors */
-.bakerloo { border-left-color: #b36305; } /* Bakerloo line color */
-.central { border-left-color: #e32017; } /* Central line color */
-.circle { border-left-color: #ffd300; } /* Circle line color */
-.district { border-left-color: #00782a; } /* District line color */
-.hammersmith { border-left-color: #f3a9bb; } /* Hammersmith & City line color */
-.jubilee { border-left-color: #a0a5a9; } /* Jubilee line color */
-.metropolitan { border-left-color: #9b0056; } /* Metropolitan line color */
-.northern { border-left-color: #000000; } /* Northern line color */
-.piccadilly { border-left-color: #003688; } /* Piccadilly line color */
-.victoria { border-left-color: #0098d4; } /* Victoria line color */
-.waterloo { border-left-color: #95cdb8; } /* Waterloo & City line color */
+.bakerloo { border-left-color: #b36305; }
+.central { border-left-color: #e32017; }
+.circle { border-left-color: #ffd300; }
+.district { border-left-color: #00782a; }
+.hammersmith { border-left-color: #f3a9bb; }
+.jubilee { border-left-color: #a0a5a9; }
+.metropolitan { border-left-color: #9b0056; }
+.northern { border-left-color: #000000; }
+.piccadilly { border-left-color: #003688; }
+.victoria { border-left-color: #0098d4; }
+.waterloo { border-left-color: #95cdb8; }
 
 h2, h3 {
     margin-top: 0;
     color: #005daa;
+    font-family: 'Johnston100', Arial, sans-serif; /* Ensuring section headers use the correct font */
 }
 
-/* Styling for departures and arrivals */
+/* Departures and Arrivals */
 .departure-list, .arrival-list {
     margin-top: 10px;
 }
@@ -187,12 +203,7 @@ h2, h3 {
     background-color: #003c7a;
 }
 
-/* Navbar Hover Effects */
-.nav-links a:hover {
-    color: #ffd300;
-}
-
 /* Miscellaneous */
 h2, h3 {
-    font-family: 'johnston100', Arial, sans-serif;
+    font-family: 'Johnston100', Arial, sans-serif; /* Apply font to headers */
 }
