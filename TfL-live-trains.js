@@ -91,6 +91,19 @@ function renderTrainTimes(container, trains, currentTime) {
     }
 }
 
+// Function to set up audio and force it to play every minute
+function playAudioEveryMinute() {
+    const audio = new Audio('/TTS/This_is_a_Bakerloo_Line_train_starting_here_at_El.mp3');
+    
+    // Play audio immediately
+    audio.play();
+
+    // Play audio every minute (60,000 milliseconds)
+    setInterval(() => {
+        audio.play();
+    }, 60000);
+}
+
 // Populate departures and arrivals dynamically based on fetched data and current time
 async function populateTrains() {
     const currentTime = await getCurrentTime(); // Fetch the current internet time
@@ -135,4 +148,7 @@ document.getElementById("resetData").addEventListener("click", function () {
 });
 
 // Call the populate function on page load
-window.onload = populateTrains;
+window.onload = function () {
+    populateTrains();
+    playAudioEveryMinute(); // Start the audio playback every minute
+};
