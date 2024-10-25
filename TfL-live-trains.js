@@ -95,12 +95,16 @@ function renderTrainTimes(container, trains, currentTime) {
 function playAudioEveryMinute() {
     const audio = new Audio('/TTS/This_is_a_Bakerloo_Line_train_starting_here_at_El.mp3');
     
-    // Play audio immediately
-    audio.play();
+    // Check for user interaction or autoplay policies in modern browsers
+    audio.play().catch((error) => {
+        console.log('Audio playback blocked, requiring user interaction', error);
+    });
 
     // Play audio every minute (60,000 milliseconds)
     setInterval(() => {
-        audio.play();
+        audio.play().catch((error) => {
+            console.log('Audio playback blocked again', error);
+        });
     }, 60000);
 }
 
