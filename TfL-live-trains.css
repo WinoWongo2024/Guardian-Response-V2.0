@@ -80,6 +80,21 @@ body {
 
 /* Line colors */
 .bakerloo { border-left-color: #b36305; } /* Bakerloo line color */
+.central { border-left-color: #e32017; } /* Central line color */
+.circle { border-left-color: #ffd300; } /* Circle line color */
+.district { border-left-color: #00782a; } /* District line color */
+.hammersmith { border-left-color: #f3a9bb; } /* Hammersmith & City line color */
+.jubilee { border-left-color: #a0a5a9; } /* Jubilee line color */
+.metropolitan { border-left-color: #9b0056; } /* Metropolitan line color */
+.northern { border-left-color: #000000; } /* Northern line color */
+.piccadilly { border-left-color: #003688; } /* Piccadilly line color */
+.victoria { border-left-color: #0098d4; } /* Victoria line color */
+.waterloo { border-left-color: #95cdb8; } /* Waterloo & City line color */
+
+h2, h3 {
+    margin-top: 0;
+    color: #005daa;
+}
 
 /* Styling for departures and arrivals */
 .departure-list, .arrival-list {
@@ -108,6 +123,12 @@ body {
     color: white;
     padding: 10px;
     display: none;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.detail-view p {
+    margin: 5px 0;
+    font-size: 16px;
 }
 
 /* Footer */
@@ -118,4 +139,60 @@ body {
     color: white;
     font-size: 14px;
     margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .train-lines {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .line-section {
+        width: 90%;
+        margin: 10px 0;
+    }
+}
+
+/* Search Bar */
+.station-filter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.station-filter label {
+    font-weight: bold;
+}
+
+.station-filter input {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 250px;
+}
+
+.station-filter button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #005daa;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.station-filter button:hover {
+    background-color: #003c7a;
+}
+
+/* Navbar Hover Effects */
+.nav-links a:hover {
+    color: #ffd300;
+}
+
+/* Miscellaneous */
+h2, h3 {
+    font-family: 'johnston100', Arial, sans-serif;
 }
