@@ -216,25 +216,25 @@ img {
     margin-top: 0.5rem;
 }
 
-/* Scrolling Banner */
+/* Scrolling Banners */
 .scrolling-banner {
     overflow: hidden;
     white-space: nowrap;
-    width: 100%;
-    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     background-color: #ffdd00;
-    font-size: 1.1rem;
     color: #0019a8;
-    margin-top: 10px;
+    padding: 0.5rem;
+    margin: 1rem 0;
+    border-radius: 5px;
 }
 
 .scrolling-banner span {
     display: inline-block;
-    animation: scroll 10s linear infinite;
+    padding-left: 100%;
+    animation: scrollBanner 15s linear infinite;
 }
 
-/* Keyframes for scrolling */
-@keyframes scroll {
+@keyframes scrollBanner {
     from {
         transform: translateX(100%);
     }
