@@ -8,19 +8,60 @@ async function fetchTrainData(line) {
     return data;
 }
 
-// Populate departures and arrivals dynamically based on fetched data
+// Function to get the current time from the internet (fallback to local time if API fails)
+async function getCurrentTime() {
+    try {
+        const response = await fetch('https://worldtimeapi.org/api/ip');
+        const data = await response.json();
+        return new Date(data.datetime); // Fetches time from the internet
+    } catch (error) {
+        console.error('Error fetching internet time, using local time instead', error);
+        return new Date(); // Fall back to local time if the API request fails
+    }
+}
+
+// Helper function to check if the time is at least 10 minutes ahead of the current time
+function isAtLeast10MinutesAhead(trainTime, currentTime) {
+    const timeDifference = (trainTime - currentTime) / (1000 * 60); // Convert difference to minutes
+    return timeDifference >= 10; // Check if the time is at least 10 minutes ahead
+}
+
+// Function to parse train times from strings (e.g., "16:41") and return a Date object for today
+function parseTrainTime(timeString, currentDate) {
+    const [hours, minutes] = timeString.split(':').map(Number);
+    return new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), hours, minutes);
+}
+
+// Function to filter and render train times
+function renderTrainTimes(container, times, currentTime) {
+    const upcomingTrains = times.filter(time => {
+        const trainTime = parseTrainTime(time, currentTime);
+        return isAtLeast10MinutesAhead(trainTime, currentTime);
+    });
+
+    if (upcomingTrains.length === 0) {
+        container.innerHTML = '<p>There are no scheduled trains</p>';
+    } else {
+        container.innerHTML = upcomingTrains.map(time => `<p>${time}</p>`).join('');
+    }
+}
+
+// Populate departures and arrivals dynamically based on fetched data and current time
 async function populateTrains() {
+    const currentTime = await getCurrentTime(); // Fetch the current internet time
     const lines = ['bakerloo', 'central', 'circle', 'district', 'hammer+city', 'jubilee', 'metropolitan', 'northern', 'piccadilly', 'victoria', 'waterloo+city'];
     
     // Loop through each line and fetch the corresponding JSON data
     for (const line of lines) {
         const trainData = await fetchTrainData(line);
         
-        // Populate departures
-        document.querySelector(`.departure-list[data-line="${line}"]`).innerHTML = trainData.departures.map(time => `<p>${time}</p>`).join('');
+        // Get the containers for departures and arrivals
+        const departureContainer = document.querySelector(`.departure-list[data-line="${line}"]`);
+        const arrivalContainer = document.querySelector(`.arrival-list[data-line="${line}"]`);
         
-        // Populate arrivals
-        document.querySelector(`.arrival-list[data-line="${line}"]`).innerHTML = trainData.arrivals.map(time => `<p>${time}</p>`).join('');
+        // Render departures and arrivals, showing "There are no scheduled trains" if empty or not 10 mins ahead
+        renderTrainTimes(departureContainer, trainData.departures, currentTime);
+        renderTrainTimes(arrivalContainer, trainData.arrivals, currentTime);
     }
 }
 
