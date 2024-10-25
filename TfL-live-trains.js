@@ -153,16 +153,15 @@ function generateRandomStops(line) {
     return stops[line];
 }
 
-// Function to handle train selection (display details)
-function handleTrainClick(train) {
-    const detailContainer = document.querySelector('.detail-container');
-    detailContainer.innerHTML = ''; // Clear previous details
-
-    const detailView = document.createElement('div');
-    detailView.classList.add('detail-view');
+// Function to handle train selection (display details and scrolling banner)
+function handleTrainClick(train, trainItem) {
+    const detailContainer = document.createElement('div');
+    detailContainer.classList.add('detail-view');
+    detailContainer.innerHTML = ''; // Clear previous details inside
 
     const serviceStatus = document.createElement('div');
     serviceStatus.classList.add('service-status');
+
     if (train.status === "delayed") {
         serviceStatus.textContent = `This service is delayed by ${train.delay} minutes. Reason: ${train.cause}`;
     } else if (train.status === "cancelled") {
@@ -174,24 +173,24 @@ function handleTrainClick(train) {
     const platformInfo = document.createElement('div');
     platformInfo.textContent = `Platform: ${train.platform}`;
 
-    detailView.appendChild(serviceStatus);
-    detailView.appendChild(platformInfo);
+    // Create scrolling banner for stops
+    const stopScrollBanner = document.createElement('div');
+    stopScrollBanner.classList.add('scrolling-banner');
+    stopScrollBanner.innerHTML = `<marquee>Next Stops: ${train.stops.join(' ➡ ')}</marquee>`;
 
-    // Create and append the scrolling banners
-    const stopsText = `Next stops: ${train.stops.join(' ➔ ')}`;
-    const delayText = train.status === 'delayed'
-        ? `This service is delayed by ${train.delay} minutes`
-        : `This service is on time`;
+    // Create scrolling banner for delay or early information
+    const delayScrollBanner = document.createElement('div');
+    delayScrollBanner.classList.add('scrolling-banner-delay');
+    delayScrollBanner.innerHTML = `<marquee>This service is ${train.delay >= 0 ? 'delayed' : 'early'} by ${Math.abs(train.delay)} minutes</marquee>`;
 
-    const stopsBanner = createScrollingBanner(stopsText);
-    const delayBanner = createScrollingBanner(delayText);
+    detailContainer.appendChild(serviceStatus);
+    detailContainer.appendChild(platformInfo);
+    detailContainer.appendChild(stopScrollBanner);
+    detailContainer.appendChild(delayScrollBanner);
 
-    detailView.appendChild(stopsBanner);
-    detailView.appendChild(delayBanner);
-
-    detailContainer.appendChild(detailView);
+    // Insert detailContainer directly after the clicked train item
+    trainItem.insertAdjacentElement('afterend', detailContainer);
 }
-
 // Function to create a scrolling banner dynamically
 function createScrollingBanner(text) {
     const scrollingBanner = document.createElement('div');
