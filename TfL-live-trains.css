@@ -1,4 +1,4 @@
-/* Importing the Johnston100 font */
+/* Importing the Johnston100 font from the specified source */
 @font-face {
     font-family: 'Johnston100';
     src: url('https://winowongo2024.github.io/Font/johnson100.otf') format('opentype');
@@ -29,9 +29,16 @@ body {
     border-bottom: 5px solid #ffdd00; /* TfL yellow */
 }
 
+/* Logo Styling */
+.nav-brand {
+    display: flex;
+    align-items: center;
+}
+
 .logo {
     height: 50px;
     margin-right: 1rem;
+    background-color: transparent; /* Ensure the background is transparent */
 }
 
 .brand-title {
@@ -61,13 +68,18 @@ body {
     color: #ffdd00; /* TfL yellow */
 }
 
+/* Remove default image backgrounds */
+img {
+    background-color: transparent;
+}
+
 /* Header Section */
 .main-header {
-    background-color: #0019a8;
+    background-color: #0019a8; /* TfL blue */
     color: white;
     padding: 2rem 0;
     text-align: center;
-    border-bottom: 5px solid #ffdd00;
+    border-bottom: 5px solid #ffdd00; /* TfL yellow */
 }
 
 .main-header h1 {
@@ -76,15 +88,36 @@ body {
     font-weight: bold;
 }
 
-/* Digital Clock Styling */
-.digital-clock {
-    font-size: 4rem;
+/* Station Search Styles */
+.station-filter {
+    padding: 1rem;
     text-align: center;
-    padding: 1.5rem;
-    background-color: #fff;
-    margin-top: 1rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+}
+
+.station-filter label {
+    font-size: 1.5rem;
+    margin-right: 10px;
+}
+
+.station-filter input {
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    width: 300px;
+}
+
+.station-filter button {
+    padding: 0.7rem 1.2rem;
+    background-color: #0019a8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin-left: 10px;
+}
+
+.station-filter button:hover {
+    background-color: #ffdd00; /* TfL yellow */
     color: #0019a8;
 }
 
@@ -96,14 +129,14 @@ body {
     padding: 2rem;
 }
 
-/* Train Line Section Styling */
+/* Line Section Styling */
 .line-section {
     background-color: white;
     border-radius: 8px;
     padding: 2rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
     position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .line-section:hover {
@@ -114,6 +147,7 @@ body {
 .line-section h2 {
     font-size: 2rem;
     margin-bottom: 1.5rem;
+    position: relative;
     padding-left: 10px;
 }
 
@@ -167,26 +201,23 @@ body {
     list-style: none;
     padding: 0;
     margin: 0;
+    font-family: 'Johnston100', sans-serif;
 }
 
 .train-item {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
+    margin-bottom: 0.5rem;
     padding: 1rem;
     background-color: #f9f9f9;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s;
-    margin-bottom: 0.5rem;
 }
 
 .train-item:hover {
     background-color: #e6f7ff;
-}
-
-.train-item.delayed {
-    background-color: #fff4e5; /* Light orange for delayed trains */
 }
 
 .train-item.cancelled {
@@ -202,58 +233,63 @@ body {
 .train-time {
     font-style: italic;
     color: #666;
+    margin-top: 0.5rem;
 }
 
-/* Service Detail Section */
-.detail-view {
-    padding: 1rem;
+/* Detail Container */
+.detail-container {
     margin-top: 1rem;
-    background-color: #f9f9f9;
+    padding: 1rem;
+    background-color: #fff;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.detail-view {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .service-status {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-}
-
-.service-status.cancelled {
-    color: #dc3545; /* Bootstrap red for cancelled */
-}
-
-.service-status.delayed {
-    color: #ffc107; /* Bootstrap yellow for delayed */
-}
-
-.stop-banner {
-    background-color: #ffdd00; /* TfL yellow */
-    padding: 0.5rem;
-    border-radius: 5px;
-    margin-top: 0.5rem;
-    color: black;
-    display: inline-block;
     font-weight: bold;
+    font-size: 1.1rem;
 }
 
-.stop-banner-text {
+.platform-info, .stops {
+    font-size: 1rem;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
     display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    animation: move-text 15s linear infinite;
+    background-color: #ffdd00; /* TfL yellow */
+    color: black;
 }
 
-@keyframes move-text {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
+.stops span {
+    display: inline;
+    font-size: 1rem;
+}
+
+/* Status-specific Colors */
+.on-time {
+    border-left: 8px solid #4caf50; /* Green for on-time trains */
+}
+
+.delayed {
+    border-left: 8px solid #ff9800; /* Orange for delayed trains */
+}
+
+.cancelled {
+    border-left: 8px solid #f44336; /* Red for cancelled trains */
 }
 
 /* Footer Styles */
 .footer {
     text-align: center;
     padding: 2rem;
-    background-color: #0019a8;
+    background-color: #0019a8; /* TfL blue */
     color: white;
     margin-top: 2rem;
 }
@@ -272,19 +308,11 @@ body {
     .main-header h1 {
         font-size: 2rem;
     }
-
-    .digital-clock {
-        font-size: 3rem;
-    }
 }
 
 @media screen and (max-width: 480px) {
     .main-header h1 {
         font-size: 1.8rem;
-    }
-
-    .digital-clock {
-        font-size: 2.5rem;
     }
 
     .station-filter label {
