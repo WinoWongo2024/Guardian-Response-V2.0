@@ -13,8 +13,7 @@ function getCurrentTime() {
     const now = new Date();
     const hours = now.getHours().toString().padStart(2, '0');
     const minutes = now.getMinutes().toString().padStart(2, '0');
-    const seconds = now.getSeconds().toString().padStart(2, '0');
-    return `${hours}:${minutes}:${seconds}`;
+    return `${hours}:${minutes}`;
 }
 
 // Add minutes to time in HH:MM format
@@ -76,6 +75,7 @@ function generateTrainSchedule() {
                     delay,
                     status,
                     platform: generatePlatformNumber(),
+                    stops: generateRandomStops(line), // New stops
                     cause: status === "delayed" ? generateDelayCause() : null,
                     cancelledTime: status === "cancelled" ? new Date() : null,
                 });
@@ -86,6 +86,7 @@ function generateTrainSchedule() {
                     delay,
                     status,
                     platform: generatePlatformNumber(),
+                    stops: generateRandomStops(line), // New stops
                     cause: status === "delayed" ? generateDelayCause() : null,
                     cancelledTime: status === "cancelled" ? new Date() : null,
                 });
@@ -94,6 +95,24 @@ function generateTrainSchedule() {
     });
 
     return schedule;
+}
+
+// Generate random stops
+function generateRandomStops(line) {
+    const stops = {
+        bakerloo: ["Paddington", "Oxford Circus", "Waterloo", "Lambeth North", "Elephant & Castle"],
+        central: ["White City", "Marble Arch", "Liverpool Street", "Bethnal Green", "Leyton"],
+        circle: ["Aldgate", "Monument", "King's Cross", "Edgware Road", "Paddington"],
+        district: ["Upminster", "Richmond", "Wimbledon", "Barking", "Tower Hill"],
+        hammersmith: ["Barking", "Mile End", "Paddington", "Latimer Road", "Hammersmith"],
+        jubilee: ["Stanmore", "Westminster", "London Bridge", "Wembley Park", "Stratford"],
+        metropolitan: ["Aldgate", "Amersham", "Baker Street", "Uxbridge", "Harrow-on-the-Hill"],
+        northern: ["Morden", "Camden Town", "Kennington", "Tooting Broadway", "East Finchley"],
+        piccadilly: ["Heathrow", "Cockfosters", "Covent Garden", "Leicester Square", "South Kensington"],
+        victoria: ["Brixton", "Victoria", "King's Cross", "Stockwell", "Green Park"],
+        waterloo: ["Bank", "Waterloo", "Lambeth North"]
+    };
+    return stops[line];
 }
 
 // Generate random destinations
@@ -139,25 +158,53 @@ function handleTrainClick(train) {
     const detailContainer = document.querySelector('.detail-container');
     detailContainer.innerHTML = ''; // Clear previous details
 
+    const trainDetails = {
+        delay: train.delay,
+        stops: train.stops, // Stops for the selected train
+        status: train.status,
+        cause: train.cause
+    };
+
+    const detailView = createDetailedView(trainDetails);
+    detailContainer.appendChild(detailView);
+}
+
+// Create the detailed view for a selected train
+function createDetailedView(trainDetails) {
     const detailView = document.createElement('div');
     detailView.classList.add('detail-view');
 
+    // Add the service status
     const serviceStatus = document.createElement('div');
     serviceStatus.classList.add('service-status');
-    if (train.status === "delayed") {
-        serviceStatus.textContent = `This service is delayed by ${train.delay} minutes. Reason: ${train.cause}`;
-    } else if (train.status === "cancelled") {
+    if (trainDetails.status === 'delayed') {
+        serviceStatus.textContent = `This service is delayed by ${trainDetails.delay} minutes. Reason: ${trainDetails.cause}`;
+    } else if (trainDetails.status === 'cancelled') {
         serviceStatus.textContent = `This service is cancelled.`;
     } else {
         serviceStatus.textContent = `This service is on time.`;
     }
-
-    const platformInfo = document.createElement('div');
-    platformInfo.textContent = `Platform: ${train.platform}`;
-
     detailView.appendChild(serviceStatus);
-    detailView.appendChild(platformInfo);
-    detailContainer.appendChild(detailView);
+
+    // Add scrolling text banner for next stops
+    const stopsBanner = document.createElement('div');
+    stopsBanner.classList.add('scrolling-banner');
+    stopsBanner.innerHTML = `<span>Next Stops: ${trainDetails.stops.join(' → ')}</span>`;
+    detailView.appendChild(stopsBanner);
+
+    // Add scrolling text banner for delay information
+    const delayBanner = document.createElement('div');
+    delayBanner.classList.add('scrolling-banner');
+    if (trainDetails.status === 'delayed') {
+        delayBanner.innerHTML = `<span>Delayed by ${trainDetails.delay} minutes</span>`;
+    } else if (trainDetails.status === 'on-time') {
+        delayBanner.innerHTML = `<span>On time</span>`;
+    } else {
+        delayBanner.innerHTML = `<span>Cancelled</span>`;
+    }
+    detailView.appendChild(delayBanner);
+
+    return detailView;
 }
 
 // Update train departures and arrivals
@@ -232,7 +279,11 @@ function updateTrainDeparturesAndArrivals(schedule) {
 // Update the clock
 function updateClock() {
     const clockElement = document.getElementById('digital-clock');
-    clockElement.textContent = getCurrentTime(); // Update every second
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    clockElement.textContent = `${hours}:${minutes}:${seconds}`;
 }
 
 // Start live updates
@@ -240,7 +291,7 @@ function startLiveUpdates() {
     trainSchedule = generateTrainSchedule();
     updateTrainDeparturesAndArrivals(trainSchedule);
     setInterval(() => updateTrainDeparturesAndArrivals(trainSchedule), REFRESH_INTERVAL);
-    setInterval(updateClock, 1000); // Update clock every second
+    setInterval(updateClock, 1000);
 }
 
 // Start live updates on page load
