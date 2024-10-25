@@ -2,100 +2,58 @@
   "Bakerloo": {
     "MondayToFriday": {
       "departures": [
-        {
-          "station": "Elephant & Castle",
-          "time": "05:00",
-          "status": "On Time"
-        },
-        {
-          "station": "Lambeth North",
-          "time": "05:15",
-          "status": "Delayed",
-          "adjusted_time": "05:17"
-        },
-        {
-          "station": "Waterloo",
-          "time": "05:30",
-          "status": "Early",
-          "adjusted_time": "05:29"
-        },
-        {
-          "station": "Oxford Circus",
-          "time": "05:45",
-          "status": "On Time"
-        },
-        {
-          "station": "Paddington",
-          "time": "06:00",
-          "status": "Delayed",
-          "adjusted_time": "06:03"
-        },
-        {
-          "station": "Regent's Park",
-          "time": "06:15",
-          "status": "Early",
-          "adjusted_time": "06:13"
-        },
-        {
-          "station": "Baker Street",
-          "time": "06:30",
-          "status": "On Time"
-        },
-        {
-          "station": "Edgware Road",
-          "time": "06:45",
-          "status": "Delayed",
-          "adjusted_time": "06:48"
-        }
-        // Continue for each interval
-      ],
-      "arrivals": [
-        {
-          "station": "Elephant & Castle",
-          "time": "05:02",
-          "status": "On Time"
-        },
-        {
-          "station": "Lambeth North",
-          "time": "05:17",
-          "status": "Delayed",
-          "adjusted_time": "05:19"
-        },
-        {
-          "station": "Waterloo",
-          "time": "05:32",
-          "status": "Early",
-          "adjusted_time": "05:31"
-        },
-        {
-          "station": "Oxford Circus",
-          "time": "05:47",
-          "status": "On Time"
-        },
-        {
-          "station": "Paddington",
-          "time": "06:02",
-          "status": "Delayed",
-          "adjusted_time": "06:04"
-        },
-        {
-          "station": "Regent's Park",
-          "time": "06:17",
-          "status": "Early",
-          "adjusted_time": "06:15"
-        },
-        {
-          "station": "Baker Street",
-          "time": "06:32",
-          "status": "On Time"
-        },
-        {
-          "station": "Edgware Road",
-          "time": "06:47",
-          "status": "Delayed",
-          "adjusted_time": "06:49"
-        }
-        // Continue for each interval
+        { "station": "Elephant & Castle", "time": "05:00", "status": "On Time" },
+        { "station": "Lambeth North", "time": "05:15", "status": "Delayed", "adjusted_time": "05:17" },
+        { "station": "Waterloo", "time": "05:30", "status": "Early", "adjusted_time": "05:29" },
+        { "station": "Oxford Circus", "time": "05:45", "status": "On Time" },
+        { "station": "Paddington", "time": "06:00", "status": "Delayed", "adjusted_time": "06:03" },
+        { "station": "Regent's Park", "time": "06:15", "status": "Early", "adjusted_time": "06:13" },
+        { "station": "Baker Street", "time": "06:30", "status": "On Time" },
+        { "station": "Edgware Road", "time": "06:45", "status": "Delayed", "adjusted_time": "06:48" },
+        { "station": "Warwick Avenue", "time": "07:00", "status": "On Time" },
+        { "station": "Maida Vale", "time": "07:15", "status": "Delayed", "adjusted_time": "07:18" },
+        { "station": "Kilburn Park", "time": "07:30", "status": "On Time" },
+        { "station": "Queen's Park", "time": "07:45", "status": "Early", "adjusted_time": "07:43" },
+        { "station": "Elephant & Castle", "time": "08:00", "status": "On Time" },
+        { "station": "Lambeth North", "time": "08:15", "status": "Delayed", "adjusted_time": "08:18" },
+        { "station": "Waterloo", "time": "08:30", "status": "Early", "adjusted_time": "08:29" },
+        { "station": "Oxford Circus", "time": "08:45", "status": "On Time" },
+        { "station": "Paddington", "time": "09:00", "status": "Delayed", "adjusted_time": "09:03" },
+        { "station": "Regent's Park", "time": "09:15", "status": "Early", "adjusted_time": "09:13" },
+        { "station": "Baker Street", "time": "09:30", "status": "On Time" },
+        { "station": "Edgware Road", "time": "09:45", "status": "Delayed", "adjusted_time": "09:47" },
+        { "station": "Warwick Avenue", "time": "10:00", "status": "On Time" },
+        { "station": "Maida Vale", "time": "10:15", "status": "Delayed", "adjusted_time": "10:18" },
+        { "station": "Kilburn Park", "time": "10:30", "status": "On Time" },
+        { "station": "Queen's Park", "time": "10:45", "status": "Early", "adjusted_time": "10:44" },
+        { "station": "Elephant & Castle", "time": "11:00", "status": "On Time" },
+        { "station": "Lambeth North", "time": "11:15", "status": "Delayed", "adjusted_time": "11:17" },
+        { "station": "Waterloo", "time": "11:30", "status": "Early", "adjusted_time": "11:29" },
+        { "station": "Oxford Circus", "time": "11:45", "status": "On Time" },
+        { "station": "Paddington", "time": "12:00", "status": "Delayed", "adjusted_time": "12:03" },
+        { "station": "Regent's Park", "time": "12:15", "status": "Early", "adjusted_time": "12:13" },
+        { "station": "Baker Street", "time": "12:30", "status": "On Time" },
+        { "station": "Edgware Road", "time": "12:45", "status": "Delayed", "adjusted_time": "12:47" },
+        { "station": "Warwick Avenue", "time": "13:00", "status": "On Time" },
+        { "station": "Maida Vale", "time": "13:15", "status": "Delayed", "adjusted_time": "13:18" },
+        { "station": "Kilburn Park", "time": "13:30", "status": "On Time" },
+        { "station": "Queen's Park", "time": "13:45", "status": "Early", "adjusted_time": "13:43" },
+        { "station": "Elephant & Castle", "time": "14:00", "status": "On Time" },
+        { "station": "Lambeth North", "time": "14:15", "status": "Delayed", "adjusted_time": "14:18" },
+        { "station": "Waterloo", "time": "14:30", "status": "Early", "adjusted_time": "14:29" },
+        { "station": "Oxford Circus", "time": "14:45", "status": "On Time" },
+        { "station": "Paddington", "time": "15:00", "status": "Delayed", "adjusted_time": "15:03" },
+        { "station": "Regent's Park", "time": "15:15", "status": "Early", "adjusted_time": "15:13" },
+        { "station": "Baker Street", "time": "15:30", "status": "On Time" },
+        { "station": "Edgware Road", "time": "15:45", "status": "Delayed", "adjusted_time": "15:48" },
+        { "station": "Warwick Avenue", "time": "16:00", "status": "On Time" },
+        { "station": "Maida Vale", "time": "16:15", "status": "Delayed", "adjusted_time": "16:18" },
+        { "station": "Kilburn Park", "time": "16:30", "status": "On Time" },
+        { "station": "Queen's Park", "time": "16:45", "status": "Early", "adjusted_time": "16:43" },
+        { "station": "Elephant & Castle", "time": "17:00", "status": "On Time" },
+        { "station": "Lambeth North", "time": "17:15", "status": "Delayed", "adjusted_time": "17:17" },
+        { "station": "Waterloo", "time": "17:30", "status": "Early", "adjusted_time": "17:29" },
+        { "station": "Oxford Circus", "time": "17:45", "status": "On Time" }
       ]
     }
   }
