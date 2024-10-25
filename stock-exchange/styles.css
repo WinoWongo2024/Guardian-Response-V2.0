@@ -1,16 +1,18 @@
-/* General styling remains unchanged */
+/* Basic Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* General Body Styling */
 body {
     font-family: Arial, sans-serif;
     color: #333;
     background-color: #f5f7fa;
 }
 
+/* Header Styling */
 header {
     background-color: #2c3e50;
     color: #ecf0f1;
@@ -36,6 +38,7 @@ header .local-time {
     font-size: 0.9rem;
 }
 
+/* Stock Ticker Styling */
 .stock-ticker {
     background-color: #3498db;
     color: #fff;
@@ -72,10 +75,10 @@ header .local-time {
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    height: 300px; /* Fixed height */
+    height: 300px; /* Fixed height for stock cards */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-between; /* Ensures content is spaced evenly */
     overflow: hidden;
     position: relative;
 }
@@ -84,33 +87,32 @@ header .local-time {
     transform: translateY(-5px);
 }
 
-.stock-card h2 {
-    font-size: 1.3rem;
-    margin-bottom: 10px;
-    color: #2c3e50;
-}
-
-/* Price and Sparkline Styling */
+/* Stock Info */
 .stock-info {
-    margin: auto 0;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Ensures the stock info section grows proportionally */
+    justify-content: center; /* Centers the price and graph */
 }
 
 .stock-info .price {
     font-size: 1.5rem;
     font-weight: bold;
     color: #27ae60;
-    margin: 5px 0;
+    margin-bottom: 10px;
 }
 
 .stock-info .change {
     color: #e74c3c;
 }
 
-/* Fixed Sparkline Size */
+/* Ensure Sparkline is Visible */
 .stock-info canvas {
-    height: 40px;
+    height: 40px; /* Fixed height for the graph */
     width: 100%;
+    flex-grow: 0; /* Prevents the chart from being pushed out of view */
     margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 /* Button Styling */
@@ -196,6 +198,7 @@ button:hover {
     text-decoration: underline;
 }
 
+/* Footer Styling */
 footer {
     background-color: #2c3e50;
     color: #ecf0f1;
