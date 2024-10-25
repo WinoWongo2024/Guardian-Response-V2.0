@@ -65,8 +65,7 @@
         { "station": "Warwick Avenue", "time": "20:00", "status": "On Time" },
         { "station": "Maida Vale", "time": "20:15", "status": "Delayed", "adjusted_time": "20:17" },
         { "station": "Kilburn Park", "time": "20:30", "status": "On Time" },
-        { "station": "Queen's Park", "time": "20:45", "status": "Early",```json
-        { "adjusted_time": "20:43" },
+        { "station": "Queen's Park", "time": "20:45", "status": "Early", "adjusted_time": "20:43" },
         { "station": "Elephant & Castle", "time": "21:00", "status": "On Time" },
         { "station": "Lambeth North", "time": "21:15", "status": "Delayed", "adjusted_time": "21:17" },
         { "station": "Waterloo", "time": "21:30", "status": "Early", "adjusted_time": "21:28" },
