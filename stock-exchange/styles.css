@@ -75,6 +75,11 @@ header .local-time {
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
+    height: 300px; /* Fixed height for stock cards */
+    overflow: hidden; /* Hide overflow for consistent card height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .stock-card:hover {
@@ -98,12 +103,14 @@ header .local-time {
     color: #e74c3c;
 }
 
+/* Restrict Sparkline Size */
 .stock-info canvas {
+    height: 40px;
+    max-width: 100%;
     margin-top: 10px;
-    height: 50px;
-    width: 100%;
 }
 
+/* Button Styling */
 button {
     margin-top: 10px;
     padding: 8px 15px;
@@ -122,14 +129,15 @@ button:hover {
 /* More Details Section */
 .more-details {
     display: none;
-    text-align: left;
-    margin-top: 10px;
     font-size: 0.9rem;
     color: #555;
+    padding-top: 10px;
 }
 
-.more-details p {
-    margin: 5px 0;
+/* Restrict Chart Size */
+.more-details canvas {
+    height: 100px;
+    max-width: 100%;
 }
 
 /* Responsive News Section */
