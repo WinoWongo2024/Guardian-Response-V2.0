@@ -69,26 +69,27 @@ body {
 }
 
 .line-section {
-    background-color: #fff;
+    background-color: #fff; /* Make the background white */
     border-radius: 8px;
     width: 300px;
     padding: 15px;
     margin: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-left: 8px solid; /* Colored line on the left */
 }
 
-/* Each line color */
-.bakerloo { background-color: #b36305; color: white; }
-.central { background-color: #e32017; color: white; }
-.circle { background-color: #ffd300; color: #333; }
-.district { background-color: #00782a; color: white; }
-.hammersmith { background-color: #f3a9bb; color: #333; }
-.jubilee { background-color: #a0a5a9; color: white; }
-.metropolitan { background-color: #9b0056; color: white; }
-.northern { background-color: #000000; color: white; }
-.piccadilly { background-color: #003688; color: white; }
-.victoria { background-color: #0098d4; color: white; }
-.waterloo { background-color: #95cdb8; color: #333; }
+/* Line colors */
+.bakerloo { border-left-color: #b36305; } /* Bakerloo line color */
+.central { border-left-color: #e32017; } /* Central line color */
+.circle { border-left-color: #ffd300; } /* Circle line color */
+.district { border-left-color: #00782a; } /* District line color */
+.hammersmith { border-left-color: #f3a9bb; } /* Hammersmith & City line color */
+.jubilee { border-left-color: #a0a5a9; } /* Jubilee line color */
+.metropolitan { border-left-color: #9b0056; } /* Metropolitan line color */
+.northern { border-left-color: #000000; } /* Northern line color */
+.piccadilly { border-left-color: #003688; } /* Piccadilly line color */
+.victoria { border-left-color: #0098d4; } /* Victoria line color */
+.waterloo { border-left-color: #95cdb8; } /* Waterloo & City line color */
 
 h2, h3 {
     margin-top: 0;
