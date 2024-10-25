@@ -31,10 +31,10 @@ async function getCurrentTime() {
     }
 }
 
-// Helper function to check if the time is at least 10 minutes ahead of the current time
-function isAtLeast10MinutesAhead(trainTime, currentTime) {
+// Function to check if the train time is within a window (e.g., within the next 60 minutes)
+function isWithinTimeWindow(trainTime, currentTime, windowInMinutes = 60) {
     const timeDifference = (trainTime - currentTime) / (1000 * 60); // Convert difference to minutes
-    return timeDifference >= 10; // Check if the time is at least 10 minutes ahead
+    return timeDifference >= 0 && timeDifference <= windowInMinutes; // Show trains within the next 'windowInMinutes'
 }
 
 // Function to parse train times from strings (e.g., "05:00") and return a Date object for today
@@ -74,12 +74,13 @@ function renderTrainTimes(container, trains, currentTime) {
         return;
     }
 
+    // Adjust the time window to display trains within the next 60 minutes
     const upcomingTrains = trains.filter(train => {
         // Randomize the status and possibly adjust the time
         randomizeStatus(train);
 
         const trainTime = train.adjusted_time ? parseTrainTime(train.adjusted_time, currentTime) : parseTrainTime(train.time, currentTime);
-        return isAtLeast10MinutesAhead(trainTime, currentTime);
+        return isWithinTimeWindow(trainTime, currentTime, 60); // Show trains within the next 60 minutes
     });
 
     if (upcomingTrains.length === 0) {
@@ -114,7 +115,7 @@ async function populateTrains() {
             const departureContainer = document.querySelector(`.departure-list[data-line="${line}"]`);
             const arrivalContainer = document.querySelector(`.arrival-list[data-line="${line}"]`);
 
-            // Render departures and arrivals, showing "There are no scheduled trains" if empty or not 10 mins ahead
+            // Render departures and arrivals, showing "There are no scheduled trains" if empty or not within the time window
             renderTrainTimes(departureContainer, departures, currentTime);
             renderTrainTimes(arrivalContainer, arrivals || [], currentTime); // Assuming no arrivals
         } catch (error) {
@@ -122,42 +123,6 @@ async function populateTrains() {
         }
     }
 }
-
-// Show detailed information when clicking on a train service
-document.querySelectorAll(".departure-list, .arrival-list").forEach(element => {
-    element.addEventListener("click", function() {
-        const detailContainer = document.getElementById("detail-container");
-        detailContainer.style.display = "block";
-        
-        // Dummy detailed info (replace with real data if available)
-        document.querySelector(".service-status").textContent = "On Time";
-        document.querySelector(".platform-info").textContent = "Platform 3";
-        document.querySelector(".stops").textContent = "Stops at: Paddington, Oxford Circus, Bank, King's Cross";
-    });
-});
-
-// Hide the detail container when clicking outside
-document.addEventListener("click", function(event) {
-    const detailContainer = document.getElementById("detail-container");
-    if (!detailContainer.contains(event.target) && !event.target.classList.contains("departure-list") && !event.target.classList.contains("arrival-list")) {
-        detailContainer.style.display = "none";
-    }
-});
-
-// Search functionality for stations
-document.getElementById("search-btn").addEventListener("click", function() {
-    const searchTerm = document.getElementById("station-search").value.toLowerCase();
-    const lines = document.querySelectorAll(".line-section");
-
-    lines.forEach(line => {
-        const lineName = line.querySelector("h2").innerText.toLowerCase();
-        if (lineName.includes(searchTerm)) {
-            line.style.display = "block";
-        } else {
-            line.style.display = "none";
-        }
-    });
-});
 
 // Call the populate function on page load
 window.onload = populateTrains;
