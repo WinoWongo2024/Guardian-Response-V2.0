@@ -1,4 +1,4 @@
-/* Importing the Johnston100 font from the specified source */
+/* Importing the Johnston100 font */
 @font-face {
     font-family: 'Johnston100';
     src: url('https://winowongo2024.github.io/Font/johnson100.otf') format('opentype');
@@ -38,7 +38,7 @@ body {
 .logo {
     height: 50px;
     margin-right: 1rem;
-    background-color: transparent; /* Ensure the background is transparent */
+    background-color: transparent;
 }
 
 .brand-title {
@@ -65,7 +65,7 @@ body {
 }
 
 .nav-links a:hover {
-    color: #ffdd00; /* TfL yellow */
+    color: #ffdd00;
 }
 
 /* Remove default image backgrounds */
@@ -75,11 +75,11 @@ img {
 
 /* Header Section */
 .main-header {
-    background-color: #0019a8; /* TfL blue */
+    background-color: #0019a8;
     color: white;
     padding: 2rem 0;
     text-align: center;
-    border-bottom: 5px solid #ffdd00; /* TfL yellow */
+    border-bottom: 5px solid #ffdd00;
 }
 
 .main-header h1 {
@@ -98,7 +98,7 @@ img {
     margin-top: 1rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    color: #0019a8; /* TfL blue */
+    color: #0019a8;
 }
 
 /* Train Lines Section */
@@ -133,47 +133,47 @@ img {
 
 /* Line-Specific Color Themes */
 .bakerloo {
-    border-left: 8px solid #B36305; /* Bakerloo Line Brown */
+    border-left: 8px solid #B36305;
 }
 
 .central {
-    border-left: 8px solid #E32017; /* Central Line Red */
+    border-left: 8px solid #E32017;
 }
 
 .circle {
-    border-left: 8px solid #FFD300; /* Circle Line Yellow */
+    border-left: 8px solid #FFD300;
 }
 
 .district {
-    border-left: 8px solid #00782A; /* District Line Green */
+    border-left: 8px solid #00782A;
 }
 
 .hammersmith {
-    border-left: 8px solid #F3A9BB; /* Hammersmith & City Line Pink */
+    border-left: 8px solid #F3A9BB;
 }
 
 .jubilee {
-    border-left: 8px solid #A0A5A9; /* Jubilee Line Grey */
+    border-left: 8px solid #A0A5A9;
 }
 
 .metropolitan {
-    border-left: 8px solid #9B0056; /* Metropolitan Line Magenta */
+    border-left: 8px solid #9B0056;
 }
 
 .northern {
-    border-left: 8px solid #000000; /* Northern Line Black */
+    border-left: 8px solid #000000;
 }
 
 .piccadilly {
-    border-left: 8px solid #003688; /* Piccadilly Line Blue */
+    border-left: 8px solid #003688;
 }
 
 .victoria {
-    border-left: 8px solid #0098D4; /* Victoria Line Light Blue */
+    border-left: 8px solid #0098D4;
 }
 
 .waterloo {
-    border-left: 8px solid #95CDBA; /* Waterloo & City Line Turquoise */
+    border-left: 8px solid #95CDBA;
 }
 
 /* Train List Styles */
@@ -181,7 +181,6 @@ img {
     list-style: none;
     padding: 0;
     margin: 0;
-    font-family: 'Johnston100', sans-serif;
 }
 
 .train-item {
@@ -200,50 +199,63 @@ img {
     background-color: #e6f7ff;
 }
 
-.train-item.cancelled {
-    background-color: #f8d7da; /* Light red for cancelled trains */
-}
-
-.train-destination {
-    font-weight: bold;
-    font-size: 1.3rem;
-    color: #0019a8; /* TfL blue */
-}
-
-.train-time {
-    font-style: italic;
-    color: #666;
+/* Styles for the delay and early banner */
+.banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    background-color: #ffdd00;
+    color: #0019a8;
+    padding: 0.5rem;
+    border-radius: 5px;
     margin-top: 0.5rem;
-}
-
-/* Scrolling Text Styles */
-.scrolling-text {
-    width: 100%;
-    overflow: hidden;
+    animation: smoothScroll 5s linear infinite;
     white-space: nowrap;
-    box-sizing: border-box;
+    overflow: hidden;
 }
 
-.scrolling-text p {
-    display: inline-block;
-    padding-left: 100%;
-    animation: scrolling 20s linear infinite;
-}
-
-@keyframes scrolling {
-    0% {
+@keyframes smoothScroll {
+    from {
         transform: translateX(100%);
     }
-    100% {
+    to {
         transform: translateX(-100%);
     }
+}
+
+/* Style for the stop banner */
+.stop-banner {
+    background-color: #ffdd00;
+    color: #0019a8;
+    padding: 0.3rem;
+    border-radius: 5px;
+    margin: 0.5rem 0;
+    text-align: center;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: smoothScroll 10s linear infinite;
+}
+
+/* Style for cancelled or delayed services */
+.train-item.cancelled {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-left: 5px solid #f5c6cb;
+}
+
+.train-item.delayed {
+    background-color: #fff3cd;
+    color: #856404;
+    border-left: 5px solid #ffeeba;
 }
 
 /* Footer Styles */
 .footer {
     text-align: center;
     padding: 2rem;
-    background-color: #0019a8; /* TfL blue */
+    background-color: #0019a8;
     color: white;
     margin-top: 2rem;
 }
@@ -251,41 +263,4 @@ img {
 .footer p {
     margin: 0.5rem 0;
     font-size: 1rem;
-}
-
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-    .line-section {
-        padding: 1rem;
-    }
-
-    .main-header h1 {
-        font-size: 2rem;
-    }
-
-    .digital-clock {
-        font-size: 3rem;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .main-header h1 {
-        font-size: 1.8rem;
-    }
-
-    .digital-clock {
-        font-size: 2.5rem;
-    }
-
-    .station-filter label {
-        font-size: 1.2rem;
-    }
-
-    .station-filter input {
-        width: 200px;
-    }
-
-    .station-filter button {
-        padding: 0.6rem 1rem;
-    }
 }
