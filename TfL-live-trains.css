@@ -111,8 +111,7 @@ img {
 
 /* Train Line Section Styling */
 .line-section {
-    background-color: white;  /* Resetting to white */
-    border-left-width: 8px;
+    background-color: white;
     border-radius: 8px;
     padding: 2rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -134,47 +133,47 @@ img {
 
 /* Line-Specific Color Themes */
 .bakerloo {
-    border-left-color: #B36305; /* Bakerloo Line Brown */
+    border-left: 8px solid #B36305; /* Bakerloo Line Brown */
 }
 
 .central {
-    border-left-color: #E32017; /* Central Line Red */
+    border-left: 8px solid #E32017; /* Central Line Red */
 }
 
 .circle {
-    border-left-color: #FFD300; /* Circle Line Yellow */
+    border-left: 8px solid #FFD300; /* Circle Line Yellow */
 }
 
 .district {
-    border-left-color: #00782A; /* District Line Green */
+    border-left: 8px solid #00782A; /* District Line Green */
 }
 
 .hammersmith {
-    border-left-color: #F3A9BB; /* Hammersmith & City Line Pink */
+    border-left: 8px solid #F3A9BB; /* Hammersmith & City Line Pink */
 }
 
 .jubilee {
-    border-left-color: #A0A5A9; /* Jubilee Line Grey */
+    border-left: 8px solid #A0A5A9; /* Jubilee Line Grey */
 }
 
 .metropolitan {
-    border-left-color: #9B0056; /* Metropolitan Line Magenta */
+    border-left: 8px solid #9B0056; /* Metropolitan Line Magenta */
 }
 
 .northern {
-    border-left-color: #000000; /* Northern Line Black */
+    border-left: 8px solid #000000; /* Northern Line Black */
 }
 
 .piccadilly {
-    border-left-color: #003688; /* Piccadilly Line Blue */
+    border-left: 8px solid #003688; /* Piccadilly Line Blue */
 }
 
 .victoria {
-    border-left-color: #0098D4; /* Victoria Line Light Blue */
+    border-left: 8px solid #0098D4; /* Victoria Line Light Blue */
 }
 
 .waterloo {
-    border-left-color: #95CDBA; /* Waterloo & City Line Turquoise */
+    border-left: 8px solid #95CDBA; /* Waterloo & City Line Turquoise */
 }
 
 /* Train List Styles */
@@ -217,58 +216,27 @@ img {
     margin-top: 0.5rem;
 }
 
-/* Scrolling Banner */
-.scrolling-banner {
-    background-color: #ffdd00;
-    color: #0019a8;
-    padding: 1rem;
-    text-align: center;
-    font-weight: bold;
-    white-space: nowrap;
-    overflow: hidden;
-    position: relative;
-    border-radius: 5px;
-    margin-top: 1rem;
-}
-
+/* Scrolling Text Styles */
 .scrolling-text {
-    display: inline-block;
-    animation: smoothScroll 10s linear infinite;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
 }
 
-@keyframes smoothScroll {
+.scrolling-text p {
+    display: inline-block;
+    padding-left: 100%;
+    animation: scrolling 20s linear infinite;
+}
+
+@keyframes scrolling {
     0% {
         transform: translateX(100%);
     }
     100% {
         transform: translateX(-100%);
     }
-}
-
-/* Train Details */
-.detail-view {
-    background-color: #fff;
-    padding: 1.5rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 1rem;
-}
-
-.service-status {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #d9534f; /* Red for delays */
-    margin-bottom: 1rem;
-}
-
-.platform-info {
-    margin-top: 1rem;
-    font-size: 1.2rem;
-    color: #333;
-}
-
-.platform-info span {
-    font-weight: bold;
 }
 
 /* Footer Styles */
