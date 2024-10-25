@@ -76,9 +76,7 @@ function renderTrainTimes(container, trains, currentTime) {
 
     // Adjust the time window to display trains within the next 60 minutes
     const upcomingTrains = trains.filter(train => {
-        // Randomize the status and possibly adjust the time
-        randomizeStatus(train);
-
+        // Use the existing or adjusted time
         const trainTime = train.adjusted_time ? parseTrainTime(train.adjusted_time, currentTime) : parseTrainTime(train.time, currentTime);
         return isWithinTimeWindow(trainTime, currentTime, 60); // Show trains within the next 60 minutes
     });
@@ -97,32 +95,44 @@ function renderTrainTimes(container, trains, currentTime) {
 async function populateTrains() {
     const currentTime = await getCurrentTime(); // Fetch the current internet time
     const lines = ['bakerloo']; // Assuming only Bakerloo for now, add more lines as needed
-    
+
     for (const line of lines) {
         try {
             const trainData = await fetchTrainData(line);
-            
-            // Ensure we have the data for Bakerloo line and MondayToFriday departures
-            const departures = trainData?.Bakerloo?.MondayToFriday?.departures;
-            const arrivals = trainData?.Bakerloo?.MondayToFriday?.arrivals;
+            const savedTrainData = localStorage.getItem(`trainData_${line}`);
+
+            let departures;
+            if (savedTrainData) {
+                // If data is stored in localStorage, use it
+                departures = JSON.parse(savedTrainData);
+            } else {
+                // Randomize the data and save it to localStorage
+                departures = trainData?.Bakerloo?.MondayToFriday?.departures;
+                departures.forEach(train => randomizeStatus(train));
+
+                // Store the data in localStorage
+                localStorage.setItem(`trainData_${line}`, JSON.stringify(departures));
+            }
 
             if (!departures) {
                 console.error('No departures found for Bakerloo line.');
                 continue;
             }
 
-            // Get the containers for departures and arrivals
             const departureContainer = document.querySelector(`.departure-list[data-line="${line}"]`);
-            const arrivalContainer = document.querySelector(`.arrival-list[data-line="${line}"]`);
-
-            // Render departures and arrivals, showing "There are no scheduled trains" if empty or not within the time window
             renderTrainTimes(departureContainer, departures, currentTime);
-            renderTrainTimes(arrivalContainer, arrivals || [], currentTime); // Assuming no arrivals
+
         } catch (error) {
             console.error('Error populating train data:', error);
         }
     }
 }
+
+// Reset train data in localStorage and reload the page
+document.getElementById("resetData").addEventListener("click", function () {
+    localStorage.clear(); // Clears the stored train data
+    location.reload(); // Reloads the page to re-randomize the data
+});
 
 // Call the populate function on page load
 window.onload = populateTrains;
