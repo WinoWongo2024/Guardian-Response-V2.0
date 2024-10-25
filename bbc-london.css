@@ -1,137 +1,117 @@
-/* Importing custom fonts */
-@font-face {
-    font-family: 'BBCReithSerif';
-    src: url('BBCReithSerif_Bd.ttf') format('truetype');
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: 'BBCReithSerif';
-    src: url('BBCReithSerif_Lt.ttf') format('truetype');
-    font-weight: 300;
-}
-
-@font-face {
-    font-family: 'BBCReithSerif';
-    src: url('BBCReithSerif_Md.ttf') format('truetype');
-    font-weight: 500;
-}
-
-/* General Styling */
+/* General styling */
 body {
-    font-family: 'BBCReithSerif', serif;
+    font-family: 'johnston100', Arial, sans-serif;
     margin: 0;
-    padding: 0;
+    background-color: #f0f0f0;
+    color: #333;
 }
 
-.bbc-header {
+/* Navbar */
+.navbar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    background-color: #000;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #005daa;
     color: white;
 }
 
-.bbc-logo {
-    width: 100px;
-}
-
-#bbc-clock {
-    font-weight: 500;
-    margin-left: 20px;
-}
-
-.header-right {
+.nav-brand {
     display: flex;
     align-items: center;
 }
 
-.search-bar {
-    margin-left: 10px;
-    padding: 5px;
-    border: none;
-    border-radius: 5px;
-}
-
-.bbc-navbar {
-    background-color: #bb1919;
-    padding: 10px;
-    text-align: center;
+.nav-brand .logo {
+    width: 40px;
+    margin-right: 10px;
 }
 
 .nav-links {
-    list-style-type: none;
-    padding: 0;
+    list-style: none;
+    display: flex;
 }
 
 .nav-links li {
-    display: inline;
-    margin: 0 15px;
+    margin-left: 20px;
 }
 
 .nav-links a {
     color: white;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: bold;
 }
 
-.menu-button {
+/* Header */
+.main-header {
+    background-color: #007acc;
+    padding: 20px;
+    color: white;
+    text-align: center;
+}
+
+/* Station Filter */
+.station-filter {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.station-filter label, .station-filter input, .station-filter button {
+    margin-right: 10px;
+}
+
+/* Train Lines */
+.train-lines {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.line-section {
+    background-color: #fff;
+    border-radius: 8px;
+    width: 300px;
+    padding: 15px;
+    margin: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-left: 8px solid; /* Add a colored line on the left */
+}
+
+/* Line colors */
+.bakerloo { border-left-color: #b36305; }
+.central { border-left-color: #e32017; }
+.circle { border-left-color: #ffd300; }
+.district { border-left-color: #00782a; }
+.hammersmith { border-left-color: #f3a9bb; }
+.jubilee { border-left-color: #a0a5a9; }
+.metropolitan { border-left-color: #9b0056; }
+.northern { border-left-color: #000000; }
+.piccadilly { border-left-color: #003688; }
+.victoria { border-left-color: #0098d4; }
+.waterloo { border-left-color: #95cdb8; }
+
+h2, h3 {
+    margin-top: 0;
+}
+
+/* Detail Container */
+.detail-container {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #005daa;
+    color: white;
+    padding: 10px;
     display: none;
 }
 
-.main-news {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.headline {
-    font-family: 'BBCReithSerif', serif;
-    font-weight: bold;
-    font-size: 36px;
-}
-
-.description {
-    font-family: 'BBCReithSerif', serif;
-    font-weight: 300;
-    font-size: 18px;
-    margin: 10px 0;
-}
-
-.category {
-    font-family: 'BBCReithSerif', serif;
-    font-weight: 500;
-    color: red;
-}
-
-.timestamp {
-    font-family: 'BBCReithSerif', serif;
-    color: gray;
-    margin-left: 10px;
-}
-
-.secondary-news .grid {
-    display: flex;
-    justify-content: space-around;
-}
-
-.news-item img {
-    width: 100%;
-    transition: transform 0.2s;
-}
-
-.news-item img:hover {
-    transform: scale(1.05);
-}
-
-@media (max-width: 768px) {
-    .menu-button {
-        display: block;
-    }
-
-    .nav-links {
-        display: none;
-    }
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    font-size: 14px;
+    margin-top: 20px;
 }
