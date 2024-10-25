@@ -110,9 +110,17 @@ header .local-time {
 .stock-info canvas {
     height: 40px; /* Fixed height for the graph */
     width: 100%;
-    flex-grow: 0; /* Prevents the chart from being pushed out of view */
+    max-height: 100%; /* Ensures graph is always contained */
     margin-top: 10px;
     margin-bottom: 10px;
+    position: relative;
+}
+
+/* Ensure Sparkline Container is Constrained */
+.stock-info .chart-container {
+    position: relative;
+    height: 50px; /* Fixed height to keep the graph from overflowing */
+    overflow: hidden; /* Hide overflow */
 }
 
 /* Button Styling */
