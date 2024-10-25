@@ -222,9 +222,10 @@ img {
     padding: 1.5rem;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
+/* Service Status Styling */
 .service-status {
     font-size: 1.2rem;
     font-weight: bold;
@@ -232,41 +233,22 @@ img {
     margin-bottom: 1rem;
 }
 
-.platform-info {
-    font-size: 1rem;
-    font-weight: bold;
+/* Scrolling Banners */
+.scrolling-banner,
+.scrolling-banner-delay {
+    background-color: #ffdd00;
     color: #0019a8;
-}
-
-/* Scrolling Banner Styles */
-.scrolling-banner {
-    width: 100%;
-    background-color: #ffdd00; /* TfL yellow */
-    color: #0019a8; /* TfL blue */
     font-weight: bold;
-    padding: 10px;
+    padding: 0.8rem;
+    margin-top: 0.8rem;
     border-radius: 5px;
-    overflow: hidden;
-    white-space: nowrap;
-    box-sizing: border-box;
-    margin-top: 1rem;
-    position: relative;
 }
 
-.scrolling-banner span {
-    display: inline-block;
-    padding-left: 100%; /* Ensures it starts outside the visible area */
-    animation: scrollBanner 15s linear infinite;
-}
-
-/* Keyframes for scrolling effect */
-@keyframes scrollBanner {
-    0% {
-        transform: translateX(100%);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
+/* Marquee Text Style */
+.scrolling-banner marquee,
+.scrolling-banner-delay marquee {
+    font-family: 'Johnston100', sans-serif;
+    font-size: 1.1rem;
 }
 
 /* Footer Styles */
