@@ -47,6 +47,23 @@ function generateDelayCause() {
     return causes[Math.floor(Math.random() * causes.length)];
 }
 
+// Function to display time with delay/early information
+function formatTimeWithDelay(time, delay) {
+    const expectedTime = addMinutesToTime(time, -delay); // Calculate expected time
+    const delayText = delay > 0 ? `${delay} minutes late` : `${-delay} minutes early`;
+    return `${time} (${expectedTime}) - ${delayText}`;
+}
+
+// Function to create scrolling banners for next stops and delay/early status
+function createScrollingBanner(text) {
+    const banner = document.createElement('div');
+    banner.classList.add('scrolling-banner');
+    const textSpan = document.createElement('span');
+    textSpan.textContent = text;
+    banner.appendChild(textSpan);
+    return banner;
+}
+
 // Generate train schedule for each line
 function generateTrainSchedule() {
     const lines = ["bakerloo", "central", "circle", "district", "hammersmith", "jubilee", "metropolitan", "northern", "piccadilly", "victoria", "waterloo"];
@@ -77,6 +94,7 @@ function generateTrainSchedule() {
                     platform: generatePlatformNumber(),
                     cause: status === "delayed" ? generateDelayCause() : null,
                     cancelledTime: status === "cancelled" ? new Date() : null,
+                    stops: generateRandomStops(line) // Added stops for the scrolling banner
                 });
 
                 schedule[line].arrivals.push({
@@ -87,6 +105,7 @@ function generateTrainSchedule() {
                     platform: generatePlatformNumber(),
                     cause: status === "delayed" ? generateDelayCause() : null,
                     cancelledTime: status === "cancelled" ? new Date() : null,
+                    stops: generateRandomStops(line) // Added stops for the scrolling banner
                 });
             }
         }
@@ -95,42 +114,23 @@ function generateTrainSchedule() {
     return schedule;
 }
 
-// Generate random destinations
-function generateRandomDestination(line, dayFactor) {
-    const destinations = {
-        bakerloo: ["Elephant & Castle", "Paddington", "Oxford Circus", "Wembley Central"],
-        central: ["Epping", "White City", "Marble Arch", "Liverpool Street"],
-        circle: ["Aldgate", "Monument", "King's Cross", "Edgware Road"],
-        district: ["Upminster", "Richmond", "Wimbledon", "Barking"],
-        hammersmith: ["Barking", "Hammersmith", "Paddington", "Mile End"],
-        jubilee: ["Stanmore", "Westminster", "London Bridge", "Wembley Park"],
-        metropolitan: ["Aldgate", "Amersham", "Baker Street", "Uxbridge"],
-        northern: ["Morden", "Camden Town", "Kennington", "Tooting Broadway"],
-        piccadilly: ["Heathrow", "Cockfosters", "Covent Garden", "Leicester Square"],
-        victoria: ["Brixton", "Victoria", "King's Cross", "Stockwell"],
+// Generate random stops for each line
+function generateRandomStops(line) {
+    const stops = {
+        bakerloo: ["Paddington", "Oxford Circus", "Piccadilly Circus", "Waterloo", "Elephant & Castle"],
+        central: ["Epping", "Stratford", "Liverpool Street", "Oxford Circus", "Marble Arch"],
+        circle: ["King's Cross", "Liverpool Street", "Moorgate", "Aldgate", "Monument"],
+        district: ["Richmond", "Ealing Broadway", "Wimbledon", "Upminster", "Barking"],
+        hammersmith: ["Hammersmith", "Paddington", "Barking", "Whitechapel", "Mile End"],
+        jubilee: ["Stratford", "Westminster", "London Bridge", "Canary Wharf", "Wembley Park"],
+        metropolitan: ["Aldgate", "Baker Street", "Harrow-on-the-Hill", "Uxbridge", "Amersham"],
+        northern: ["Morden", "Kennington", "Camden Town", "High Barnet", "Tooting Broadway"],
+        piccadilly: ["Heathrow", "Hammersmith", "Green Park", "Covent Garden", "Cockfosters"],
+        victoria: ["Brixton", "Victoria", "Oxford Circus", "Walthamstow", "King's Cross"],
         waterloo: ["Bank", "Waterloo", "Lambeth North"]
     };
 
-    return destinations[line][dayFactor % destinations[line].length];
-}
-
-// Generate random origins
-function generateRandomOrigin(line, dayFactor) {
-    const origins = {
-        bakerloo: ["Paddington", "Oxford Circus", "Elephant & Castle"],
-        central: ["Liverpool Street", "Marble Arch", "Epping"],
-        circle: ["Monument", "King's Cross", "Aldgate"],
-        district: ["Barking", "Wimbledon", "Richmond"],
-        hammersmith: ["Hammersmith", "Paddington", "Barking"],
-        jubilee: ["London Bridge", "Westminster", "Stanmore"],
-        metropolitan: ["Amersham", "Baker Street", "Aldgate"],
-        northern: ["Kennington", "Camden Town", "Morden"],
-        piccadilly: ["Covent Garden", "Leicester Square", "Heathrow"],
-        victoria: ["Victoria", "Brixton", "King's Cross"],
-        waterloo: ["Waterloo", "Bank", "Lambeth North"]
-    };
-
-    return origins[line][dayFactor % origins[line].length];
+    return stops[line];
 }
 
 // Function to handle train selection (display details)
@@ -154,8 +154,14 @@ function handleTrainClick(train) {
     const platformInfo = document.createElement('div');
     platformInfo.textContent = `Platform: ${train.platform}`;
 
+    const delayBanner = createScrollingBanner(`Delay: ${train.delay} minutes`);
+    const stopsBanner = createScrollingBanner(`Next stops: ${train.stops.join(', ')}`);
+
     detailView.appendChild(serviceStatus);
     detailView.appendChild(platformInfo);
+    detailView.appendChild(delayBanner);
+    detailView.appendChild(stopsBanner);
+
     detailContainer.appendChild(detailView);
 }
 
@@ -190,7 +196,7 @@ function updateTrainDeparturesAndArrivals(schedule) {
 
             const timeElement = document.createElement('span');
             timeElement.classList.add('train-time');
-            timeElement.textContent = train.departureTime;
+            timeElement.textContent = formatTimeWithDelay(train.departureTime, train.delay);
 
             trainItem.appendChild(destinationElement);
             trainItem.appendChild(timeElement);
@@ -217,7 +223,7 @@ function updateTrainDeparturesAndArrivals(schedule) {
 
             const timeElement = document.createElement('span');
             timeElement.classList.add('train-time');
-            timeElement.textContent = train.arrivalTime;
+            timeElement.textContent = formatTimeWithDelay(train.arrivalTime, train.delay);
 
             trainItem.appendChild(originElement);
             trainItem.appendChild(timeElement);
