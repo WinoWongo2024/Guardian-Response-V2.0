@@ -226,3 +226,67 @@ footer p {
         margin-top: 5px;
     }
 }
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search-bar {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .search-bar input {
+        width: 80%;
+        margin-bottom: 5px;
+    }
+
+    .search-bar button {
+        width: 80%;
+    }
+
+    .cart {
+        margin-top: 10px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 5px;
+        padding: 0;
+    }
+
+    nav ul li a {
+        padding: 8px 0;
+        font-size: 0.9rem;
+    }
+
+    .filters, .product-listing {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+
+    footer p {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Further adjustments for very small screens */
+    .search-bar input {
+        width: 100%;
+    }
+
+    .search-bar button {
+        width: 100%;
+    }
+
+    .product-card {
+        padding: 10px;
+    }
+}
