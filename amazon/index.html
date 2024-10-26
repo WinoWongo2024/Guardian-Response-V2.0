@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Replica</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS file -->
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <h1>MyShop</h1>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search products...">
+                <button type="submit">Search</button>
+            </div>
+            <div class="cart">
+                <a href="cart.html">Cart <span class="cart-count">0</span></a>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Electronics</a></li>
+                <li><a href="#">Clothing</a></li>
+                <li><a href="#">Home & Kitchen</a></li>
+                <li><a href="#">Books</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content Section -->
+    <main>
+        <section class="filters">
+            <h2>Filter Products</h2>
+            <label for="category">Category:</label>
+            <select id="category">
+                <option value="all">All</option>
+                <option value="electronics">Electronics</option>
+                <option value="clothing">Clothing</option>
+                <option value="home">Home & Kitchen</option>
+            </select>
+
+            <label for="price">Price:</label>
+            <input type="range" id="price" min="0" max="500" step="10">
+            <span id="price-value">$0 - $500</span>
+
+            <label for="rating">Rating:</label>
+            <select id="rating">
+                <option value="all">All Ratings</option>
+                <option value="4">4 Stars & Up</option>
+                <option value="3">3 Stars & Up</option>
+                <option value="2">2 Stars & Up</option>
+            </select>
+        </section>
+
+        <!-- Product Listings -->
+        <section class="product-listing">
+            <h2>Products</h2>
+            <div class="product-grid">
+                <!-- Sample Product Card -->
+                <div class="product-card">
+                    <img src="product1.jpg" alt="Product Image">
+                    <h3>Product Name</h3>
+                    <p class="price">$99.99</p>
+                    <p class="rating">⭐⭐⭐⭐ (4)</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+
+                <!-- Repeat Product Cards for multiple items -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 MyShop. All rights reserved.</p>
+    </footer>
+
+    <!-- External JavaScript -->
+    <script src="script.js"></script>
+</body>
+
+</html>
