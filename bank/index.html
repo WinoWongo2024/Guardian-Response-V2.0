@@ -1,8 +1,41 @@
-<!Doctype>
-<html>
-  <h1>Welcome to London General Bank</h1>
-  <h4>Your finances are our priority</h4>
-  <nav>
-    
-  </nav>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Great London Bank - Login</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="login-container">
+        <header>
+            <img src="logo.png" alt="GLB Logo" class="logo">
+            <h1 class="title">GLB</h1>
+            <img src="uk-flag.png" alt="UK Flag" class="uk-flag">
+        </header>
+        <h2>Great London Bank - Login Page</h2>
+        <form id="loginForm">
+            <label for="surname">Surname</label>
+            <input type="text" id="surname" name="surname" required>
+
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" name="dob" required>
+
+            <label for="postcode">Postcode</label>
+            <input type="text" id="postcode" name="postcode" required>
+
+            <label for="account">Account Number</label>
+            <input type="text" id="account" name="account" required>
+
+            <label for="sortcode">Sort Code</label>
+            <input type="text" id="sortcode" name="sortcode" required>
+
+            <button type="submit" onclick="submitForm()">Register</button>
+        </form>
+        <footer>
+            <a href="#">Terms & Conditions</a> | <a href="#">Privacy Policy</a>
+        </footer>
+    </div>
+    <script src="login.js"></script>
+</body>
 </html>
