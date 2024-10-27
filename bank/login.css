@@ -1,45 +1,49 @@
-/* Reset and basic styling */
+/* Global Reset and Styling */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Roboto', Arial, sans-serif;
 }
 
 body {
-    font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background: linear-gradient(135deg, #005eb8, #002855);
     overflow: hidden;
-    background: linear-gradient(135deg, #4f81c7, #1c1d25);
+    color: #333;
 }
 
-/* Background overlay for extra effect */
 .background-overlay {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-    background-size: 15px 15px;
-    opacity: 0.15;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
 }
 
-/* Login container */
+/* Login Container */
 .login-container {
     position: relative;
     z-index: 2;
-    width: 380px;
-    background: rgba(255, 255, 255, 0.9);
+    width: 420px;
     padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 1s ease-in-out;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-/* Header styling */
+.login-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Header Styling */
 header {
     display: flex;
     align-items: center;
@@ -48,111 +52,158 @@ header {
 }
 
 .logo, .uk-flag {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover, .uk-flag:hover {
+    transform: scale(1.1);
 }
 
 .title {
-    font-size: 26px;
+    font-size: 28px;
     font-weight: bold;
-    color: #1c1d25;
+    color: #005eb8;
     text-align: center;
 }
 
 .subtitle {
     font-size: 18px;
-    color: #4f81c7;
+    color: #4a4a4a;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    letter-spacing: 0.5px;
 }
 
-/* Form styling */
+/* Form Styling */
 form {
     display: flex;
     flex-direction: column;
+    gap: 15px;
 }
 
 label {
-    margin: 10px 0 5px;
     font-size: 14px;
     color: #333;
+    font-weight: 500;
 }
 
 input[type="text"], input[type="date"] {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
     outline: none;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 input[type="text"]:focus, input[type="date"]:focus {
-    border-color: #4f81c7;
+    border-color: #005eb8;
+    box-shadow: 0 0 8px rgba(0, 94, 184, 0.3);
 }
 
+/* Button Styling */
 button {
-    margin-top: 20px;
-    padding: 12px;
-    background-color: #4f81c7;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    padding: 14px;
+    background-color: #005eb8;
+    color: #ffffff;
     font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.3s, transform 0.1s;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s;
 }
 
 button:hover {
-    background-color: #3d6cae;
+    background-color: #004080;
+    box-shadow: 0 4px 15px rgba(0, 94, 184, 0.3);
 }
 
 button:active {
     transform: scale(0.98);
 }
 
+/* Register Link */
 .register-link {
     text-align: center;
-    margin-top: 15px;
+    margin-top: 20px;
     font-size: 14px;
+    color: #333;
 }
 
 .register-link a {
-    color: #4f81c7;
+    color: #005eb8;
     text-decoration: none;
+    font-weight: 500;
     transition: color 0.3s;
 }
 
 .register-link a:hover {
-    color: #3d6cae;
+    color: #003f6f;
+    text-decoration: underline;
 }
 
-/* Footer */
+/* Footer Styling */
 footer {
     text-align: center;
-    margin-top: 25px;
+    margin-top: 30px;
     font-size: 12px;
     color: #666;
 }
 
 footer a {
-    color: #4f81c7;
+    color: #005eb8;
     text-decoration: none;
+    transition: color 0.3s;
 }
 
 footer a:hover {
+    color: #003f6f;
     text-decoration: underline;
 }
 
-/* Animation */
+/* Advanced Animations */
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateY(10px);
     }
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+.login-container {
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* Input Placeholder Styling */
+input::placeholder {
+    color: #888;
+    font-style: italic;
+}
+
+/* Accessibility Focus Outline */
+input:focus, button:focus {
+    outline: 2px solid #005eb8;
+    outline-offset: 2px;
+}
+
+/* Media Query for Smaller Screens */
+@media (max-width: 480px) {
+    .login-container {
+        width: 90%;
+        padding: 20px;
+    }
+    
+    .title {
+        font-size: 24px;
+    }
+    
+    .subtitle {
+        font-size: 16px;
     }
 }
