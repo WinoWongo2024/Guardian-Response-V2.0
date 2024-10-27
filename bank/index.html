@@ -3,35 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Great London Bank - Login</title>
+    <title>Great London Bank - Secure Login</title>
     <link rel="stylesheet" href="login.css">
 </head>
 <body>
+    <div class="background-overlay"></div>
     <div class="login-container">
         <header>
             <img src="logo.png" alt="GLB Logo" class="logo">
-            <h1 class="title">GLB</h1>
+            <h1 class="title">Great London Bank</h1>
             <img src="uk-flag.png" alt="UK Flag" class="uk-flag">
         </header>
-        <h2>Great London Bank - Login Page</h2>
-        <form id="loginForm">
-            <label for="surname">Surname</label>
-            <input type="text" id="surname" name="surname" required>
+        
+        <h2 class="subtitle">Secure Login Portal</h2>
+        
+        <form id="loginForm" aria-labelledby="loginFormHeader">
+            <fieldset>
+                <legend id="loginFormHeader" class="form-title">User Information</legend>
 
-            <label for="dob">Date of Birth</label>
-            <input type="date" id="dob" name="dob" required>
+                <label for="surname">Surname</label>
+                <input type="text" id="surname" name="surname" required aria-required="true" placeholder="Enter your surname">
 
-            <label for="postcode">Postcode</label>
-            <input type="text" id="postcode" name="postcode" required>
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" name="dob" required aria-required="true">
 
-            <label for="account">Account Number</label>
-            <input type="text" id="account" name="account" required>
+                <label for="postcode">Postcode</label>
+                <input type="text" id="postcode" name="postcode" required aria-required="true" placeholder="Enter your postcode">
 
-            <label for="sortcode">Sort Code</label>
-            <input type="text" id="sortcode" name="sortcode" required>
+                <label for="account">Account Number</label>
+                <input type="text" id="account" name="account" required aria-required="true" placeholder="Enter your account number">
 
-            <button type="submit" onclick="submitForm()">Register</button>
+                <label for="sortcode">Sort Code</label>
+                <input type="text" id="sortcode" name="sortcode" required aria-required="true" placeholder="Enter your sort code">
+
+                <button type="submit" onclick="login()">Login</button>
+            </fieldset>
         </form>
+        
+        <p class="register-link">
+            Don’t have an account? <a href="register.html">Register here</a>
+        </p>
+        
         <footer>
             <a href="#">Terms & Conditions</a> | <a href="#">Privacy Policy</a>
         </footer>
