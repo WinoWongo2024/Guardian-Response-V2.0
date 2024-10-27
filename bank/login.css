@@ -1,47 +1,49 @@
-/* Global Reset and Styling */
+/* Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Roboto', Arial, sans-serif;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
 body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     background: linear-gradient(135deg, #002855, #005eb8);
-    overflow: hidden;
     color: #333;
+    overflow: hidden;
 }
 
-/* Background Overlay for Subtle Grid Effect */
+/* Background overlay for subtle texture */
 .background-overlay {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-    background-size: 15px 15px;
-    opacity: 0.1;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.2;
+    z-index: 0;
 }
 
-/* Login Container */
-.login-container {
+/* Login Card */
+.login-card {
     position: relative;
-    z-index: 2;
+    z-index: 1;
     width: 420px;
-    padding: 40px;
+    padding: 30px;
     background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 0.8s ease-out;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    animation: fadeInUp 0.8s ease-out;
 }
 
 /* Header Styling */
-header {
+.login-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -49,8 +51,8 @@ header {
 }
 
 .logo, .uk-flag {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
 }
 
 .title {
@@ -61,10 +63,10 @@ header {
 }
 
 .subtitle {
-    font-size: 18px;
-    color: #4a4a4a;
+    font-size: 16px;
+    color: #666;
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     letter-spacing: 0.5px;
 }
 
@@ -81,57 +83,53 @@ fieldset {
     margin: 0;
 }
 
-legend {
-    font-size: 16px;
-    color: #005eb8;
-    font-weight: 600;
-    margin-bottom: 15px;
-}
-
 label {
     font-size: 14px;
     color: #333;
     font-weight: 500;
-    margin-bottom: 5px;
 }
 
 input[type="text"], input[type="date"] {
     padding: 12px;
-    font-size: 16px;
-    border: 1px solid #ddd;
+    font-size: 15px;
+    border: 1px solid #ccc;
     border-radius: 8px;
-    outline: none;
     background-color: #f9f9f9;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    transition: border 0.3s, background-color 0.3s, box-shadow 0.3s;
 }
 
 input[type="text"]:focus, input[type="date"]:focus {
     border-color: #005eb8;
+    background-color: #fff;
     box-shadow: 0 0 8px rgba(0, 94, 184, 0.3);
 }
 
 /* Button Styling */
 button {
     padding: 14px;
-    background-color: #005eb8;
-    color: #ffffff;
     font-size: 16px;
     font-weight: bold;
+    color: #ffffff;
+    background: linear-gradient(135deg, #005eb8, #004080);
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s, box-shadow 0.3s;
+    transition: background 0.3s, transform 0.1s;
+    box-shadow: 0 4px 10px rgba(0, 94, 184, 0.2);
 }
 
 button:hover {
-    background-color: #004080;
-    box-shadow: 0 4px 10px rgba(0, 94, 184, 0.3);
+    background: linear-gradient(135deg, #004080, #003366);
+}
+
+button:active {
+    transform: scale(0.97);
 }
 
 /* Register Link */
 .register-link {
     text-align: center;
-    margin-top: 15px;
+    margin-top: 20px;
     font-size: 14px;
     color: #333;
 }
@@ -145,13 +143,12 @@ button:hover {
 
 .register-link a:hover {
     color: #003f6f;
-    text-decoration: underline;
 }
 
 /* Footer Styling */
 footer {
     text-align: center;
-    margin-top: 30px;
+    margin-top: 25px;
     font-size: 12px;
     color: #666;
 }
@@ -159,29 +156,27 @@ footer {
 footer a {
     color: #005eb8;
     text-decoration: none;
-    transition: color 0.3s;
 }
 
 footer a:hover {
     color: #003f6f;
-    text-decoration: underline;
 }
 
-/* Input Placeholder Styling */
-input::placeholder {
-    color: #888;
-    font-style: italic;
+/* Fade-in Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* Accessibility Focus Outline */
-input:focus, button:focus {
-    outline: 2px solid #005eb8;
-    outline-offset: 2px;
-}
-
-/* Media Query for Smaller Screens */
+/* Responsive Styling */
 @media (max-width: 480px) {
-    .login-container {
+    .login-card {
         width: 90%;
         padding: 20px;
     }
@@ -191,18 +186,6 @@ input:focus, button:focus {
     }
     
     .subtitle {
-        font-size: 16px;
-    }
-}
-
-/* Subtle Fade-in Animation */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+        font-size: 14px;
     }
 }
