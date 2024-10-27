@@ -11,19 +11,21 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(135deg, #005eb8, #002855);
+    background: linear-gradient(135deg, #002855, #005eb8);
     overflow: hidden;
     color: #333;
 }
 
+/* Background Overlay for Subtle Grid Effect */
 .background-overlay {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 1;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 15px 15px;
+    opacity: 0.1;
 }
 
 /* Login Container */
@@ -31,16 +33,11 @@ body {
     position: relative;
     z-index: 2;
     width: 420px;
-    padding: 30px;
+    padding: 40px;
     background: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-}
-
-.login-container:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.8s ease-out;
 }
 
 /* Header Styling */
@@ -52,17 +49,12 @@ header {
 }
 
 .logo, .uk-flag {
-    width: 50px;
-    height: 50px;
-    transition: transform 0.3s ease;
-}
-
-.logo:hover, .uk-flag:hover {
-    transform: scale(1.1);
+    width: 40px;
+    height: 40px;
 }
 
 .title {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: bold;
     color: #005eb8;
     text-align: center;
@@ -83,18 +75,33 @@ form {
     gap: 15px;
 }
 
+fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+legend {
+    font-size: 16px;
+    color: #005eb8;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
 label {
     font-size: 14px;
     color: #333;
     font-weight: 500;
+    margin-bottom: 5px;
 }
 
 input[type="text"], input[type="date"] {
     padding: 12px;
     font-size: 16px;
-    border: 2px solid #ccc;
+    border: 1px solid #ddd;
     border-radius: 8px;
     outline: none;
+    background-color: #f9f9f9;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
@@ -109,26 +116,22 @@ button {
     background-color: #005eb8;
     color: #ffffff;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: bold;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 button:hover {
     background-color: #004080;
-    box-shadow: 0 4px 15px rgba(0, 94, 184, 0.3);
-}
-
-button:active {
-    transform: scale(0.98);
+    box-shadow: 0 4px 10px rgba(0, 94, 184, 0.3);
 }
 
 /* Register Link */
 .register-link {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 15px;
     font-size: 14px;
     color: #333;
 }
@@ -164,22 +167,6 @@ footer a:hover {
     text-decoration: underline;
 }
 
-/* Advanced Animations */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.login-container {
-    animation: fadeIn 0.8s ease-out;
-}
-
 /* Input Placeholder Styling */
 input::placeholder {
     color: #888;
@@ -200,10 +187,22 @@ input:focus, button:focus {
     }
     
     .title {
-        font-size: 24px;
+        font-size: 22px;
     }
     
     .subtitle {
         font-size: 16px;
+    }
+}
+
+/* Subtle Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
