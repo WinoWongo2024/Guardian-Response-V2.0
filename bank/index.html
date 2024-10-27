@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Great London Bank - Secure Login</title>
+    <title>Great London Bank - Login</title>
     <link rel="stylesheet" href="login.css">
 </head>
 <body>
     <div class="background-overlay"></div>
-    <div class="login-container">
-        <header>
+    <div class="login-card">
+        <header class="login-header">
             <img src="logo.png" alt="GLB Logo" class="logo">
             <h1 class="title">Great London Bank</h1>
             <img src="uk-flag.png" alt="UK Flag" class="uk-flag">
@@ -22,19 +22,19 @@
                 <legend id="loginFormHeader" class="form-title">User Information</legend>
 
                 <label for="surname">Surname</label>
-                <input type="text" id="surname" name="surname" required aria-required="true" placeholder="Enter your surname">
+                <input type="text" id="surname" name="surname" required placeholder="Enter your surname">
 
                 <label for="dob">Date of Birth</label>
-                <input type="date" id="dob" name="dob" required aria-required="true">
+                <input type="date" id="dob" name="dob" required>
 
                 <label for="postcode">Postcode</label>
-                <input type="text" id="postcode" name="postcode" required aria-required="true" placeholder="Enter your postcode">
+                <input type="text" id="postcode" name="postcode" required placeholder="Enter your postcode">
 
                 <label for="account">Account Number</label>
-                <input type="text" id="account" name="account" required aria-required="true" placeholder="Enter your account number">
+                <input type="text" id="account" name="account" required placeholder="Enter your account number">
 
                 <label for="sortcode">Sort Code</label>
-                <input type="text" id="sortcode" name="sortcode" required aria-required="true" placeholder="Enter your sort code">
+                <input type="text" id="sortcode" name="sortcode" required placeholder="Enter your sort code">
 
                 <button type="submit" onclick="login()">Login</button>
             </fieldset>
