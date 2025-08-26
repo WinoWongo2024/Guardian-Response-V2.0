@@ -1,220 +1,191 @@
-/*----------------------------------------------------------------
-  styles.css
-  Updated image paths, responsive image rules, and background
-  fallbacks to ensure all images load correctly.
-----------------------------------------------------------------*/
+/*--------------------------------------------------------------
+  TfL Brand Variables & Font
+--------------------------------------------------------------*/
+:root {
+  --tfl-red: #DA291C;
+  --tfl-dark: #1C2833;
+  --tfl-light: #FFFFFF;
+  --tfl-grey: #F2F2F2;
+}
 
-/* General Styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@font-face {
+  font-family: 'Johnston100';
+  src: url('https://github.com/WinoWongo2024/Font/blob/main/johnston100.otf?raw=true') format('opentype');
 }
 
 body {
+  margin: 0;
   font-family: 'Johnston100', sans-serif;
+  color: var(--tfl-dark);
+  background: var(--tfl-light);
   line-height: 1.6;
-  background-color: #fff;
-  color: #333;
 }
 
-/* Ensure all <img> elements scale responsively */
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/*----------------------------------------------------------------
-  Scrolling Banner
-----------------------------------------------------------------*/
-.scrolling-banner {
-  background-color: #ffcc00; /* Yellow background */
-  padding: 10px 0;           /* Adjust padding for room */
-  overflow: hidden;
-  position: relative;
-  height: 50px;              /* Fixed height to prevent clipping */
-  display: flex;
-  align-items: center;       /* Vertically center text */
-}
-
-.scrolling-banner p {
-  font-size: 1.2rem;
-  white-space: nowrap;
-  position: absolute;
-  will-change: transform;
-  animation: scroll-left 10s linear infinite;
-  color: #000;               /* Black text for contrast */
-  line-height: 1.5rem;       /* Ensure enough spacing */
-}
-
-@keyframes scroll-left {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(-100%);
-  }
-}
-
-/*----------------------------------------------------------------
+/*--------------------------------------------------------------
   Navigation Bar
-----------------------------------------------------------------*/
+--------------------------------------------------------------*/
 .navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background-color: #333;
-  color: white;
-  padding: 15px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  justify-content: space-between;
+  background: var(--tfl-dark);
+  padding: 0.75rem 2rem;
 }
 
 .logo {
   font-size: 1.5rem;
-  font-weight: bold;
+  color: var(--tfl-light);
 }
 
 .nav-links {
-  list-style-type: none;
+  list-style: none;
   display: flex;
-  gap: 20px;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
 }
 
-.nav-links li a {
-  color: white;
+.nav-links a {
   text-decoration: none;
+  color: var(--tfl-light);
+  font-weight: 500;
 }
 
-.navbar .menu-toggle {
-  display: none;
-  font-size: 2rem;
-  cursor: pointer;
+.nav-links a:hover {
+  color: var(--tfl-red);
 }
 
 .contact-info {
-  display: none;
+  color: var(--tfl-light);
+  font-size: 0.9rem;
 }
 
-/* Mobile Menu Toggle */
-@media (max-width: 768px) {
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .nav-links.active {
-    display: flex;
-    background-color: #333;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    right: 0;
-    padding: 15px;
-  }
-
-  .navbar .menu-toggle {
-    display: block;
-  }
-
-  .contact-info {
-    display: block;
-    color: white;
-    font-size: 0.9rem;
-  }
-}
-
-/*----------------------------------------------------------------
-  Main Section / Hero
-  - Ensure the correct image folder path here. 
-  - If your CSS is in /css/styles.css and images are in /images/, 
-    the relative path should be ../images/IMG_1111.jpeg
-----------------------------------------------------------------*/
-.main-section {
-  height: 100vh;
-  background-image: url('../images/IMG_1111.jpeg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+/*--------------------------------------------------------------
+  Scrolling Banner
+--------------------------------------------------------------*/
+.scrolling-banner {
+  background: var(--tfl-red);
+  color: var(--tfl-light);
+  padding: 0.5rem;
+  overflow: hidden;
   position: relative;
+  height: 50px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  text-align: center;
-  color: white;
 }
 
-/* Fallback color if the image fails to load */
+.scrolling-banner p {
+  white-space: nowrap;
+  animation: scroll-text 12s linear infinite;
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+@keyframes scroll-text {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+/*--------------------------------------------------------------
+  Main Section
+--------------------------------------------------------------*/
 .main-section {
-  background-color: #000; 
+  position: relative;
+  background: url('images/tfl-hero.jpg') center/cover no-repeat;
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
-.overlay {
+.main-section .overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(28, 40, 51, 0.6);
+}
+
+.main-section h1,
+.main-section p {
+  position: relative;
+  color: var(--tfl-light);
+  margin: 0.5rem;
 }
 
 .main-section h1 {
-  z-index: 1;
-  font-size: 3rem;
+  font-size: 2.5rem;
+  max-width: 80%;
 }
 
-.main-section p {
-  z-index: 1;
-  font-size: 1.5rem;
+/*--------------------------------------------------------------
+  Service Updates
+--------------------------------------------------------------*/
+.service-updates {
+  background: var(--tfl-grey);
+  padding: 2rem;
 }
 
-/*----------------------------------------------------------------
-  Protection Sections
-----------------------------------------------------------------*/
+.service-updates h2 {
+  color: var(--tfl-dark);
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--tfl-red);
+  padding-left: 0.5rem;
+}
+
+.delay-details h3 {
+  color: var(--tfl-red);
+  margin-top: 1.25rem;
+}
+
+.delay-details ul {
+  margin-left: 1.25rem;
+  list-style-type: disc;
+}
+
+.delay-details a {
+  color: var(--tfl-dark);
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+/*--------------------------------------------------------------
+  Protection Section
+--------------------------------------------------------------*/
 .protection-section {
-  display: flex;
-  justify-content: space-around;
-  padding: 50px;
-  gap: 20px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
 }
 
-.card {
-  background-color: #eee;
-  padding: 20px;
+.protection-section .card {
+  background: var(--tfl-light);
+  border: 1px solid #DDD;
+  border-radius: 4px;
+  padding: 1.5rem;
   text-align: center;
-  width: 30%;
-  border-radius: 10px;
-  transition: box-shadow 0.3s;
-  flex-grow: 1;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.card h2 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
+.protection-section .card h2 {
+  color: var(--tfl-dark);
+  margin-bottom: 0.75rem;
 }
 
-.card:hover {
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+.protection-section .card a {
+  display: inline-block;
+  margin-top: 0.75rem;
+  color: var(--tfl-red);
+  text-decoration: none;
+  font-weight: 500;
 }
 
-.business {
-  background-color: #f4a261;
-}
+.business { background-color: #f4a261; }
+.travel   { background-color: #2a9d8f; }
+.family   { background-color: #e76f51; }
 
-.travel {
-  background-color: #2a9d8f;
-}
-
-.family {
-  background-color: #e76f51;
-}
-
-/* New Live Trains Card */
 .live-trains {
   background-color: #007bff;
   color: white;
@@ -235,72 +206,45 @@ img {
   background-color: #003d82;
 }
 
-/* Mobile Cards */
-@media (max-width: 768px) {
-  .protection-section {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .card {
-    width: 80%;
-    margin-bottom: 20px;
-  }
-}
-
-/*----------------------------------------------------------------
+/*--------------------------------------------------------------
   Contact Section
-----------------------------------------------------------------*/
+--------------------------------------------------------------*/
 .contact-section {
-  padding: 50px;
-  background-color: #f4f4f4;
+  background: var(--tfl-dark);
+  color: var(--tfl-light);
+  padding: 2rem;
   text-align: center;
-}
-
-.contact-section h2 {
-  margin-bottom: 20px;
-  font-size: 2rem;
 }
 
 .contact-section form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: inline-grid;
+  gap: 0.75rem;
 }
 
 .contact-section input {
-  padding: 10px;
-  margin: 10px 0;
-  width: 300px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  width: 200px;
 }
 
 .contact-section button {
-  padding: 10px 20px;
+  padding: 0.6rem 1.2rem;
   border: none;
-  background-color: #333;
-  color: white;
-  font-size: 1rem;
+  background: var(--tfl-red);
+  color: var(--tfl-light);
+  font-weight: 600;
+  border-radius: 4px;
   cursor: pointer;
-  border-radius: 5px;
 }
 
-.contact-section button:hover {
-  background-color: #555;
-}
-
-/*----------------------------------------------------------------
+/*--------------------------------------------------------------
   Footer
-----------------------------------------------------------------*/
+--------------------------------------------------------------*/
 footer {
-  background-color: #333;
-  color: white;
+  background: var(--tfl-dark);
+  color: var(--tfl-light);
   text-align: center;
-  padding: 20px;
-  font-size: 0.9rem;
-}
-
-footer p {
-  margin: 5px 0;
+  padding: 1rem;
+  font-size: 0.85rem;
 }
