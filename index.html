@@ -1,89 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transport for London</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
-    <!-- Load the Johnston100 font -->
-    <style>
-        @font-face {
-            font-family: 'Johnston100';
-            src: url('https://github.com/WinoWongo2024/Font/blob/main/johnston100.otf?raw=true') format('opentype');
-        }
+  <meta charset="UTF-8">
 
-        body {
-            font-family: 'Johnston100', sans-serif;
-        }
-    </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transport for London – Service Updates</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+
+  <!-- Johnston100 font + TfL brand colours -->
+  <style>
+    :root {
+      --tfl-red: #DA291C;
+      --tfl-dark: #1C2833;
+      --tfl-light: #FFFFFF;
+      --tfl-grey: #F2F2F2;
+    }
+
+    @font-face {
+      font-family: 'Johnston100';
+      src: url('https://github.com/WinoWongo2024/Font/blob/main/johnston100.otf?raw=true') format('opentype');
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Johnston100', sans-serif;
+      color: var(--tfl-dark);
+      background: var(--tfl-light);
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--tfl-dark);
+      padding: 0.75rem 2rem;
+    }
+    .navbar .logo {
+      font-size: 1.5rem;
+      color: var(--tfl-light);
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      margin: 0;
+      padding: 0;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--tfl-light);
+      font-weight: 500;
+    }
+    .nav-links a:hover {
+      color: var(--tfl-red);
+    }
+    .contact-info {
+      color: var(--tfl-light);
+      font-size: 0.9rem;
+    }
+
+    .scrolling-banner {
+      background: var(--tfl-red);
+      color: var(--tfl-light);
+      padding: 0.5rem;
+      overflow: hidden;
+      position: relative;
+    }
+    .scrolling-banner p {
+      white-space: nowrap;
+      animation: scroll-text 12s linear infinite;
+      margin: 0;
+    }
+    @keyframes scroll-text {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .main-section {
+      position: relative;
+      background: url('tfl-hero.jpg') center/cover no-repeat;
+      height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .main-section .overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(28, 40, 51, 0.6);
+    }
+    .main-section h1, .main-section p {
+      position: relative;
+      color: var(--tfl-light);
+      text-align: center;
+      margin: 0.5rem;
+    }
+    .main-section h1 {
+      font-size: 2.5rem;
+      max-width: 80%;
+    }
+
+    /* Service Updates / Delay Details */
+    .service-updates {
+      background: var(--tfl-grey);
+      padding: 2rem;
+    }
+    .service-updates h2 {
+      color: var(--tfl-dark);
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--tfl-red);
+      padding-left: 0.5rem;
+    }
+    .delay-details h3 {
+      color: var(--tfl-red);
+      margin-top: 1.25rem;
+    }
+    .delay-details ul {
+      margin-left: 1.25rem;
+      list-style-type: disc;
+    }
+    .delay-details a {
+      color: var(--tfl-dark);
+      text-decoration: underline;
+      font-weight: 500;
+    }
+
+    .protection-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+    .protection-section .card {
+      background: var(--tfl-light);
+      border: 1px solid #DDD;
+      border-radius: 4px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .protection-section .card h2 {
+      color: var(--tfl-dark);
+      margin-bottom: 0.75rem;
+    }
+    .protection-section .card a {
+      display: inline-block;
+      margin-top: 0.75rem;
+      color: var(--tfl-red);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .contact-section {
+      background: var(--tfl-dark);
+      color: var(--tfl-light);
+      padding: 2rem;
+      text-align: center;
+    }
+    .contact-section form {
+      display: inline-grid;
+      gap: 0.75rem;
+    }
+    .contact-section input {
+      padding: 0.5rem;
+      border: none;
+      border-radius: 4px;
+      width: 200px;
+    }
+    .contact-section button {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      background: var(--tfl-red);
+      color: var(--tfl-light);
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    footer {
+      background: var(--tfl-dark);
+      color: var(--tfl-light);
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.85rem;
+    }
+  </style>
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="logo">TfL</div>
-        <ul class="nav-links">
-            <li><a href="#">Business</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Tickets</a></li>
-            <li><a href="#">Team</a></li>
-            <li><a href="#">Information</a></li>
-        </ul>
-        <div class="contact-info">
-            <span>Email: info@tfl.com</span> | <span>Phone: 020 1234 5678</span>
-        </div>
-    </nav>
 
-    <!-- Scrolling Text Banners -->
-    <div class="scrolling-banner">
-        <p>TfL services are currently delayed due to construction works</p>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo">TfL</div>
+    <ul class="nav-links">
+      <li><a href="#">Business</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Tickets</a></li>
+      <li><a href="#">Team</a></li>
+      <li><a href="#">Information</a></li>
+    </ul>
+    <div class="contact-info">
+      <span>Email: info@tfl.com</span> | <span>Phone: 020 1234 5678</span>
     </div>
-    <div class="scrolling-banner">
-        <p>All stations have been effected we apologise for the delay</p>
+  </nav>
+
+  <!-- Scrolling Text Banners -->
+  <div class="scrolling-banner">
+    <p>TfL services are currently delayed due to essential infrastructure works</p>
+  </div>
+  <div class="scrolling-banner">
+    <p>All stations affected. We apologise for the disruption and thank you for your patience</p>
+  </div>
+
+  <!-- Main Section -->
+  <section class="main-section">
+    <div class="overlay"></div>
+    <div>
+      <h1>Transport for all London citizens</h1>
+      <p>Your journey is our priority.</p>
     </div>
+  </section>
 
-    <!-- Main Section -->
-    <section class="main-section">
-        <div class="overlay"></div>
-        <h1>Transport for all London citizens within London.</h1>
-        <p>We are proud to support your travel needs.</p>
-    </section>
+  <!-- Service Updates / Delay Details -->
+  <section class="service-updates">
+    <h2>Latest Service Updates</h2>
+    <div class="delay-details">
+      <h3>Current Disruptions</h3>
+      <p>Ongoing track renewal works are causing delays across multiple lines. We’re working through the night to restore full service as quickly as possible.</p>
+      <ul>
+        <li>Bakerloo line between Paddington and Queen’s Park: Replacement buses every 12–15 minutes until 23:30.</li>
+        <li>Piccadilly line lift outage at Covent Garden: Step-free assistance available on request.</li>
+        <li>Jubilee line signal upgrades: Minor delays expected; engineering teams on site 24/7.</li>
+      </ul>
 
-    <!-- Protection Sections -->
-    <section class="protection-section">
-        <div class="card business">
-            <h2>Business Protection</h2>
-            <p>Comprehensive coverage for all your travel requirements.</p>
-        </div>
-        <div class="card travel">
-            <h2>People Protection</h2>
-            <p>Secure your daily commute with our services.</p>
-        </div>
-        <div class="card family">
-            <h2>Family Protection</h2>
-            <p>Keep your family safe while traveling in London.</p>
-        </div>
-    
+      <h3>Passenger Convenience</h3>
+      <p>To keep you moving smoothly, we’re offering:</p>
+      <ul>
+        <li>Free bus and tram transfers on impacted sections — tap your Oyster or contactless card as usual.</li>
+        <li>Enhanced station staff presence for wayfinding and step-free guidance.</li>
+        <li>Real-time updates via the TfL Go app, station displays, and social channels.</li>
+        <li>24/7 journey planning support: call 0343 222 1234 or visit any station help desk.</li>
+      </ul>
+
+      <p>We apologise for the inconvenience and thank you for your patience. <a href="#">View alternative routes &amp; Journey Planner</a></p>
+    </div>
+  </section>
+
+  <!-- Protection Sections -->
+  <section class="protection-section">
+    <div class="card business">
+      <h2>Business Protection</h2>
+      <p>Comprehensive coverage for all your travel requirements.</p>
+    </div>
+    <div class="card travel">
+      <h2>People Protection</h2>
+      <p>Secure your daily commute with our services.</p>
+    </div>
+    <div class="card family">
+      <h2>Family Protection</h2>
+      <p>Keep your family safe while traveling in London.</p>
+    </div>
     <div class="card live-trains">
-    <h2>Live Trains Information</h2>
-    <p>Check the current status and live updates for train services in London.</p>
-    <a href="TfL-live-trains.html">See Live Trains</a>
-</div>
-    </section>
-    <!-- Contact Form -->
-    <section id="contact" class="contact-section">
-        <h2>Contact Us</h2>
-        <form action="#" method="post">
-            <input type="email" name="email" placeholder="Your Email" required>
-            <input type="text" name="phone" placeholder="Your Phone Number" required>
-            <button type="submit">Contact Us</button>
-        </form>
-    </section>
+      <h2>Live Trains Information</h2>
+      <p>Check the current status and live updates for train services in London.</p>
+      <a href="TfL-live-trains.html">See Live Trains</a>
+    </div>
+  </section>
 
-    <!-- Footer -->
-    <footer>
-        <p>Contact: info@tfl.com | Phone: 020 1234 5678</p>
-        <p>© 2025 Transport for London. All rights reserved.</p>
-    </footer>
+  <!-- Contact Form -->
+  <section id="contact" class="contact-section">
+    <h2>Contact Us</h2>
+    <form action="#" method="post">
+      <input type="email" name="email" placeholder="Your Email" required>
+      <input type="text" name="phone" placeholder="Your Phone Number" required>
+      <button type="submit">Contact Us</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>Contact: info@tfl.com | Phone: 020 1234 5678</p>
+    <p>© 2025 Transport for London. All rights reserved.</p>
+  </footer>
 </body>
 </html>
